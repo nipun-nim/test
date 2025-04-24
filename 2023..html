@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>පරිගණක විද්‍යා ප්‍රශ්නෝත්තර පරීක්ෂණය</title>
+    <style>
+        /* Modern, Professional Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&display=swap');
+        #reattempt-btn {
+    background: var(--highlight);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: block;
+    margin: 30px auto 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+#reattempt-btn:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+#reattempt-btn:active {
+    transform: translateY(0);
+}
+        :root {
+            --primary: #e30062;
+            --secondary: #1900ff;
+            --danger: #ff1900;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --border: #dfe6e9;
+            --highlight: #f39c12; /* Added highlight color */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Noto Sans Sinhala', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #f9f9f9;
+        }
+        
+        /* Header with Professional Design */
+        .exam-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .exam-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .exam-title-sinhala {
+            font-size: 1.4rem;
+        }
+        
+        .exam-title-tamil {
+            font-size: 1.2rem;
+            font-family: 'Noto Sans Tamil', sans-serif;
+            margin: 5px 0;
+        }
+        
+        .exam-title-english {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        
+        .exam-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .exam-info-item {
+            background: rgba(255,255,255,0.15);
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .exam-info-item.marks {
+            background: rgba(255,255,255,0.25);
+            font-weight: bold;
+        }
+        
+        /* Instructions Section */
+        .instructions {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 auto 30px;
+            max-width: 800px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .instructions-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary);
+            text-align: center;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .instructions-list {
+            padding-left: 25px;
+        }
+        
+        .instructions-list li {
+            margin-bottom: 10px;
+        }
+        
+        /* Quiz Container */
+        .quiz-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgb(255, 255, 255);
+            padding: 0 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        /* Professional Floating Timer with Highlight Color */
+        .floating-timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 101;
+            opacity: 0;
+            transform: translateY(-30px) scale(0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border: 2px solid var(--highlight); /* Changed to highlight color */
+            overflow: hidden;
+        }
+        
+        .floating-timer.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .timer-display {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .timer-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            opacity: 0.7;
+        }
+        
+        /* Questions Container */
+        .questions-wrapper {
+            padding: 20px 0;
+        }
+        
+        /* Questions */
+        .question {
+            padding: 25px 0;
+            border-bottom: 1px solid var(--border);
+            scroll-margin-top: 20px;
+        }
+        
+        .question:last-child {
+            border-bottom: none;
+        }
+        
+        .question-text {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        /* Question Image */
+        .question-image {
+            max-width: 100%;
+            height: auto;
+            margin: 15px 0;
+            display: block;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Options with Professional Styling */
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .option {
+            position: relative;
+        }
+        
+        .option input {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .option label {
+            display: block;
+            padding: 14px 18px;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+        
+        .option input:checked ~ label {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: var(--secondary);
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+        }
+        
+        .option label:hover {
+            background: rgba(52, 152, 219, 0.05);
+        }
+        
+        /* Submit Button */
+        .submit-btn {
+            display: block;
+            width: 90%;
+            max-width: 300px;
+            margin: 30px auto 0;
+            padding: 14px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .submit-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 95%;
+            max-width: 700px;
+            max-height: 85vh;
+            padding: 30px;
+            position: relative;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: transform 0.3s ease;
+            color: var(--dark);
+            line-height: 1;
+        }
+        
+        .close:hover {
+            color: var(--danger);
+        }
+        
+        /* Circular Image for Explanation Container */
+        .crying-boy {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            display: block;
+            border-radius: 50%; /* Made circular */
+            object-fit: cover;
+            border: 3px solid var(--highlight); /* Using highlight color */
+            animation: bounceIn 0.6s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Result Styles */
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 25px 0;
+            color: var(--primary);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .total-marks {
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--dark);
+            opacity: 0.8;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Enhanced Explanation Container with Circular Images */
+        .explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--highlight); /* Using highlight color */
+            animation: fadeIn 0.3s ease;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .explanation img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; /* Circular images in explanations */
+            object-fit: cover;
+            border: 3px solid var(--highlight);
+            margin: 10px auto;
+            display: block;
+        }
+        
+        .explanation h3, 
+        .explanation h4 {
+            color: var(--primary);
+            margin: 15px 0 10px;
+        }
+        
+        .explanation ul, 
+        .explanation ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        
+        .explanation li {
+            margin-bottom: 8px;
+        }
+        
+        .explanation p {
+            margin-bottom: 12px;
+        }
+        
+        .explanation strong {
+            color: var(--dark);
+        }
+        
+        /* Wrong Answers Section */
+        #wrong-answers {
+            max-height: 50vh;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Custom scrollbar */
+        #wrong-answers::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #wrong-answers::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        #wrong-answers::-webkit-scrollbar-thumb {
+            background: var(--highlight); /* Using highlight color */
+            border-radius: 10px;
+        }
+        
+        #wrong-answers::-webkit-scrollbar-thumb:hover {
+            background: #e67e22;
+        }
+        
+        /* Answer Comparison Styles */
+        .answer-comparison {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 5px;
+            border-left: 3px solid var(--highlight); /* Using highlight color */
+        }
+        
+        .answer-row {
+            display: flex;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .answer-label {
+            font-weight: bold;
+            min-width: 140px;
+            color: var(--dark);
+        }
+        
+        .correct-answer {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .user-answer {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        .unanswered {
+            color: #ff6d00;
+            font-style: italic;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .exam-header {
+                padding: 20px 0 15px;
+            }
+            
+            .exam-title {
+                font-size: 1.5rem;
+            }
+            
+            .exam-title-sinhala {
+                font-size: 1.2rem;
+            }
+            
+            .exam-title-tamil {
+                font-size: 1rem;
+            }
+            
+            .exam-title-english {
+                font-size: 1.1rem;
+            }
+            
+            .exam-info {
+                gap: 10px;
+            }
+            
+            .exam-info-item {
+                font-size: 0.8rem;
+                padding: 6px 15px;
+            }
+            
+            .instructions {
+                padding: 15px;
+            }
+            
+            .question {
+                padding: 20px 0;
+            }
+            
+            .option label {
+                padding: 12px 15px;
+            }
+            
+            .floating-timer {
+                width: 80px;
+                height: 80px;
+                right: 15px;
+                top: 15px;
+            }
+            
+            .timer-display {
+                font-size: 0.9rem;
+            }
+            
+            .timer-label {
+                font-size: 0.6rem;
+            }
+            
+            .answer-label {
+                min-width: 120px;
+            }
+            
+            .modal-content {
+                padding: 25px 15px;
+                max-height: 80vh;
+            }
+            
+            .explanation {
+                padding: 15px;
+                font-size: 0.9rem;
+            }
+            
+            .crying-boy {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .answer-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .answer-label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            
+            .modal-content {
+                width: 98%;
+                padding: 20px 15px;
+            }
+        }
+            /* Remove circular styling for explanation images */
+    .explanation img {
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        border-radius: 0; /* Remove circular border */
+        border: none; /* Remove border */
+        margin: 10px 0;
+        display: block;
+    }
+    
+    /* Keep other existing styles */
+    .explanation {
+        background: #f8f9fa;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        border-left: 4px solid var(--highlight);
+        animation: fadeIn 0.3s ease;
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+Table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 600px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+th,td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background-color: #f2f2f2;
+  width: 20%;
+}
+    </style>
+</head>
+<body>
+    <!-- Professional Exam Header -->
+    <header class="exam-header">
+        <div class="exam-title">
+            <div class="exam-title-sinhala">තොරතුරු හා සන්නිවේදන තාක්ෂණය</div>
+            <div class="exam-title-tamil">தகவல், தொடர்பாடல் தொழினுட்பவியல்</div>
+            <div class="exam-title-english">Information & Communication Technology</div>
+        </div>
+        <div class="exam-info">
+            <div class="exam-info-item">වර්ෂය: 2023</div>
+            <div class="exam-info-item">කාලය: පැය 2 සහ මිනිත්තු 10</div>
+            <div class="exam-info-item">ප්‍රශ්න: 50</div>
+            <div class="exam-info-item marks">20 E I</div>
+        </div>
+    </header>
+    
+    <!-- Instructions Section -->
+    <div class="instructions">
+        <div class="instructions-title">උපදෙස්</div>
+        <ul class="instructions-list">
+            <li>මෙම ප්‍රශ්න පත්‍රයේ ප්‍රශ්න ගණන 50 කි</li>
+            <li>සෑම ප්‍රශ්නයකටම ලකුණු 2 ක් වශයෙන් ලබා දී ඇත</li>
+            <li>ප්‍රශ්නවලට ඇතුළත් විකල්ප අතුරින් වඩාත් සුදුසු පිළිතුර තෝරන්න</li>
+            <li>ප්‍රශ්න පත්‍රය ඉදිරිපත් කිරීම සඳහා පිටුවේ පහළට ඇති බොත්තම භාවිතා කරන්න</li>
+        </ul>
+    </div>
+    
+    <!-- Professional Floating Timer with Highlight Color -->
+    <div class="floating-timer" id="floating-timer">
+        <div class="timer-display" id="floating-timer-display">
+            <div class="timer-label">කාලය</div>
+            <div id="timer-time">02:10:00</div>
+        </div>
+    </div>
+    
+    <div class="quiz-container">
+        <div class="questions-wrapper" id="quiz-questions">
+            <!-- Questions will be inserted here -->
+        </div>
+        
+        <button id="submit-btn" class="submit-btn">පරීක්ෂණය ඉදිරිපත් කරන්න</button>
+    </div>
+    
+    <!-- Incomplete Quiz Modal -->
+    <div id="incomplete-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img src="https://media1.tenor.com/m/_snHGY2GiUIAAAAC/wei-ying-wei-wuxian.gif" alt="Crying boy" class="crying-boy">
+            <h2 style="color: var(--danger); margin-bottom: 15px; text-align: center; animation: fadeIn 0.4s ease 0.2s both;">ඔබ කිසිදු ප්‍රශ්නයකට පිළිතුරු දී නැත!</h2>
+            <p style="margin-bottom: 20px; text-align: center; animation: fadeIn 0.4s ease 0.3s both;">කරුණාකර අවම වශයෙන් එක් ප්‍රශ්නයකට හෝ පිළිතුරු දෙන්න.</p>
+            <button id="continue-btn" style="background: var(--highlight); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; display: block; margin: 0 auto; animation: fadeIn 0.4s ease 0.4s both; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">පරීක්ෂණය දිගටම කරගෙන යන්න</button>
+        </div>
+    </div>
+    
+ <!-- Results Modal -->
+<div id="results-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 style="color: var(--primary); margin-bottom: 15px; text-align: center;">පරීක්ෂණ ප්‍රතිඵල</h2>
+        
+        <div class="total-marks">එක් ප්‍රශ්නයකට ලකුණු 2 ක්</div>
+        <div class="score">ඔබේ ලකුණු: <span id="score-display">0</span>/<span id="total-marks">100</span></div>
+        
+        <div id="wrong-answers" style="margin-top: 15px;">
+            <!-- Wrong answers will be inserted here -->
+        </div>
+        
+        <!-- Add this button -->
+        <button id="reattempt-btn" class="submit-btn" style="margin-top: 30px; background: var(--highlight);">නැවත උත්සාහ කරන්න</button>
+    </div>
+</div>
+
+    <script>
+        // Function to reset the quiz
+function resetQuiz() {
+    // Reset answers array
+    answers = Array(quizData.length).fill(null);
+    
+    // Reset timer (2 hours and 10 minutes)
+    timeLeft = 2 * 60 * 60 + 10 * 60;
+    updateTimerDisplay();
+    
+    // Clear any existing timer interval and start a new one
+    clearInterval(timerInterval);
+    startTimer();
+    
+    // Re-display questions to clear any selected answers
+    displayQuestions();
+    
+    // Close the results modal
+    resultsModal.classList.remove('active');
+    
+    // Scroll to top
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+        // Quiz data with questions, options, correct answers, and explanations
+        const quizData = [
+            {
+                "question": "<b>01. පහත කවර ප්‍රකාශ නිවැරදි වේ ද?</h1></b><p><br>A - වදන් සැකසුම් සහ පැතුරුම්පත් මෘදුකාංග, උපයෝගී (utility) මෘදුකාංග ප්‍රවර්ගයට අයත් වේ.</p><br><p>B - සම්පාදකයක් (compiler), ක්‍රමලේඛ පරිවර්තකයකට උදාහරණයකි.</p><br><p>C - හිමිකම් සහිත (proprietary) මෘදුකාංගයක් එහි බලපත්‍රය රහිතව භාවිත කිරීම නීති විරෝධී වේ.</p>",
+                "image": "",
+                "options": [
+                    "(1) A පමණි",
+                    "(2) B පමණි",
+                    "(3) C පමණි",
+                    "(4) A සහ B පමණි",
+                    "(5) B සහ C පමණි"
+                ],
+                "correctAnswer": 4,
+                "explanation": "වදන් සැකසුම් හා පැතරුම්පත් මෘදුකාංග උපයෝගිතා(Utility) මෘදුකාංග නොවන අතර ඒ්වා යෙදුම් මෘදුකාංග වේ ඒම නිසා A ප්‍රකාශය වැරදි වන අතර B හා C නිවැරදි වේ"
+
+            },
+            {
+            "question": "<b>02. ශිෂ්‍ය තොරතුරු පද්ධතියකට සිසුන්ගේ පෞද්ගලික තොරතුරු සහ ඔවුන්ගේ විභාග ලකුණු ආදානය කෙරේ. විෂයක ලකුණු පරාසය 0 සිට 100 තෙක් වේ. සිසුවකු අනිවාර්ය සහ වෛකල්පිත (තෝරාගත හැකි) විෂයක් එකතුවක් හදාරා අදාළ විභාගයන්ට පෙනී සිටිය යුතුය. පහත කවරක් ඉහත පද්ධතියට සුදුසු දත්ත වලංගු කිරීම් (validations) වේ ද?</b><p><br>A - සිසුවකු පෙනී සිටි/නොසිටි සෑම විෂයකම ලකුණු සඳහා තථ්‍යතා පරීක්ෂාවක්</p><br>B - ආදානය කළ විභාග ලකුණු 0 සිට 100 තෙක් දැයි සෙවීමට පරාස පරීක්ෂාවක්<p><br>C - සිසු දුරකථන අංකය සඳහා කළ ආදානයේ ඉලක්කම් පමණක් ඇති බව සහතික කිරීමට දත්ත වර්ගය පරීක්ෂාවක්</p>",
+            "image": "",
+            "options": [
+                "(1) A පමණි",
+                "(2) B පමණි",
+                "(3) A සහ B පමණි",
+                "(4) A සහ C පමණි",
+                "(5) B සහ C පමණි"
+            ],
+            "correctAnswer": 4,
+            "explanation": "තත්‍යතා පරීක්ශාව යනු සරලව කිසියම් දත්තයක් තිබේ දැයි පරීක්ශා කිරීමයි මෙම ප්‍රකාශ වලට අනුව A ප්‍රකාශයන් සදහන් වන්නේ සිසුවා තෝරා ගන්නා මෙන්ම තොරා නොගන්නා සෑම විසයකටද තත්‍යතා පරීක්ශාවක් සිදු කරන බවයි තෝරා නමුත් මෙම ප්‍රශ්නයේ සදහන් සිද්දියට අනුව සිසුවාට සිසුවාගේ කැමත්ත අනුව තම විශය තෝරා ගත හැකිය ඒ අනුව එක් සිසුවකු සෑම විශයක්ම හදාරන්නේ නැති බැවින් තෝරානොගත් විශයන් සදහා තත්‍යතා පරීක්ශාවක් කලනොහැක එම නිසා A ප්‍රකාශය වැරදි අතර B හා C නිවැරදි වේ "
+        },
+        {
+            "question": "<b>03. පාසල් පුස්තකාලයක දැනට පවතින ග්‍රන්ථ කළමනාකරණ පද්ධතිය පරිගණකයක්, මොනිටරයක්, යතුරු පුවරුවක් සහ මූසිකයක් යොදා ගෙන භාවිත වේ. පොත් බැහැර දීමට සහ ආපසු භාර ගැනීමට දැනට ගතවන කාලය අවම කිරීමට පාසල් කළමනාකාරිත්වයට අවශ්‍ය වේ. මෙම අවශ්‍යතාව සඳහා පහත කවරක් වඩාත් උචිත වේද?</b>",
+            "image": "",
+            "options": [
+                "(1) සංඛ්‍යාංකකයන් (digitizer) භාවිත කිරීම",
+                "(2) බාහිර (external) දෘඪ තැටියක් භාවිත කිරීම",
+                "(3) කීපර්ශක (touch) තිරයක් භාවිත කිරීම",
+                "(4) චුම්භක තීරු (magnetic stripe) කියවනයක් භාවිත කිරීම",
+                "(5) තීරු කේත (bar code) තාක්ෂණය භාවිත කිරීම"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<ol><li><strong>සංඛ්‍යාංකකයන් (digitizer) භාවිත කිරීම:</strong>ඩිජිටයිසර් යනු රූප හෝ ඇඳීම් ඩිජිටල් දත්ත බවට පරිවර්තනය කරන උපකරණයකි. මෙය පොත් බැහැර කිරීමේ සහ ආපසු භාර ගැනීමේ ක්‍රියාවලියට සෘජුවම උපකාරී නොවේ.</li><li><strong>බාහිර (external) දෘඪ තැටියක් භාවිත කිරීම:</strong>බාහිර දෘඪ තැටියක් යනු පරිගණකයකට බාහිරව සම්බන්ධ කළ හැකි දත්ත ගබඩා කිරීමේ උපකරණයකි. මෙය දත්ත ගබඩා කිරීමට ප්‍රයෝජනවත් වුවද, පොත් බැහැර කිරීමේ සහ ආපසු භාර ගැනීමේ ක්‍රියාවලිය වේගවත් කිරීමට සෘජුවම උපකාරී නොවේ.</li> <li><strong>කීපර්ශක (touch) තිරයක් භාවිත කිරීම:</strong>ස්පර්ශ තිරයක් යනු පරිශීලකයාට තිරය ස්පර්ශ කිරීමෙන් පරිගණකයක් සමඟ අන්තර් ක්‍රියා කිරීමට ඉඩ සලසන තිරයකි. එය දත්ත ඇතුළත් කිරීම වේගවත් කළ හැකි නමුත් තීරු කේත තාක්ෂණය තරම් කාර්යක්ෂම නොවේ.</li><li><strong>චුම්භක තීරු (magnetic stripe) කියවනයක් භාවිත කිරීම:</strong>චුම්බක තීරු කියවනයක් යනු ක්‍රෙඩිට් කාඩ් හෝ හැඳුනුම්පත් වල ඇති චුම්බක තීරු වලින් දත්ත කියවන උපකරණයකි. මෙය පුස්තකාල ග්‍රන්ථ කළමනාකරණයට සුදුසු නොවේ. </li> <li><strong>තීරු කේත (bar code) තාක්ෂණය භාවිත කිරීම:</strong>තීරු කේත තාක්‍ෂණය පොත්වල ඇති තීරු කේත ස්කෑන් කර එම තොරතුරු පරිගණකයට ඇතුළත් කිරීමට භාවිතා කරයි. මෙය පොත් බැහැර කිරීමේ සහ ආපසු භාර ගැනීමේ ක්‍රියාවලිය ඉතා වේගවත් සහ කාර්යක්ෂම කරයි. එම නිසා පුස්තකාල ග්‍රන්ථ කළමනාකරණ පද්ධතියක් සඳහා මෙය ඉතාමත් සුදුසු වේ. </li></ol>"
+        },
+        {
+            "question": "<b>04. මුද්‍රක තුනක අභ්‍යන්තර ක්‍රියාවලි පහත වාක්‍ය ඛණ්ඩ මගින් ලැයිස්තු ගත කර දැක්වේ.</b><p><br>A - චලනය වන මුද්‍රණ හිසක් මගින් තීන්ත ආලේපිත පටියක් මුද්‍රණ කඩදාසියේ වැද්දවීම<p><br>B - සිලින්ඩරයක මුද්‍රණය වන දෙයට ටෝනර් ආකර්ෂණය වී ඒවා පසුව කඩදාසියට මාරු වීම</p><br>C - තුඩු (nozzles) මගින් කඩදාසියට තීන්ත ඉසීම<br><br><b>ඉහත වාක්‍ය ඛණ්ඩ සමඟ තිත් න්‍යාස (dot matrix), තීන්ත විදීම් (inkjet) සහ ලේසර් මුද්‍රක නිවැරදිව ගළපා ඇත්තේ පහත කවරක ද?</b>",
+            "image": "",
+            "options": [
+                "(1) A - තිත් න්‍යාස, B - ලේසර්, C - තීන්ත විදීම්",
+                "(2) A - තිත් න්‍යාස, B - තීන්ත විදීම්, C - ලේසර්",
+                "(3) A - තීන්ත විදීම්, B - තිත් න්‍යාස, C - ලේසර්",
+                "(4) A - ලේසර්, B - තිත් න්‍යාස, C - තීන්ත විදීම්",
+                "(5) A - ලේසර්, B - තීන්ත විදීම්, C - තිත් න්‍යාස"
+            ],
+            "correctAnswer": 0,
+            "explanation": "<ol> <li><strong>තිත් න්‍යාස (Dot Matrix) මුද්‍රණ යන්ත්‍ර:</strong>මෙම මුද්‍රණ යන්ත්‍ර ක්‍රියා කරන්නේ චලනය වන මුද්‍රණ හිසක් මගින් තීන්ත ආලේපිත පටියක් මුද්‍රණ කඩදාසියේ වැද්දවීමෙනි. එනම් A ක්‍රියාවලිය තිත් න්‍යාස මුද්‍රණ යන්ත්‍රයට අදාළ වේ.</li> <li><strong>ලේසර් (Laser) මුද්‍රණ යන්ත්‍ර:</strong>ලේසර් මුද්‍රණ යන්ත්‍ර වලදී සිලින්ඩරයක මුද්‍රණය වන දෙයට ටෝනර් ආකර්ෂණය වී ඒවා පසුව කඩදාසියට මාරු වීම සිදු වේ. එනම් B ක්‍රියාවලිය ලේසර් මුද්‍රණ යන්ත්‍රයට අදාළ වේ.</li><li><strong>තීන්ත විදීම් (Inkjet) මුද්‍රණ යන්ත්‍ර:</strong>තීන්ත විදීම් මුද්‍රණ යන්ත්‍ර ක්‍රියා කරන්නේ තුඩු (nozzles) මගින් කඩදාසියට තීන්ත ඉසීමෙනි. එනම් C ක්‍රියාවලිය තීන්ත විදීම් මුද්‍රණ යන්ත්‍රයට අදාළ වේ. </li></ol><br><strong>ඒ අනුව, නිවැරදි පිළිතුර වන්නේ:</strong><ul><li>A - තිත් න්‍යාස</li><li>B - ලේසර්</li><li>C - තීන්ත විදීම්</li></ul>එනම් (1) පිළිතුර නිවැරදි වේ.</li>"
+        },
+        {
+            "question": "<b>05. මධ්‍ය සැකසුම් ඒකකයට (CPU) වෙනත් උපදෙස් (instructions) සමූහයක් ක්‍රියාත්මක කිරීම සඳහා පහත කවරත් හේතු වේද?</b><br><br>A - සන්ධර්භ ස්විචයක් (context switch)<br><br>B - අතුරු බිඳුමක් (an interrupt)<br><br>C - පරිශීලකයා පරිගණකයේ ක්‍රියාවිරහිත කිරීමේ විකල්පය (shutdown) ක්‍රියාත්මක කිරීමක්",
+            "image": "",
+            "options": [
+                "(1) A පමණි",
+                "(2) B පමණි",
+                "(3) C පමණි",
+                "(4) A සහ B පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 5,
+            "explanation": "<ul><li><strong>සන්ධර්භ ස්විචයක් (Context Switch):</strong><p>සන්ධර්භ ස්විචයක් සිදුවන්නේ CPU එක එක් ක්‍රියාවලියක සිට තවත් ක්‍රියාවලියකට මාරු වන විටයි. මෙහිදී, වත්මන් ක්‍රියාවලියේ තත්ත්වය සුරැකෙන අතර නව ක්‍රියාවලියක තත්ත්වය ප්‍රතිස්ථාපනය කෙරේ. මෙය CPU එකට වෙනත් උපදෙස් ක්‍රියාත්මක කිරීමට හේතු වේ.</p></li><li><strong>අතුරු බිඳුමක් (Interrupt):</strong><p>අතුරු බිඳුමක් යනු දෘඪාංග හෝ මෘදුකාංග මගින් CPU එකට එවන සංඥාවක් වන අතර, එය වත්මන් ක්‍රියාවලියට බාධා කර විශේෂිත උපදෙස් සමූහයක් ක්‍රියාත්මක කිරීමට CPU එකට බල කරයි. උදාහරණයක් ලෙස, යතුරු පුවරුවෙන් යතුරක් එබීමෙන් අතුරු බිඳුමක් ජනනය වේ.</p></li><li><strong>පරිශීලකයා පරිගණකයේ ක්‍රියාවිරහිත කිරීමේ විකල්පය (Shutdown):</strong><p>පරිශීලකයා පරිගණකය ක්‍රියාවිරහිත කරන විට, CPU එකට ක්‍රියාවිරහිත කිරීමේ ක්‍රියාවලියට අදාළ උපදෙස් සමූහයක් ක්‍රියාත්මක කිරීමට සිදු වේ. මෙය ද CPU එකට වෙනත් උපදෙස් ක්‍රියාත්මක කිරීමට හේතු වේ.</p></li></ul><p>එබැවින්, A, B සහ C යන සියල්ලම CPU එකට වෙනත් උපදෙස් ක්‍රියාත්මක කිරීමට හේතු වේ.</p>"
+        },
+        {
+            "question": "<b>06. ක්‍රමලේඛයක් වේගයෙන්ම ක්‍රියාත්මක වන්නේ එයට අවශ්‍ය දත්ත,</b>",
+            "image": "",
+            "options": [
+                "(1) දෘඩ තැටියේ තිබෙන විට ය.",
+                "(2) L1 නිහීත (cache) මතකයේ තිබෙන විට ය.",
+                "(3) L2 නිහීත මතකයේ තිබෙන විට ය.",
+                "(4) චුම්භක පටියේ (magnetic tape) තිබෙන විට ය.",
+                "(5) ප්‍රධාන මතකයේ (main memory) තිබෙන විට ය."
+            ],
+            "correctAnswer": 1,
+            "explanation": "<ul><li><strong>L1 නිහීත මතකය (L1 Cache Memory):</strong><p>L1 නිහීත මතකය යනු මධ්‍ය සැකසුම් ඒකකයට (CPU) ඉතා සමීපව පිහිටා ඇති කුඩා, වේගවත් මතකයකි. CPU එකට අවශ්‍ය දත්ත L1 නිහීත මතකයේ තිබේ නම්, එය ඉතා වේගයෙන් එම දත්ත වෙත ප්‍රවේශ විය හැකිය. L1 නිහීත මතකය අනෙකුත් මතක වර්ග වලට වඩා වේගවත් බැවින්, ක්‍රමලේඛයක් L1 නිහීත මතකයේ තිබෙන දත්ත භාවිතා කරන විට වේගයෙන්ම ක්‍රියාත්මක වේ.</p></li><li><strong>වෙනත් විකල්ප පිළිබඳ කෙටි විස්තර:</strong><ul><li><strong>දෘඪ තැටිය (Hard Disk):</strong><p>දෘඪ තැටිය දත්ත ගබඩා කිරීම සඳහා භාවිතා කරන නමුත් එය L1 නිහීත මතකයට වඩා බෙහෙවින් මන්දගාමී වේ.</p></li><li><strong>L2 නිහීත මතකය (L2 Cache Memory):</strong><p>L2 නිහීත මතකය L1 නිහීත මතකයට වඩා විශාල නමුත් මන්දගාමී වේ.</p></li><li><strong>චුම්භක පටිය (Magnetic Tape):</strong><p>චුම්භක පටිය දත්ත ගබඩා කිරීම සඳහා භාවිතා කරන නමුත් එය ඉතා මන්දගාමී වන අතර ප්‍රවේශ වීමට වැඩි කාලයක් ගත වේ.</p></li><li><strong>ප්‍රධාන මතකය (Main Memory/RAM):</strong><p>ප්‍රධාන මතකය දත්ත ගබඩා කිරීම සඳහා භාවිතා කරන නමුත් L1 නිහීත මතකයට වඩා මන්දගාමී වේ.</p></li></ul><p>එබැවින්, ක්‍රමලේඛයක් වේගයෙන්ම ක්‍රියාත්මක වන්නේ එයට අවශ්‍ය දත්ත L1 නිහීත මතකයේ තිබෙන විට ය.</p>"
+        },
+        {
+            "question": "<b>07. දශමය 13.125 ට තුල්‍ය වන නිවැරදි ද්වීමය සංඛ්‍යාව කුමක්ද?</b>",
+            "image": "",
+            "options": [
+                "(1) 1100.001",
+                "(2) 1100.100",
+                "(3) 1101.001",
+                "(4) 1101.100",
+                "(5) 1101.101"
+            ],
+            "correctAnswer": 2,
+            "explanation": "<h4>දශමය 13.125 ද්වීමයට පරිවර්තනය කිරීම</h1><p>දශමය 13.125 ද්වීමයට පරිවර්තනය කරන්නේ පහත ආකාරයටයි:</p><h2>පූර්ණ සංඛ්‍යා කොටස (13) පරිවර්තනය කිරීම</h2><br><ol><li>13 / 2 = 6, ඉතිරිය 1</li><li>6 / 2 = 3, ඉතිරිය 0</li><li>3 / 2 = 1, ඉතිරිය 1</li><li>1 / 2 = 0, ඉතිරිය 1</li><br><br></ol><p>පහළ සිට ඉහළට ඉතිරි අගයන් කියවීමෙන් පූර්ණ සංඛ්‍යා කොටසේ ද්වීමය අගය ලැබේ: 1101<br><br></p><h2>භාගික කොටස (0.125) පරිවර්තනය කිරීම<br></h2><ol><li>0.125 * 2 = 0.25, පූර්ණ සංඛ්‍යා කොටස 0</li><li>0.25 * 2 = 0.5, පූර්ණ සංඛ්‍යා කොටස 0</li><li>0.5 * 2 = 1.0, පූර්ණ සංඛ්‍යා කොටස 1</li></ol><p>ඉහළ සිට පහළට පූර්ණ සංඛ්‍යා කොටස් කියවීමෙන් භාගික කොටසේ ද්වීමය අගය ලැබේ: 001</p><br><h2>සම්පූර්ණ ද්වීමය අගය</h2><p>පූර්ණ සංඛ්‍යා කොටස සහ භාගික කොටස එක් කිරීමෙන් සම්පූර්ණ ද්වීමය අගය ලැබේ: 1101.001</p><br><p>එබැවින්, දශමය 13.125 ද්වීමයට පරිවර්තනය කළ විට 1101.001 වේ.</p>"
+        },
+        {
+            "question": "<b>08. පහත කවරක් අෂ්ඨමය 674<sub>8</sub> ට තුල්‍ය වේද?</b><br><br>A - 110 111 100<sub>2</sub><br>B - 144<sub>10</sub><br>C - 2BC<sub>16</sub>",
+            "image": "",
+            "options": [
+                "(1) A පමණි",
+                "(2) A සහ B පමණි",
+                "(3) A සහ C පමණි",
+                "(4) B සහ C පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 1,
+            "explanation": "<ul><li>A - 110 111 100<sub>2</sub> (හරි)</li><li>B - 144<sub>0</sub> වැරදියි - 444<sub>10</sub> විය යුතුයි</li><li>C - 2BC<sub>16</sub> වැරදියි - 2F8<sub>16</sub> විය යුතුයි /li></ul><p>පිළිතුර: A පමණි.</p>"
+        },
+        {
+            "question": "<b>09. උපදෙසක යොමුව (address) ෂඩ්දශමය 5A1 ලෙස දැක්විණි. එම යොමුව දශමය ආකාරයට කුමක් වේද?</b>",
+            "image": "",
+            "options": [
+                "(1) 41",
+                "(2) 1441",
+                "(3) 1457",
+                "(4) 2641",
+                "(5) 23056"
+            ],
+            "correctAnswer": 1,
+            "explanation": "<p>ෂඩ්දශමය 5A1 දශමයට පරිවර්තනය කිරීමේ ක්‍රියාවලිය මෙන්න:</p><ol><li><b>ඉලක්කම් වෙන් කරන්න:</b><ul><li>5</li><li>A</li><li>1</li></ul></li><li><b>ස්ථාන අගයන් ගණනය කරන්න:</b><p>දකුණේ සිට වමට, ස්ථාන අගයන් 16 හි බලයන් වේ:</p><ul><li>16<sup>0</sup> = 1</li><li>16<sup>1</sup> = 16</li><li>16<sup>2</sup> = 256</li></ul></li><li><b>එක් එක් ඉලක්කම එහි ස්ථාන අගයෙන් ගුණ කරන්න:</b><ul><li>1 * 1 = 1</li><li>A (10) * 16 = 160</li><li>5 * 256 = 1280</li></ul></li><li><b>එකතු කරන්න:</b><p>1 + 160 + 1280 = 1441</p></li></ol><p>එබැවින්, ෂඩ්දශමය 5A1 දශමය 1441 ට සමාන වේ.</p>"
+        },
+        {
+            "question": "<b>10. ඉඩ (space) සහ පේළි යැවුම් (line break) ද සමග ලේඛනයක් අනුලක්ෂණ 2048 කින් සමන්විත වේ. සමතා (parity) බිටු ද භාවිත කරමින් මෙම ලේඛනය ASCII වලින් ආකේතනය කිරීමට බිටු කොපමණ අවශ්‍ය වේද?</b>",
+            "image": "",
+            "options": [
+                "(1) 2048",
+                "(2) 2048 x 2",
+                "(3) 2048 x 7",
+                "(4) 2048 x 8",
+                "(5) 2048 / 8"
+            ],
+            "correctAnswer": 3,
+            "explanation": "<p>ලේඛනයේ අක්ෂර 2048 ක් ඇත.</p><p>සමතා බිටු භාවිතයෙන් එක් අක්ෂරයක් සඳහා බිටු 8 ක් අවශ්‍ය වේ.</p><p>එබැවින්, සම්පූර්ණ ලේඛනය සංකේතනය කිරීමට අවශ්‍ය බිටු ගණන 2048 * 8 වේ.</p><p><b>පිළිතුර:</b></p><p>(4) 2048 x 8</p>"
+        },
+        {
+            "question": "<b>11. බිටු 8 භාවිතයෙන් දශමය -49 හි නිවැරදි 2 හි අනුපූරක ද්විමය (2's complement) නිරූපණය කුමක්ද?</b>",
+            "image": "",
+            "options": [
+                "(1) 00110001",
+                "(2) 01100010",
+                "(3) 10011110",
+                "(4) 11001111",
+                "(5) 11100010"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<p><b>දශමය -49 හි 2 හි අනුපූරක ද්විමය (2's complement) නිරූපණය සොයා ගැනීම:</b></p><ol><li><b>49 හි ධන ද්විමය නිරූපණය සොයා ගන්න:</b><p>49 දශමය ද්විමය බවට පරිවර්තනය කරන්න. 49 = 32 + 16 + 1. මෙය 2<sup>5</sup> + 2<sup>4</sup> + 2<sup>0</sup> ට සමාන වේ.</p><p>එබැවින්, 49 හි 8-bit ද්විමය නිරූපණය 00110001 වේ.</p></li><li><b>1 හි අනුපූරකය (1's complement) සොයා ගන්න:</b><p>ධන ද්විමය ඉලක්කම් පෙරළන්න (0 සිට 1 දක්වා සහ 1 සිට 0 දක්වා).</p><p>00110001 හි 1 හි අනුපූරකය 11001110 වේ.</p></li><li><b>2 හි අනුපූරකය (2's complement) සොයා ගන්න:</b><p>1 හි අනුපූරකයට 1 එකතු කරන්න.</p><p>11001110 + 1 = 11001111</p></li></ol><p>එබැවින්, -49 හි 2 හි අනුපූරක 8-bit ද්විමය නිරූපණය 11001111 වේ.</p><p><b>පිළිතුර:</b> (4) 11001111</p>"
+        },
+        {
+            "question": "<b>12. ආදාන දෙකක් සහිත තාර්කික ද්වාරයක් X මගින් දැක්වෙන පහත තර්කන පරිපථය සලකන්න.",
+            "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgPJLFlv9R5mdpAknLhb0GleeNxJC8KUJz4yzrqwvFeNain31sFF0j2CbZ22ojak-yOZp4Jkka0SWXf3mlYvoUAVxOvwuzzOl8Jg5MYSI31KhvPNAYvM_sfJwj0tsoswRB34pmEbs-6143CEcxb9JuPTMs_D3Kn6181FC2bAl4_8-2SYX8Np50YDYqGfXq8/s533/20232024-AL-ICT-Marking-Scheme-Sinhala-Medium-2.png",
+            "text":" A= 0 සහ B = 1 වන විට C ප්‍රතිදානය 0 වීමට X පහත කවරක් විය යුතු ද?<p>I - NAND ද්වාරයක්</p><p>II - NOR ද්වාරයක්</p><p>III - XOR ද්වාරයක්</p>",
+            "options": [
+                "(1) I පමණි",
+                "(2) I සහ II පමණි",
+                "(3) I සහ III පමණි",
+                "(4) II සහ III පමණි",
+                "(5) I, II සහ III යන සියල්ලම"
+            ],
+            "correctAnswer": 4,
+            "explanation": "මෙහිදි NAND,NOR,XOR සියලුම ද්වාර වලින් අවසනය 0 ප්‍රතිදානය වේ"
+        },
+        {
+            "question": "<b>13. X(X+Y) බුලිය ප්‍රකාශයේ සරල ආකාරය පහත කුමක්ද?</b>",
+            "image": "",
+            "options": [
+                "(1) X",
+                "(2) Y",
+                "(3) XY",
+                "(4) X'Y",
+                "(5) X+Y"
+            ],
+            "correctAnswer": 0,
+            "explanation": "<ol><li><b>විභේදන න්‍යාය (Distribution):</b><p>අපි ප්‍රකාශනයේ X කියන පදය (X+Y) කියන වරහන තුලට ගුණ කරනවා. (A(B+C) = AB + AC)</p><p>X(X+Y) = XX + XY</p></li><li><b> තදේවභාවී න්‍යාය (Idempotent Law):</b><p> (AA = A)</p><p>XX = X</p></li><li><b>ප්‍රතිස්ථාපනය (Substitution):</b><p>දැන් අපි XX කියන පදය X කියල ප්‍රතිස්ථාපනය කරනවා.</p><p>XX + XY = X + XY</p></li><li><b> සමතිරික්තතා න්‍යාය (Absorption Law):</b><p>A + AB = A</p><p>X + XY = X</p></li></ol><p><b>නිගමනය:</b></p><p>X(X+Y) කියන බුලියානු ප්‍රකාශනයේ සරල ආකාරය X වේ.</p><p><b>පිළිතුර:</b></p><p>(1) X</p>"
+        },
+        {
+            "question": "<b>14. පරිගණකයක ක්‍රියාත්මක වන ක්‍රමලේඛයක්, ක්‍රියායනයක් (process) ලෙස හැඳින් වේ. ක්‍රියායනයකට අදාළ තත්ත්ව සංක්‍රාන්ති පිළිවෙළක් (state transition sequence) විය හැක්කේ පහත කවරක් ද?</b>",
+            "image": "",
+            "options": [
+                "(1) නව → සූදානම් → ක්‍රියාත්මක → අවසන්",
+                "(2) නව → අවහිර කළ → අවසන්",
+                "(3) නව → සූදානම් → අවහිර කළ → ක්‍රියාත්මක → අවසන්",
+                "(4) නව → ක්‍රියාත්මක → සූදානම් → ක්‍රියාත්මක → අවසන්",
+                "(5) නව → අහිර කළ → සූදානම් → ක්‍රියාත්මක → අවසන්"
+            ],
+            "correctAnswer": 0,
+            "explanation":"  ",
+            explanationImage: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBALVG1UC86Z9oTQi8AR4Cz9U53Fp0O9nX9EgUPKQn7zv0nM__Go6RaNYZDUT3vVmC8-5xsYHRc1d5Bfre3AiD5sTrWxaWgfQi_S0fEtS5oygOcSypv2x6-lOyf2GuWptlY_mX9k1eHA7j/s1600/os4.PNG"
+        },
+        {
+            "question": "<b>15. අමර පරිගණකය පණගන්වා පැතුරුම්පත් යෙදුමක් ආරම්භ කරයි. ඉන්පසු ඔහු වෙබ් අතරික්සුවක්ද විවෘත කරයි. ඔහුගේ පරිගණකයේ සකසනය මත ධාවනය වන්නන්ගේ නිවැරදි අනුපිළිවෙළ විය හැක්කේ පහත කවරක් ද?</b>",
+            "image": "",
+            "options": [
+                "(1) BIOS → OS → පැතුරුම්පත් ක්‍රියායනය → OS → වෙබ් අතරික්සු ක්‍රියායනය → OS",
+                "(2) BIOS → පැතුරුම්පත් ක්‍රියායනය → OS → වෙබ් අතරික්සු ක්‍රියායනය → OS → පැතුරුම්පත් ක්‍රියායනය",
+                "(3) BIOS → පැතුරුම්පත් ක්‍රියායනය → වෙබ් අතරික්සු ක්‍රියායනය → OS",
+                "(4) BIOS → OS → පැතුරුම්පත් ක්‍රියායනය → වෙබ් අතරික්සු ක්‍රියායනය",
+                "(5) BIOS → OS → පැතුරුම්පත් ක්‍රියායනය → වෙබ් අතරික්සු ක්‍රියායනය → පැතුරුම්පත් ක්‍රියායනය → වෙබ් අතරික්සු ක්‍රියායනය"
+            ],
+            "correctAnswer": 0,
+            "explanation": "<p>පරිගණකයක යම් මෘදුකාංගයක් ක්‍රියාත්මක වන ආකාරය පිළිබඳව අවබෝධයක් ලබා ගැනීම සඳහා මෙම ප්‍රශ්නය ඉතා වැදගත් වේ. පරිගණකයක ක්‍රියාත්මක වන ක්‍රියාවලිය පහත පරිදි වේ:</p><ul><li><b>BIOS (Basic Input/Output System):</b> පරිගණකය පණගැන්වීමේදී මුලින්ම ක්‍රියාත්මක වන්නේ BIOS ය. මෙය පරිගණකයේ දෘඪාංග පරීක්ෂා කර මෙහෙයුම් පද්ධතිය (OS) පූරණය කරයි.</li><li><b>OS (Operating System):</b> මෙහෙයුම් පද්ධතිය පූරණය වූ පසු පරිගණකයේ සියලුම මෘදුකාංග ක්‍රියාත්මක කිරීමේ වගකීම මෙහෙයුම් පද්ධතියට පැවරේ.</li><li><b>පැතුරුම්පත් යෙදුම (Spreadsheet Application):</b> පරිශීලකයා පැතුරුම්පත් යෙදුම ආරම්භ කළ විට, මෙහෙයුම් පද්ධතිය එම යෙදුම ක්‍රියාත්මක කරයි.</li><li><b>වෙබ් අතරික්සුව (Web Browser):</b> වෙබ් අතරික්සුව විවෘත කළ විට, මෙහෙයුම් පද්ධතිය එම යෙදුම ක්‍රියාත්මක කරයි.</li></ul><p>ඉහත තොරතුරු අනුව මෙම ප්‍රශ්නයට පිළිතුර පහදා දෙන්නම්.</p><ol><li><b>BIOS → OS:</b> පරිගණකය පණගැන්වීමේදී මුලින්ම ක්‍රියාත්මක වන්නේ BIOS ය. එය මෙහෙයුම් පද්ධතිය පූරණය කරයි.</li><li><b>OS → පැතුරුම්පත් ක්‍රියායනය:</b> පරිශීලකයා පැතුරුම්පත් යෙදුම ආරම්භ කළ විට, මෙහෙයුම් පද්ධතිය එම යෙදුම ක්‍රියාත්මක කරයි.</li><li><b>OS → වෙබ් අතරික්සු ක්‍රියායනය:</b> පරිශීලකයා වෙබ් අතරික්සුව විවෘත කළ විට, මෙහෙයුම් පද්ධතිය එම යෙදුම ක්‍රියාත්මක කරයි.</li></ol><p>එබැවින්, අමර පරිගණකය පණගන්වා පැතුරුම්පත් යෙදුමක් ආරම්භ කර, පසුව වෙබ් අතරික්සුවක් විවෘත කළ විට, ඔහුගේ පරිගණකයේ සකසනය මත ධාවනය වන්නන්ගේ නිවැරදි අනුපිළිවෙළ වන්නේ:</p><p><b>BIOS → OS → පැතුරුම්පත් ක්‍රියායනය → OS → වෙබ් අතරික්සු ක්‍රියායනය → OS</b></p><p>මෙහිදී, මෙහෙයුම් පද්ධතිය (OS) මූලිකවම පරිගණකයේ ක්‍රියාවලි පාලනය කරන බැවින්, සෑම යෙදුමක්ම ක්‍රියාත්මක වීමට පෙර සහ පසු එය ක්‍රියාත්මක වේ.</p><p>එම නිසා නිවැරදි පිළිතුර (1) වේ.</p>"
+        },
+        {
+            "question": "<b>16. පහත කවර ප්‍රකාශ නිවැරදි වේ ද?</b><p><br>A - ජාලයකට ඇතුළුවන සියලු පැකට්ටු පරීක්ෂා කරන පැකට්ටු පෙරහනක් ලෙස ගිනි පවුරක් (firewall) ක්‍රියා කරයි.</p><p><br>B - සම්මත ක්‍රමලේඛයක් ලෙස පෙනී සිටිමින් පරිශීලකයන් රවටන අනිෂ්ට මෘදුකාංගයක් ට්‍රෝජන් අශ්වයෙකු ලෙස හැඳින්වේ.</p><p><br>C - ශක්තිමත් මුරපදයක් (password) කැපිටල් අකුරු (upper case), කුඩා අකුරු (lower case), ඉලක්කම් සහ සංකේත (symbols) සංයෝජනයක් ප්‍රමාණවත් දිගකින් තිබිය යුතු ය.</p>",
+            "image": "",
+            "options": [
+                "(1) A පමණි",
+                "(2) B පමණි",
+                "(3) C පමණි",
+                "(4) A සහ B පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<ul><li><b>A - ජාලයකට ඇතුළුවන සියලු පැකට්ටු පරීක්ෂා කරන පැකට්ටු පෙරහනක් ලෙස ගිනි පවුරක් (firewall) ක්‍රියා කරයි.</b><p>මෙය නිවැරදි ප්‍රකාශයකි. ගිනි පවුරක් (firewall) යනු ජාල ආරක්ෂාව සඳහා භාවිතා කරන මෘදුකාංගයක් හෝ දෘඩාංගයක් වේ. එය ජාලයකට ඇතුළුවන සහ පිටවන දත්ත පැකට්ටු පරීක්ෂා කර, පෙර-නිර්වචනය කළ ආරක්ෂක නීති මත පදනම්ව අවහිර කිරීම හෝ ඉඩ දීම සිදු කරයි.</p></li><li><b>B - සම්මත ක්‍රමලේඛයක් ලෙස පෙනී සිටිමින් පරිශීලකයන් රවටන අනිෂ්ට මෘදුකාංගයක් ට්‍රෝජන් අශ්වයෙකු ලෙස හැඳින්වේ.</b><p>මෙය ද නිවැරදි ප්‍රකාශයකි. ට්‍රෝජන් අශ්වයෙකු (trojan horse) යනු පරිශීලකයන්ගේ පරිගණක වලට ඇතුළු වී හානි කරන අනිෂ්ට මෘදුකාංගයකි. එය සාමාන්‍ය මෘදුකාංගයක් ලෙස වෙස්වලාගෙන පරිශීලකයන් රවටා පරිගණකයට ඇතුල් වේ.</p></li><li><b>C - ශක්තිමත් මුරපදයක් (password) කැපිටල් අකුරු (upper case), කුඩා අකුරු (lower case), ඉලක්කම් සහ සංකේත (symbols) සංයෝජනයක් ප්‍රමාණවත් දිගකින් තිබිය යුතු ය.</b><p>මෙය ද නිවැරදි ප්‍රකාශයකි. ශක්තිමත් මුරපදයක් ආරක්ෂාව සඳහා ඉතා වැදගත් වේ. එය විවිධ අක්ෂර වර්ග සහ දිගු වීම නිසා අනවසරයෙන් ඇතුල් වීම අපහසු කරයි.</p></li></ul><p><b>නිගමනය:</b></p><p>A, B සහ C යන ප්‍රකාශ තුනම නිවැරදිය.</p>"
+        },
+        {
+            "question": "<b>17. පහත කවර ප්‍රකාශ නිවැරදි වේ ද?</b><br><p>A - ගුප්ත කේතනයේ (encryption) එක් භාවිතයක් වන්නේ දත්තවල රහස්‍යභාවය සහතික කර ගැනීමයි.</p><br><p>B - අසමමිතික (asymmetric) ගුප්ත කේතනය භාවිත කරන විට, සෑම පරිශීලකයෙක් සතුවම අසමාන යතුරු යුගලයන් තිබිය යුතු ය.</p><br><p>C - සම්මිතික ගුප්ත කේතනය භාවිත කොට තොරතුරු හුවමාරු කර ගැනීමේදී පරිශීලකයන් පොදු යතුරක් හවුලේ පරිහරණය කළ යුතු ය.</p>",
+            "image": "",
+            "options": [
+                "(1) A පමණි",
+                "(2) A සහ B පමණි",
+                "(3) A සහ C පමණි",
+                "(4) B සහ C පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<ul><li><b>A - ගුප්ත කේතනයේ (encryption) එක් භාවිතයක් වන්නේ දත්තවල රහස්‍යභාවය සහතික කර ගැනීමයි.</b><p>මෙය නිවැරදි ප්‍රකාශයකි. ගුප්ත කේතනය මඟින් දත්ත කියවිය නොහැකි ආකාරයට පරිවර්තනය කරන අතර, අවසර නොමැති පුද්ගලයන්ට දත්ත ලබා ගැනීමෙන් වළක්වයි.</p></li><li><b>B - අසමමිතික (asymmetric) ගුප්ත කේතනය භාවිත කරන විට, සෑම පරිශීලකයෙක් සතුවම අසමාන යතුරු යුගලයන් තිබිය යුතු ය.</b><p>මෙය ද නිවැරදි ප්‍රකාශයකි. අසමමිතික ගුප්ත කේතනයේදී, සෑම පරිශීලකයෙකුටම පොදු යතුරක් සහ පෞද්ගලික යතුරක් ලෙස වෙනස් යතුරු යුගලක් පවතී.</p><li><b>C - සම්මිතික ගුප්ත කේතනය භාවිත කොට තොරතුරු හුවමාරු කර ගැනීමේදී පරිශීලකයන් පොදු යතුරක් හවුලේ පරිහරණය කළ යුතු ය.</b><p>මෙය නිවැරදි ප්‍රකාශයකි. සම්මිතික ගුප්ත කේතනයේදී, පරිශීලකයන් පොදු යතුරක් හවුලේ පරිහරණය කරයි.</p></li></ul><p><b>නිගමනය:</b></p><p>A, B සහ C යන ප්‍රකාශ සියල්ලම නිවැරදියි.</p>"
+        },
+        {
+            "question": "<b>18. ඉරට්ටේ සමතා (even parity) පද්ධතියක දෝෂ සහිතව ලද බයිටය ලෙස සැලකිය හැක්කේ පහත ඒවායින් කවරක් ද?</b>",
+            "image": "",
+            "options": [
+                "(1) 01010101",
+                "(2) 10010011",
+                "(3) 10110010",
+                "(4) 11011001",
+                "(5) 11010111"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<p><b>ඉරට්ටේ සමතා (Even Parity) යනු කුමක්ද?</b></p><ul><li>ඉරට්ටේ සමතා පද්ධතියක, බයිටයක ඇති 1 බිටු ගණන ඉරට්ටේ සංඛ්‍යාවක් විය යුතුය.</li><li>එනම්, බයිටයක 1 බිටු 2ක්, 4ක්, 6ක් හෝ 8ක් තිබිය යුතුය.</li><li>කිසියම් බයිටයක 1 බිටු ගණන ඔත්තේ නම්, එය දෝෂ සහිත බයිටයක් ලෙස සැලකේ.</li></ul><p><b>පිළිතුර විශ්ලේෂණය කිරීම:</b></p><p>දැන් අපි එක් එක් බයිටය පරීක්ෂා කරමු:</p><ol><li>01010101: 1 බිටු 4ක් ඇත. (ඉරට්ටේ)</li><li>10010011: 1 බිටු 4ක් ඇත. (ඉරට්ටේ)</li><li>10110010: 1 බිටු 4ක් ඇත. (ඉරට්ටේ)</li><li>11011001: 1 බිටු 5ක් ඇත. (ඔත්තේ)</li><li>11010111: 1 බිටු 6ක් ඇත. (ඉරට්ටේ)</li></ol><p>(4) 11011001 බයිටයේ 1 බිටු 5ක් ඇත, එය ඔත්තේ සංඛ්‍යාවකි, එබැවින් එය දෝෂ සහිත බයිටයකි.</p><p><b>පිළිතුර:</b></p><p>(4) 11011001</p>"
+        },
+        {
+            "question": "<b>19. පහත A සිට E තෙක් නම් කර ඇති උපාංග 1 සිට 5 තෙක් නම් කර ඇති විස්තර සමඟ ගළපන්න.</b><br><table><tr><th>උපාංගය</th><th>විස්තරය</th></tr><tr><td>A. සේවාලාභියා (client)</td><td>1 – පරිශීලක භාවිතය සඳහා ජාල ක්‍රමලේඛ (network programs) සහ දත්ත ගොනු ගබඩා කරයි</td></tr><tr><td>B. නාභිය (hub)</td><td>2 – ස්ථානීය පෙදෙස් ජාලයක් (LAN) සහ පුළුල් පෙදෙස් ජාලයක් (WAN) සම්බන්ධ කළ හැකි උපාංගයකි</td></tr><tr><td>C. මං හසුරුව (router)</td><td>3 – පණිවිඩයක් ලද විට මෙය එම පණිවිඩය ලැබිය යුතු පරිගණකය සම්බන්ධ කර ඇති කෙවෙනියේ (port) පමණක් එය සම්ප්‍රේෂණය කරයි</td></tr><tr><td>D. සේවාදායකය (server)</td><td>4 – අනෙකුත් පරිගණක වලින් සේවා සහ අන්තර්ගත (content) ඉල්ලා සිටියි</td></tr><tr><td>E. ස්විචය</td><td>5 – පණිවිඩයක් ලද විට මෙය එම පණිවිඩය සියලු කෙවෙනි හරහා සම්බන්ධිත සියලු සත්කාරක (hosts) වෙත විකාශය (broadcast) කරයි</td></tr></table>",
+            "image": "",
+            "options": [
+                "(1) A - 1, B - 5, C - 4, D - 2, E - 3",
+                "(2) A - 2, B - 4, C - 3, D - 5, E - 1",
+                "(3) A - 3, B - 2, C - 1, D - 4, E - 5",
+                "(4) A - 4, B - 5, C - 2, D - 1, E - 3",
+                "(5) A - 5, B - 1, C - 2, D - 3, E - 4"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<ol><li><b>A. සේවාලාභියා (client) - 4. අනෙකුත් පරිගණක වලින් සේවා සහ අන්තර්ගත (content) ඉල්ලා සිටියි.</b><ul><li>සේවාලාභියෙකු යනු සේවා සපයන සේවාදායකයකින් (server) දත්ත හෝ සේවා ඉල්ලා සිටින පරිගණකයකි.</li></ul></li><li><b>B. නාභිය (hub) - 5. පණිවිඩයක් ලද විට මෙය එම පණිවිඩය සියලු කෙවෙනි හරහා සම්බන්ධිත සියලු සත්කාරක (hosts) වෙත විකාශය (broadcast) කරයි.</b><ul><li>නාභියක් (hub) යනු ජාලයක ඇති සියලුම පරිගණකවලට දත්ත සම්ප්‍රේෂණය කරන උපකරණයකි.</li></ul></li><li><b>C. මං හසුරුව (router) - 2. ස්ථානීය පෙදෙස් ජාලයක් (LAN) සහ පුළුල් පෙදෙස් ජාලයක් (WAN) සම්බන්ධ කළ හැකි උපාංගයකි.</b><ul><li>මං හසුරුවක් (router) යනු විවිධ ජාල අතර දත්ත හුවමාරු කිරීමට භාවිතා කරන උපකරණයකි.</li></ul></li><li><b>D. සේවාදායකය (server) - 1. පරිශීලක භාවිතය සඳහා ජාල ක්‍රමලේඛ (network programs) සහ දත්ත ගොනු ගබඩා කරයි.</b><ul><li>සේවාදායකයක් (server) යනු අනෙකුත් පරිගණකවලට සේවා සපයන බලවත් පරිගණකයකි.</li></ul></li><li><b>E. ස්විචය - 3. පණිවිඩයක් ලද විට මෙය එම පණිවිඩය ලැබිය යුතු පරිගණකය සම්බන්ධ කර ඇති කෙවෙනියේ (port) පමණක් එය සම්ප්‍රේෂණය කරයි.</b><ul><li>ස්විචයක් (switch) යනු නාභියකට වඩා බුද්ධිමත්ව දත්ත යොමු කරන උපකරණයකි, එය දත්ත අවශ්‍ය පරිගණකයට පමණක් යවයි.</li></ul></li></ol><p>එබැවින්, (4) පිළිතුර නිවැරදි වේ.</p>"
+        },
+        {
+            "question": "<b>20. පහත ඡේදයේ A සහ B හිස් තැන්වලට සුදුසු ආදේශක සහිත පිළිතුර තෝරන්න.</b><p><br>අන්තර්ජාලයේදී, සත්කාරකයක් (host) එහි IP යොමුවෙන් (address) හඳුනාගැනේ. IPv4 හිදී සත්කාරක හඳුනා ගැනීමට සෑම IP යොමුවක්ම බිටු_____ A_____ කින් සමන්විත වේ. IPv6 ලෙස හඳුන්වන නව සංස්කරණයේදී IP යොමුවක් බිටු______B_____ කින් සමන්විත වේ.",
+            "image": "",
+            "options": [
+                "(1) 32, 48",
+                "(2) 32, 128",
+                "(3) 48, 32",
+                "(4) 48, 128",
+                "(5) 128, 32"
+            ],
+            "correctAnswer": 1,
+            "explanation": "<p><b>IPv4 (Internet Protocol version 4):</b></p><ul><li>IPv4 යනු අන්තර්ජාල ප්‍රොටෝකෝලයේ සිව්වන සංස්කරණයයි.</li><li>එය 32-bit ලිපින ක්‍රමයක් භාවිතා කරයි.</li><li>IPv4 ලිපිනවල සීමිත ලිපින ප්‍රමාණය නිසා, IPv6 සංවර්ධනය කිරීමට හේතු විය.</li></ul><p><b>IPv6 (Internet Protocol version 6):</b></p><ul><li>IPv6 යනු අන්තර්ජාල ප්‍රොටෝකෝලයේ නවතම සංස්කරණයයි.</li><li>එය 128-bit ලිපින ක්‍රමයක් භාවිතා කරයි.</li><li>IPv6 මඟින් IPv4 ට වඩා විශාල ලිපින අවකාශයක් ලබා දෙන අතර, අන්තර්ජාලයේ වැඩිවන උපාංග සංඛ්‍යාවට සහය වීමට එය ප්‍රයෝජනවත් වේ.</li></ul>"
+        },
+        {
+            "question": "<b>21. වසම් නාම පද්ධතිය (DNS) සම්බන්ධයෙන් පහත කවර ප්‍රකාශ නිවැරදි ද?</b><br><p>A - එය වෙබ් ලිපින IP යොමුවලට සහ IP යොමු වෙබ් ලිපිනවලට අනුරූපණය (map) කරයි.</p><br><p>B - HTTP, DNS මගින් සපයන සේවා භාවිත කරයි.</p><br><p>C - DNS වසම් නාම ධුරාවලියක් පවත්වා ගනියි.</p>",
+            "image": "",
+            "options": [
+                "(1) A පමණි",
+                "(2) A සහ B පමණි",
+                "(3) A සහ C පමණි",
+                "(4) B සහ C පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 4,
+            "explanation":" <p><b>වසම් නාම පද්ධතිය (DNS) සම්බන්ධයෙන් පහත කවර ප්‍රකාශ නිවැරදි ද?</b></p><ol><li><b>A - එය වෙබ් ලිපින IP යොමුවලට සහ IP යොමු වෙබ් ලිපිනවලට අනුරූපණය (map) කරයි.</b><ul><li>මෙය නිවැරදි ප්‍රකාශයකි. DNS හි ප්‍රධාන කාර්යය වන්නේ මිනිසුන්ට මතක තබා ගැනීමට පහසු වසම් නම් (උදා: google.com) පරිගණකවලට තේරුම් ගත හැකි IP ලිපින (උදා: 172.217.160.142) බවට පරිවර්තනය කිරීම සහ අනෙක් අතට කිරීමයි.</li></ul></li><li><b>B - HTTP, DNS මගින් සපයන සේවා භාවිත කරයි.</b><ul><li>මෙයද නිවැරදි ප්‍රකාශයකි. HTTP (Hypertext Transfer Protocol) යනු වෙබ් බ්‍රව්සර සහ වෙබ් සේවාදායක අතර සන්නිවේදනය සඳහා භාවිතා කරන ප්‍රොටෝකෝලයයි. HTTP වෙබ් සේවාදායකයේ IP ලිපිනය සොයා ගැනීමට DNS මත රඳා පවතී.</li></ul></li><li><b>C - DNS වසම් නාම ධුරාවලියක් පවත්වා ගනියි.</b><ul><li>මෙයද නිවැරදි ප්‍රකාශයකි. DNS ධුරාවලියක් ලෙස සංවිධානය කර ඇති අතර, එය root servers, top-level domain (TLD) servers, සහ authoritative name servers වලින් සමන්විත වේ. මෙම ධුරාවලිය වසම් නාම විසඳීමේ ක්‍රියාවලිය කාර්යක්ෂම කිරීමට උපකාරී වේ.</li></ul></li></ol><p><b>නිගමනය:</b></p><p>A, B සහ C යන ප්‍රකාශ තුනම නිවැරදිය.</p>"
+        },
+        {
+            "question": "<b>22. IP යොමු (addresses) සම්බන්ධයෙන් පහත කවර ප්‍රකාශ නිවැරදි වේ ද?</b><p><br>A - C පන්තියේ ජාලවල පළමු අෂ්ටක අගය 192 සිට 223 තෙක් වේ.</p><br><p>B - IPv4 මගින් උපාංග මිලියන 4 ක් දක්වා IP යොමු පැවරීම කළ හැක.</p><br><p>C - 192.168.0.0 - 192.168.255.255 යනු පෞද්ගලික IP යොමු පරාසයකි.</p>",
+            "image": "",
+            "options": [
+                "(1) A පමණි",
+                "(2) B පමණි",
+                "(3) C පමණි",
+                "(4) A සහ B පමණි",
+                "(5) A සහ C පමණි"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<ol><li><b>A - C පන්තියේ ජාලවල පළමු අෂ්ටක අගය 192 සිට 223 තෙක් වේ.</b><ul><li>මෙය නිවැරදි ප්‍රකාශයකි. C පන්තියේ IP ලිපින 192.0.0.0 සිට 223.255.255.255 දක්වා පරාසයක පවතී.</li></ul></li><li><b>B - IPv4 මගින් උපාංග මිලියන 4 ක් දක්වා IP යොමු පැවරීම කළ හැක.</b><ul><li>මෙය වැරදි ප්‍රකාශයකි. IPv4 මගින් 2^32 (4,294,967,296) දක්වා IP ලිපින පැවරීමට හැකියාව තිබේ.</li></ul> </li><li><b>C - 192.168.0.0 - 192.168.255.255 යනු පෞද්ගලික IP යොමු පරාසයකි.</b><ul><li>මෙය නිවැරදි ප්‍රකාශයකි. 192.168.0.0 සිට 192.168.255.255 දක්වා පරාසය පෞද්ගලික ජාල සඳහා වෙන් කර ඇත.</li></ul></li></ol><p><b>නිගමනය:</b></p><p>A සහ C යන ප්‍රකාශ නිවැරදියි.</p>"
+        },
+        {
+            "question": "<b>23. අසම්මිතික යතුරු කේතනය යොදා ගුප්ත කේතනය (encrypt) කළ පණිවිඩයක් අමරට පමණක් කියවීම සඳහා යැවීමට සුරේෂ්ට අවශ්‍ය නම්,</b>",
+            "image": "",
+            "options": [
+                "(1) සුරේෂ් තම පොදු යතුර යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.",
+                "(2) සුරේෂ් තම පෞද්ගලික යතුර යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.",
+                "(3) සුරේෂ්, අමරගේ පොදු යතුර යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.",
+                "(4) සුරේෂ්, අමරගේ පෞද්ගලික යතුර යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.",
+                "(5) සුරේෂ්, අමරගේ පොදු සහ පෞද්ගලික යන යතුරු දෙකම යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය."
+            ],
+            "correctAnswer": 2,
+            "explanation": "<p><b>අසමමිතික යතුරු කේතනය (Asymmetric Key Encryption) යනු කුමක්ද?</b></p><ul><li>අසමමිතික යතුරු කේතනය යනු කේතනය සහ විකේතනය සඳහා වෙනස් යතුරු දෙකක් භාවිතා කරන ක්‍රමයකි.</li><li>එම යතුරු දෙක නම් පොදු යතුර (public key) සහ පෞද්ගලික යතුර (private key) වේ.</li><li>පොදු යතුර ඕනෑම අයෙකුට ලබා ගත හැකි අතර, පෞද්ගලික යතුර රහසිගතව තබා ගත යුතුය.</li> <li>පොදු යතුරෙන් කේතනය කළ දත්ත විකේතනය කළ හැක්කේ අදාල පෞද්ගලික යතුරෙන් පමණි.</li></ul><p><b>ප්‍රශ්නය විශ්ලේෂණය කිරීම:</b></p><ul><li>සුරේෂ්ට අවශ්‍ය වන්නේ අමරට පමණක් කියවිය හැකි පණිවිඩයක් යැවීමටයි.</li><li>ඒ කියන්නේ, අමරට පමණක් පණිවිඩය විකේතනය කර කියවීමට හැකි විය යුතුයි.</li></ul><p><b>පිළිතුර විශ්ලේෂණය කිරීම:</b></p><ol><li><b>(1) සුරේෂ් තම පොදු යතුර යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.</b><ul><li>මෙය වැරදියි. පොදු යතුර ඕනෑම කෙනෙකුට ලබා ගත හැකි බැවින්, මෙය භාවිතා කළහොත් අමරට පමණක් කියවීමට නොහැකි වේ.</li></ul></li><li><b>(2) සුරේෂ් තම පෞද්ගලික යතුර යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.</b><ul><li>මෙය වැරදියි. පෞද්ගලික යතුර සුරේෂ් පමණක් දන්නා යතුරකි. සුරේෂ් මෙම යතුරෙන් කේතනය කළහොත් අමරට විකේතනය කිරීමට නොහැකි වේ.</li></ul></li><li><b>(3) සුරේෂ්, අමරගේ පොදු යතුර යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.</b><ul><li>මෙය නිවැරදියි. අමරගේ පොදු යතුරෙන් කේතනය කළ පණිවිඩයක් විකේතනය කළ හැක්කේ අමරගේ පෞද්ගලික යතුරෙන් පමණි.</li></ul></li><li><b>(4) සුරේෂ්, අමරගේ පෞද්ගලික යතුර යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.</b><ul><li>මෙය වැරදියි. අමරගේ පෞද්ගලික යතුර අමර පමණක් දන්නා යතුරකි. සුරේෂ්ට එය ලබාගත නොහැක.</li></ul> </li><li><b>(5) සුරේෂ්, අමරගේ පොදු සහ පෞද්ගලික යන යතුරු දෙකම යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.</b><ul><li>මෙය වැරදියි. අසමමිතික යතුරු කේතනයේදී කේතනයට යොදා ගන්නේ පොදු යතුර පමණි.</li></ul></li></ol><p><b>නිවැරදි පිළිතුර:</b></p><p>(3) සුරේෂ්, අමරගේ පොදු යතුර යොදා පණිවුඩය ගුප්ත කේතනය කළ යුතුය.</p>"
+        },
+        {
+            "question": "<b>24. පහත පද්ධති සඳහා වඩාත් සුදුසු ස්ථාපන ආකාර සහිත වරණය තෝරන්න.</b><br><br>A - ගුවන්තොටුපළක දැනට පවතින ගුවන් ගමනාගමන පාලන පද්ධතිය වෙනුවට නව පද්ධතියක්<br><br>B - දීප ව්‍යාප්ත සුපිරි වෙළඳසැල් දාමයක ගැණුම්කරුවන්ට මාර්ගගතව භාණ්ඩ ඇණවුම් කිරීමට පද්ධතියක්<br><br>C - කාර්යාලයකදී තමන් ලද සේවා අත්දැකීම් පිළිබඳ මහජන අදහස් ඇතුළත් කිරීමට පද්ධතියක්",
+            "image": "",
+            "options": [
+                "(1) A - සෘජු, B - සෘජු, C - සමාන්තර",
+                "(2) A - සෘජු, B - නියාමක, C - සමාන්තර",
+                "(3) A - සමාන්තර, B - නියාමක, C - සෘජු",
+                "(4) A - සමාන්තර, B - සමාන්තර, C - සමාන්තර",
+                "(5) A - සමාන්තර, B - සමාන්තර, C - නියාමක"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<p><b>ස්ථාපන ක්‍රම:</b></p><ul><li><b>සෘජු ස්ථාපනය (Direct Installation):</b><ul><li>මෙම ක්‍රමයේදී, පැරණි පද්ධතිය හදිසියේම නව පද්ධතියකින් ප්‍රතිස්ථාපනය වේ.</li><li>මෙය වේගවත් නමුත් අවදානම් සහිත ක්‍රමයකි, මන්ද නව පද්ධතියේ කිසියම් දෝෂයක් ඇත්නම්, එය වහාම ක්‍රියාකාරීත්වයට බලපායි.</li></ul></li><li><b>සමාන්තර ස්ථාපනය (Parallel Installation):</b><ul><li>මෙම ක්‍රමයේදී, පැරණි සහ නව පද්ධති දෙකම එකවර ක්‍රියාත්මක වේ.</li><li>නව පද්ධතිය නිවැරදිව ක්‍රියාත්මක වන බව සහතික වූ පසු පැරණි පද්ධතිය ඉවත් කරනු ලැබේ.</li><li>මෙය ආරක්ෂිත ක්‍රමයකි, නමුත් කාලය හා සම්පත් අවශ්‍ය වේ.</li></ul></li><li><b>නියාමක ස්ථාපනය (Phased Installation):</b><ul><li>මෙම ක්‍රමයේදී, නව පද්ධතිය ක්‍රමයෙන් ක්‍රියාත්මක කරනු ලැබේ, සාමාන්‍යයෙන් විවිධ කොටස් හෝ ස්ථානවලට.</li><li>මෙය අවදානම අඩු කරන අතර නව පද්ධතිය ක්‍රියාත්මක වන විට ගැටළු හඳුනා ගැනීමට සහ විසඳීමට ඉඩ සලසයි.</li></ul></li></ul><p><b>පද්ධති සහ ස්ථාපන ක්‍රම විශ්ලේෂණය:</b></p><ul><li><b>A - ගුවන්තොටුපළක දැනට පවතින ගුවන් ගමනාගමන පාලන පද්ධතිය වෙනුවට නව පද්ධතියක්:</b><ul><li>මෙය ඉතා සංවේදී පද්ධතියකි. සුළු දෝෂයක් වුවද විශාල අනතුරකට තුඩු දිය හැකිය.</li><li>එබැවින්, <b>සමාන්තර ස්ථාපනය</b> වඩාත් සුදුසුය.</li></ul></li><li><b>B - දීප ව්‍යාප්ත සුපිරි වෙළඳසැල් දාමයක ගැණුම්කරුවන්ට මාර්ගගතව භාණ්ඩ ඇණවුම් කිරීමට පද්ධතියක්:</b><ul><li>මෙම පද්ධතිය ද ඉතා වැදගත් වේ, නමුත් ගුවන් ගමනාගමන පාලන පද්ධතිය තරම් සංවේදී නොවේ.</li><li>එබැවින්, <b>නියාමක ස්ථාපනය</b> සුදුසු වේ.</li></ul></li><li><b>C - කාර්යාලයකදී තමන් ලද සේවා අත්දැකීම් පිළිබඳ මහජන අදහස් ඇතුළත් කිරීමට පද්ධතියක්:</b><ul><li>මෙය සාපේක්ෂව අඩු සංවේදී පද්ධතියකි.</li><li>එබැවින්, <b>සෘජු ස්ථාපනය</b> සුදුසු වේ.</li></ul></li></ul><p><b>නිගමනය:</b></p><ul><li>A - සමාන්තර</li><li>B - නියාමක</li><li>C - සෘජු</li></ul>"
+        },
+        {
+            "question": "<b>25. පහත කවරක් ඊ-වාණිජ්‍ය වෙබ් අඩවියකට කාර්ය බද්ධ නොවන (non-functional) අවශ්‍යතාවක් වේද?</b>",
+            "image": "",
+            "options": [
+                "(1) සෘප්පු ට්‍රොලියට (shopping cart) අයිතම එකතු කිරීමේ හැකියාව",
+                "(2) මාර්ගගතව ගෙවීම් කිරීමට හැකිවීම",
+                "(3) ප්‍රවර්ගය අනුව අයිතම දැක බලා ගැනීමේ හැකියාව",
+                "(4) සෑම අයිතමයක්ම කුඩා ඡායාරූපයක් සහ විස්තරයක් සහිතව පෙන්විය යුතු වීම",
+                "(5) ජනප්‍රිය වෙබ් අතරික්සු හරහා වාණිජ්‍යය වෙබ් අඩවියට ප්‍රවේශ වීමේ හැකියාව"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<p><b>කාර්ය බද්ධ අවශ්‍යතා (Functional Requirements):</b></p><ul><li>පද්ධතිය විසින් කළ යුතු දේ විස්තර කරයි.</li><li>පරිශීලකයන්ට කළ හැකි ක්‍රියාකාරකම් සහ පද්ධතියෙන් ලැබිය යුතු ප්‍රතිඵල විස්තර කරයි.</li><li>උදාහරණ:<ul><li>සෘප්පු ට්‍රොලියට (shopping cart) අයිතම එකතු කිරීම.</li><li>මාර්ගගතව ගෙවීම් කිරීමට හැකිවීම.</li><li>ප්‍රවර්ගය අනුව අයිතම දැක බලා ගැනීම.</li></ul></li></ul><p><b>කාර්ය බද්ධ නොවන අවශ්‍යතා (Non-functional Requirements):</b></p><ul><li>පද්ධතිය ක්‍රියා කරන ආකාරය විස්තර කරයි.</li><li>පද්ධතියේ ගුණාත්මකභාවය, කාර්ය සාධනය, ආරක්ෂාව සහ වෙනත් ගුණාංග විස්තර කරයි.</li><li>උදාහරණ:<ul><li>කාර්ය සාධනය.</li><li>ආරක්ෂාව.</li><li>භාවිතාව.</li><li>විශ්වසනීයත්වය.</li><li>අනුකූලතාවය.</li></ul></li></ul><p><b>ප්‍රශ්නය විශ්ලේෂණය:</b></p><ul><li>(1) සෘප්පු ට්‍රොලියට (shopping cart) අයිතම එකතු කිරීමේ හැකියාව - කාර්ය බද්ධ අවශ්‍යතාවයකි.</li><li>(2) මාර්ගගතව ගෙවීම් කිරීමට හැකිවීම - කාර්ය බද්ධ අවශ්‍යතාවයකි.</li><li>(3) ප්‍රවර්ගය අනුව අයිතම දැක බලා ගැනීමේ හැකියාව - කාර්ය බද්ධ අවශ්‍යතාවයකි.</li><li>(4) සෑම අයිතමයක්ම කුඩා ඡායාරූපයක් සහ විස්තරයක් සහිතව පෙන්විය යුතු වීම - කාර්ය බද්ධ අවශ්‍යතාවයකි.</li><li>(5) ජනප්‍රිය වෙබ් අතරික්සු හරහා වාණිජ්‍යය වෙබ් අඩවියට ප්‍රවේශ වීමේ හැකියාව - කාර්ය බද්ධ නොවන අවශ්‍යතාවයකි. මෙය පද්ධතියේ භාවිතාව හා අනුකූලතාවය විස්තර කරයි.</li></ul><p><b>නිවැරදි පිළිතුර:</b></p><ul><li>(5) ජනප්‍රිය වෙබ් අතරික්සු හරහා වාණිජ්‍යය වෙබ් අඩවියට ප්‍රවේශ වීමේ හැකියාව</li></ul>"
+        },
+        {
+            "question": "<b>26. යෙදුමක සංවර්ධකයින් විසින් එය ස්ථාපනය කිරීමට බලාපොරොත්තුවන දෘඪාංග, මෘදුකාංග සහ ජාල වින්‍යාස පරිසරයට වඩාත් සමීප පරිසරයක සිදු කරන පරීක්ෂාව පහත කවරක් ද?</b>",
+            "image": "",
+            "options": [
+                "(1) ප්‍රතිග්‍රහ (acceptance) පරීක්ෂාව",
+                "(2) ඒකාබද්ධ (integration) පරීක්ෂාව",
+                "(3) සමාන්තර පරීක්ෂාව",
+                "(4) පද්ධති (system) පරීක්ෂාව",
+                "(5) ඒකක (unit) පරීක්ෂාව"
+            ],
+            "correctAnswer": 3,
+            "explanation": "<p><b>පරීක්ෂා කිරීමේ වර්ග:</b></p><ul><li><b>ඒකක (unit) පරීක්ෂාව:</b><ul><li>මෘදුකාංගයේ එක් එක් ඒකකය (unit) වෙන වෙනම පරීක්ෂා කිරීම.</li></ul></li><li><b>ඒකාබද්ධ (integration) පරීක්ෂාව:</b><ul><li>මෘදුකාංගයේ විවිධ ඒකක එකට ක්‍රියා කරන ආකාරය පරීක්ෂා කිරීම.</li></ul></li><li><b>පද්ධති (system) පරීක්ෂාව:</b><ul><li>සම්පූර්ණ මෘදුකාංග පද්ධතියම පරීක්ෂා කිරීම.</li></ul></li><li><b>ප්‍රතිග්‍රහ (acceptance) පරීක්ෂාව:</b><ul><li>අවසාන පරිශීලකයින් විසින් මෘදුකාංගය පිළිගැනීමට පෙර සිදු කරන පරීක්ෂාව.</li></ul></li><li><b>සමාන්තර පරීක්ෂාව:</b><ul><li>පැරණි පද්ධතිය සහ නව පද්ධතිය එකවර ක්‍රියාත්මක කර ප්‍රතිඵල සංසන්දනය කිරීම.</li></ul></li></ul><p><b>ප්‍රශ්නය විශ්ලේෂණය:</b></p><ul><li>ප්‍රශ්නයෙන් අසන්නේ, යෙදුමක් ස්ථාපනය කිරීමට අපේක්ෂිත පරිසරයට වඩාත් සමීප පරිසරයක සිදු කරන පරීක්ෂාව කුමක්ද යන්නයි.</li><li>පද්ධති (system) පරීක්ෂාව මෙම අවශ්‍යතාවය සපුරාලයි.</li></ul><p><b>පිළිතුර 4 පැහැදිලි කිරීම:</b></p><ul><li>පිළිතුර (4) පද්ධති (system) පරීක්ෂාව වේ.</li><li>යෙදුමක සංවර්ධකයින් විසින් එය ස්ථාපනය කිරීමට බලාපොරොත්තුවන දෘඪාංග, මෘදුකාංග සහ ජාල වින්‍යාස පරිසරයට වඩාත් සමීප පරිසරයක සිදු කරන පරීක්ෂාව පද්ධති (system) පරීක්ෂාව ලෙස හැඳින්වේ.</li><li>මෙම පරීක්ෂාව මගින්, යෙදුම සමස්ත පද්ධතියක් ලෙස ක්‍රියා කරන ආකාරය සහ එහි විවිධ කොටස් එකට ක්‍රියා කරන ආකාරය පරීක්ෂා කරනු ලැබේ.</li><li>මෙහිදී, යෙදුම ස්ථාපනය කිරීමට අපේක්ෂිත පරිසරයට සමාන පරිසරයක යෙදුම පරීක්ෂා කර, විවිධ තත්වයන් යටතේ යෙදුමේ ක්‍රියාකාරීත්වය නිරීක්ෂණය කරනු ලැබේ.</li></ul>"
+        },
+        {
+            "question": "<b>27. තම භාවිතය සඳහා මෘදුකාංග යෙදුමක් සංවර්ධනය කිරීමට සමාගමක් සලකා බලයි. අභ්‍යන්තර ක්‍රියාවලි සුසංවිධිත කිරීම, සහයෝගීතාව වැඩිදියුණු කිරීම සහ ඵලදායිතාව වැඩි දියුණු කිරීම එම යෙදුමෙන් බලාපොරොත්තු වේ. එහෙත් ශක්‍යතා විශ්ලේෂණයේදී හඳුනා ගැනුණේ දැනට පවතින ක්‍රියාවලි වලට හුරු වී ඇති සේවකයන්ගේ ප්‍රතිරෝධයක් නව මෘදුකාංගයට ඇති විය හැකි බව ය.<br><br>ශක්‍යතා අධ්‍යයනයේ කුමන සංරචකය එම තොරතුර ලබා ගැනීමට ඉවහල් වී ඇති ද?</b>",
+            "image": "",
+            "options": [
+                "(1) ආර්ථික ශක්‍යතාව",
+                "(2) නීතිමය ශක්‍යතාව",
+                "(3) මෙහෙයුම් ශක්‍යතාව",
+                "(4) කාල (schedule) ශක්‍යතාව",
+                "(5) තාක්ෂණික ශක්‍යතාව"
+            ],
+            "correctAnswer": 2,
+            "explanation": "<ul><li>(1) ආර්ථික ශක්‍යතාව: මෙහිදී සේවක ප්‍රතිරෝධය නොව වියදම් හා ප්‍රතිලාභ පිළිබඳව සලකා බලයි.</li><li>(2) නීතිමය ශක්‍යතාව: මෙහිදී සලකා බලන්නේ නව මෘදුකාංගය නීතිමය අවශ්‍යතාවන්ට අනුකූල වේද යන්නයි.</li><li>(4) කාල (schedule) ශක්‍යතාව: මෙහිදී ව්‍යාපෘතිය සම්පූර්ණ කිරීමට අවශ්‍ය කාලය හා කාල රාමුව පිළිබඳව සලකා බලයි.</li><li>(5) තාක්ෂණික ශක්‍යතාව: මෙහිදී නව මෘදුකාංගය සඳහා අවශ්‍ය තාක්ෂණික සම්පත් පිළිබඳව සලකා බලයි.</li><li>මෙහෙයුම් ශක්‍යතාව යනු යෝජිත ව්‍යාපෘතියේ මෙහෙයුම්මය අංශයන් විශ්ලේෂණය කිරීමයි. නව මෘදුකාංගය ක්‍රියාත්මක කිරීමේ පහසුව, එය භාවිතා කරන්නන්ගේ සහයෝගය සහ එය සංවිධානයේ වර්තමාන ක්‍රියාවලීන්ට කෙතරම් හොඳින් ගැලපේද යන්න මෙහිදී සලකා බලයි. සේවක ප්‍රතිරෝධය යනු මෙහෙයුම් ශක්‍යතාවේ ප්‍රධාන සාධකයකි.</li></ul>"
+        },
+        {
+            "question": "<b>28. පුස්තකාල කළමනාකරණ පද්ධතියකට අදාළ පහත දත්ත ගැලීම සටහනේ P සිට S දක්වා ලේබල සඳහා සුදුසු ආදේශක සහිත වරණය තෝරන්න.</b>",
+            "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjV7OgxK4ggnzlb5a-pdTKbQ8eM3bak3qVUJjg-L4eJ9V6gAXin1JNHAUqcOpQgcWVoatY2-chQ6MeFD7838k4_Ba8O5DgIzzaaZk2eZKwDcu1eHFhBFrk3aIvyOVMO7AxjzuJXYa3xNNPgIk6gLRXUPYvAJPom0jx7bpP_2WDgNtVzDX-yv0dJjxl4i7kL",
+            "options": [
+                "(1) P - මූලපදය (keyword), Q - සාමාජික අංකය, R - පොත් විස්තර,   S - පොත් විස්තර",
+                "(2) P - මූලපදය,           Q - මූලපදය,        R - පොත් විස්තර,   S - සාමාජික අංකය",
+                "(3) P - මූලපදය,           Q - මූලපදය,        R -පොත් විස්තර ,    S - මූලපදය",
+                "(4) P - සාමාජික අංකය,    Q - මූලපදය ,       R - සාමාජික අංකය, S - සාමාජික අංකය",
+                "(5) P - සාමාජික අංකය,    Q - සාමාජික අංකය, R - පොත් විස්තර,    S - පොත් විස්තර"
+            ],
+            "correctAnswer":0 ,
+            "explanation": "<ul><li>(P) - මූලපදය (keyword):<ul><li>පුස්තකාල පද්ධතියේ පොත් සෙවීමේ ක්‍රියාවලියේදී, සාමාජිකයා පොත් සෙවීම සඳහා මූලපදයක් ඇතුළත් කරයි.</li><li>එම නිසා (P) ලේබලය මූලපදය (keyword) ලෙස හඳුනා ගැනීම නිවැරදිය.</li></ul></li><li>(Q) - සාමාජික අංකය:<ul><li>පොත් තාවකාලිකව ලබා ගැනීමේ ක්‍රියාවලියේදී, සාමාජිකයා හඳුනා ගැනීම සඳහා සාමාජික අංකය අවශ්‍ය වේ.</li><li>එම නිසා (Q) ලේබලය සාමාජික අංකය ලෙස හඳුනා ගැනීම නිවැරදිය.</li></ul></li><li>(R) - පොත් විස්තර:<ul><li>පොත් සෙවීමේ සහ තාවකාලිකව ලබා ගැනීමේ ක්‍රියාවලීන්හිදී පොත් විස්තර අවශ්‍ය වේ.</li><li>එම නිසා (R) ලේබලය පොත් විස්තර ලෙස හඳුනා ගැනීම නිවැරදිය.</li></ul></li><li>(S) - පොත් විස්තර:<ul><li>පොත් නැවත භාරදීමේදීද පොත් විස්තර අවශ්‍ය වේ.</li><li>එම නිසා (S) ලේබලය පොත් විස්තර ලෙස හඳුනා ගැනීම නිවැරදිය.</li></ul></li><li>මෙම ක්‍රියාවලීන්හි දත්ත ගැලීම නිරීක්ෂණය කිරීමෙන් මෙම පිළිතුර සහතික කරගත හැක.</li></ul>"
+        },
+        {
+            "question": "<b>29. මෘදුකාංග ගොඩනැගීමට අදාළ දියඇලි (waterfall) ආකෘතිය සම්බන්ධයෙන් අසත්‍ය වන්නේ පහත කවරක් ද?</b>",
+            "image": "",
+            "options": [
+                "(1) සංවර්ධකයන්ට ව්‍යාපෘතිය පුරාවටම අවශ්‍යතා එකතු කිරීමටත්, ක්‍රියාත්මක කිරීමටත් එය ඉඩ දෙයි.",
+                "(2) එය පුනරාවර්තී (iterative) ආකෘතියක් නොවේ.",
+                "(3) මනාව නිර්ණය කරන ලද අවශ්‍යතා සහිත මෘදුකාංග සඳහා එය සුදුසු වේ.",
+                "(4) ව්‍යාපෘතියක් සඳහා අවශ්‍ය සම්පත් ඇස්තමේන්තු කිරීම පහසුය.",
+                "(5) ව්‍යාපෘතියේ අවසන් අවධි වන තෙක්, වැඩ කරන නිෂ්පාදිතයක් (working product) ලබාගත නොහැක."
+            ],
+            "correctAnswer": 0,
+            "explanation": "<ul><li>දියඇලි ආකෘතිය (Waterfall Model) යනු මෘදුකාංග සංවර්ධන ජීවන චක්‍රයේ (SDLC) රේඛීය අනුක්‍රමික ප්‍රවේශයකි. එහිදී එක් එක් අදියර ඊළඟ අදියර ආරම්භ කිරීමට පෙර සම්පූර්ණ කළ යුතුය.</li><li>මෙම ආකෘතියේ ඇති ප්‍රධාන සීමාවන් වන්නේ:<ul><li>අවශ්‍යතා වෙනස් කිරීමේ අපහසුව: එක් අදියරක් අවසන් වූ පසු, නැවත පෙර අදියර වෙත ගොස් අවශ්‍යතා වෙනස් කිරීම අපහසුය.</li><li>ප්‍රතිපෝෂණ ප්‍රමාදය: පරීක්ෂණ අදියර දක්වා වැඩ කරන නිෂ්පාදනයක් නොමැති බැවින්, ප්‍රතිපෝෂණ ප්‍රමාද වේ.</li><li>අනම්‍යතාවය: වෙනස් වන අවශ්‍යතාවන්ට හෝ අනපේක්ෂිත ගැටළු වලට අනුවර්තනය වීමට අපහසුය.</li></ul></li><li>එම නිසා (1) සංවර්ධකයන්ට ව්‍යාපෘතිය පුරාවටම අවශ්‍යතා එකතු කිරීමටත්, ක්‍රියාත්මක කිරීමටත් එය ඉඩ දෙයි යන්න අසත්‍ය ප්‍රකාශයකි.</li></ul>"
+        },
+        {
+            "question": "<b>30. රජයේ ආයතනයක්, දිවයින පුරා ක්‍රියාත්මක කිරීම සඳහා වාණිජ පෙර නිමි පැකේජයක් (COTS) මිලදී ගැනීමේදී, අවශ්‍ය විශේෂාංග වලට (features) අමතරව පහත කවරක් සැලකිය යුතු ද?</b><br><br>A - ස්ථාපනය (deploy) කිරීම, නඩත්තු කිරීම, උශ්‍රේණි (upgrade) කිරීම සහ විකරණය (modify) කිරීම සඳහා වන වියදම<br><br>B - දැනට පවතින පද්ධති සමග ඒකාබද්ධ (integrate) කිරීමේ පහසුව<br><br>C - විකුණුම්කරුගේ, මිලදී ගැනීමෙන් පසු සේවය",
+            "image": "",
+            "options": [
+                "(1) A පමණි",
+                "(2) A සහ B පමණි",
+                "(3) A සහ C පමණි",
+                "(4) B සහ C පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 4,
+            "explanation": "<ul><li>A - ස්ථාපනය (deploy) කිරීම, නඩත්තු කිරීම, උශ්‍රේණි (upgrade) කිරීම සහ විකරණය (modify) කිරීම සඳහා වන වියදම:<ul><li>රජයේ ආයතනයක් දිවයින පුරා ක්‍රියාත්මක කිරීම සඳහා වාණිජ පෙර නිමි පැකේජයක් (COTS) මිලදී ගැනීමේදී, මෙම වියදම් ඉතා වැදගත් වේ.</li><li>දිගුකාලීන ක්‍රියාත්මක කිරීම සහ නඩත්තු කිරීම සඳහා අයවැය සැලසුම් කිරීමේදී මෙම වියදම් අත්‍යවශ්‍ය වේ.</li></ul></li><li>B - දැනට පවතින පද්ධති සමග ඒකාබද්ධ (integrate) කිරීමේ පහසුව:<ul><li>රජයේ ආයතනවල බොහෝ විට පවතින විවිධ පද්ධති ඇත.</li><li>මෙම නව පැකේජය ඒවා සමඟ ගැළපිය යුතුය.</li><li>ඒකාබද්ධ කිරීමේ පහසුව ක්‍රියාත්මක කිරීමේ කාලය සහ පිරිවැය අඩු කිරීමට උපකාරී වේ.</li></ul></li><li>C - විකුණුම්කරුගේ, මිලදී ගැනීමෙන් පසු සේවය:<ul><li>රජයේ ආයතනවලට දිගුකාලීනව සහයෝගය අවශ්‍ය වේ.</li><li>පුහුණුව, ගැටළු විසඳීම සහ යාවත්කාලීන කිරීම් සඳහා විකුණුම්කරුගේ සහයෝගය අත්‍යවශ්‍ය වේ.</li></ul></li><li>එබැවින්, A, B සහ C යන සියල්ලම රජයේ ආයතනයක් වාණිජ පෙර නිමි පැකේජයක් (COTS) මිලදී ගැනීමේදී, අවශ්‍ය විශේෂාංග වලට (features) අමතරව සැලකිය යුතු සාධක වේ.</li></ul>"
+        },
+        {
+            "question": "<b>31. පහත A සිට D තෙක් නම් කර ඇති භූතාර්ථ උපලක්ෂණ (attributes) 1 සිට 4 තෙක් නම් කර ඇති විස්තර සමග ගළපන්න.</b>",
+            "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhnKBUKn2twIZcLFF8Dt14Ssj8sgZo5JirjlB8TbbLgaFIrnX3sxdXvH_iwHoXtE3bLq6kBs79Gu68CTKUH5RlyIoI3FjRgUzY-ykWFFMq9mLfVvEQr3unQhDcR2r5ewyTMmzKKdeWkuQiYhtIAuO9kOmmrvujj7nUh1JwrObiNrErIS4ko_WdT4ML19HuM",
+            "options": [
+                "(1) A - 2, B - 1, C - 3, D - 4",
+                "(2) A - 2, B - 1, C - 4, D - 3",
+                "(3) A - 3, B - 4, C - 2, D - 1",
+                "(4) A - 4, B - 2, C - 3, D - 1",
+                "(5) A - 4, B - 3, C - 1, D - 2"
+            ],
+            "correctAnswer": 1,
+            "explanation": "<ul><li>A - සංයුක්ත උපලක්ෂණය (Composite Attribute):<ul><li>සංයුක්ත උපලක්ෂණයක් යනු තවත් උපලක්ෂණ කිහිපයකින් සමන්විත උපලක්ෂණයකි.</li><li>මෙහිදී ලිපිනය (Address) නගරය, වීදිය, තැපැල් කේතය ආදී උපලක්ෂණවලින් සමන්විත වේ.</li></ul></li> <li>B - සරල උපලක්ෂණය (Simple Attribute):<ul><li>සරල උපලක්ෂණයක් යනු තවත් උපලක්ෂණවලට බෙදිය නොහැකි උපලක්ෂණයකි.</li><li>මෙහිදී සේවක අංකය (Employee ID) තනි අගයකින් සමන්විත වේ.</li></ul></li><li>C - බහු අගය උපලක්ෂණය (Multi-valued Attribute):<ul><li>බහු අගය උපලක්ෂණයක් යනු එක් භූතාර්ථයකට (entity) එකකට වඩා අගයන් තිබිය හැකි උපලක්ෂණයකි.</li><li>මෙහිදී දුරකථන අංක (Telephone Numbers) සේවකයෙකුට එකකට වඩා දුරකථන අංක තිබිය හැකි නිසා බහු අගය උපලක්ෂණයකි.</li></ul></li><li>D - ව්‍යුත්පන්න උපලක්ෂණය (Derived Attribute):<ul><li>ව්‍යුත්පන්න උපලක්ෂණයක් යනු වෙනත් උපලක්ෂණයකින් ලබාගත හැකි උපලක්ෂණයකි.</li><li>මෙහිදී වයස (Age) උපන්දිනයෙන් (Date of Birth) ලබාගත හැකි බැවින් ව්‍යුත්පන්න උපලක්ෂණයකි.</li></ul></li><li>එබැවින්, A - 2, B - 1, C - 4, D - 3 යනු නිවැරදි පිළිතුරයි.</li></ul>"
+        },
+        {
+            "question": "<b>32. පහත Employee වගුව සලකන්න.</b>",
+            "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhh-grW5upMWUrI7GCCIXRQFuxT6Hwu_5UQAR8_U0cjEzssYuZ9mswLCXd-WchO9GOuLS4ZBJUYKBs6A8X6oBUQt9yH-h-uQ6eh5g435kxrRk0zswxVmOYq_lq8Zt7klki0RqdbIebm38FWtgvqtp-uh_Axl7WHmUMH4lsqsQcoZF-Q-ges89Ft9vo4UmOU",
+            "text":"ඉහත Employee වගුව මත පහත SQL විමසුම ක්‍රියාත්මක කළ විට ප්‍රතිදානය කුමක් වේ ද?<br><br>SELECT COUNT(*)<br>FROM Employee<br>WHERE Salary > ANY (SELECT Salary FROM Employee); ",
+            "options": [
+                "(1) 3",
+                "(2) 4",
+                "(3) 5",
+                "(4) 6",
+                "(5) 10"
+            ],
+            "correctAnswer": 1,
+            "explanation": "<ul><li>SQL විමසුම විග්‍රහ කිරීම:<ul><li><code>SELECT COUNT(*)</code>: මෙය ප්‍රතිදානයේ පේළි ගණන ගණන් කරයි.</li><li><code>FROM Employee</code>: මෙය Employee වගුවෙන් දත්ත ලබා ගනී.</li><li><code>WHERE Salary > ANY (SELECT Salary FROM Employee)</code>: මෙයින් අදහස් කරන්නේ, Employee වගුවේ ඇති ඕනෑම වැටුපකට වඩා වැඩි වැටුප් ඇති සේවකයින්ගේ පේළි තෝරා ගැනීමයි.</li></ul></li><li>වගුව විශ්ලේෂණය කිරීම:<ul><li>Employee වගුවේ වැටුප් (Salary) අගයන් වන්නේ 50000, 60000, 75000, 80000, 90000, 100000 යන්නයි.</li><li><code>ANY</code> යනු උප විමසුමෙන් (subquery) ලැබෙන ඕනෑම අගයකට වඩා වැඩි අගයක් සෙවීමයි.</li><li>එබැවින්, 60000ට වඩා වැඩි වැටුප් ඇති සේවකයින් 4 දෙනෙකු සිටී (75000, 80000, 90000, 100000).</li></ul></li><li>ප්‍රතිදානය:<ul><li>විමසුම ක්‍රියාත්මක කළ විට, 60000ට වඩා වැඩි වැටුප් ඇති සේවකයින්ගේ පේළි ගණන 4 ලෙස ප්‍රතිදානය වේ.</li></ul></li><li>එබැවින්, පිළිතුර (2) 4 වේ.</li></ul>"
+        },
+        {
+            "question": "<b>33. LENDING සහ STUDENT නම් වූ දත්ත සමුදා වගු දෙකක් සෑදීමට අදාළව දී ඇති SQL වගන්ති සලකන්න.</b>",
+            "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjlHumHm2hZAjBNA9Q0L9KN5SLShL6ZV4dLo0_D1IjRsy5Nq08Zzq90-HobYnZ6PsnlaBhvqNSHCfF883eqY8_ZXJaGAMbKumvNG1unIa7VDPDhlTohgKvcXKnz7qhGTeVmDHYCy818ekCdXY_YklLObW3G30RY8ar1AYhqVDUqcBVWiQ4ip1kEbZBnHzOo",
+            "text":"<b>පහත කවර වගන්ති නිවැරදි වේද?</b><br><br>A - STUDENT_ID යන්න LENDING වගුවේ ආගන්තුක (foreign) යතුරකි.<br><br>B - වගු දෙකෙහිම DATE දත්ත වර්ගයේ ක්ෂේත්‍ර වලට දත්ත ආදානය කිරීම අනිවාර්ය වේ.<br><br>C - STUDENT_ID හි ඉංග්‍රීසි අක්ෂර පහක් පමණක් පැවතිය හැකි ය.",
+            "options": [
+                "(1) A පමණි",
+                "(2) A සහ B පමණි",
+                "(3) A සහ C පමණි",
+                "(4) B සහ C පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 0,
+            "explanation": "<ul> <li>A - STUDENT_ID යන්න LENDING වගුවේ ආගන්තුක (foreign) යතුරකි:<ul><li>LENDING වගුවේ STUDENT_ID ක්ෂේත්‍රය STUDENT වගුවේ STUDENT_ID ක්ෂේත්‍රයට සම්බන්ධ කර ඇත.</li><li>එම නිසා, STUDENT_ID යන්න LENDING වගුවේ ආගන්තුක යතුරකි. මෙය නිවැරදි වේ.</li></ul></li><li>B - වගු දෙකෙහිම DATE දත්ත වර්ගයේ ක්ෂේත්‍ර වලට දත්ත ආදානය කිරීම අනිවාර්ය වේ:<ul><li>LENDING වගුවේ ISSUED_DATE ක්ෂේත්‍රය NOT NULL ලෙස දක්වා ඇත. එබැවින්, එහි අගයක් අනිවාර්යයෙන් ඇතුළත් කළ යුතුය.</li><li>STUDENT වගුවේ BIRTH_DATE ක්ෂේත්‍රය NOT NULL ලෙස දක්වා නොමැත. එබැවින්, එහි අගයක් අනිවාර්යයෙන් ඇතුළත් කිරීම අවශ්‍ය නොවේ.</li><li>එම නිසා B වැරදියි.</li></ul></li><li>C - STUDENT_ID හි ඉංග්‍රීසි අක්ෂර පහක් පමණක් පැවතිය හැකි ය:<ul><li>STUDENT_ID ක්ෂේත්‍රය CHAR(5) ලෙස දක්වා ඇත. එබැවින්, එහි අක්ෂර 5 ක් පමණක් තිබිය හැක. මෙය නිවැරදි වේ.</li><li>නමුත් ප්‍රශ්නය තුල දක්වා ඇත්තේ STUDENT id හි ඉංග්‍රීසි අක්ෂර පමණක් පැවතිය හැකිද යන්නයි. CHAR(5) මගින් අක්ෂර 5ක් දක්වනවා පමණි. එබැවින් C වැරදියි.</li></ul></li><li>එබැවින්, නිවැරදි පිළිතුර වන්නේ (1) A පමණි.</li></ul>"
+        },
+        {
+            "question": "<b>34. රූපයේ Employee භූතාර්ථය දත්ත සමුදායක නිරූපණය කිරීමේදී පහත කවරක් ඇතුළත් නොකළ යුතුද?</b>",
+            "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjR8fNcYXzR7JkuEJhVUiDdNnsd_27NkW1-d_qYWNRyO8AmqyyxMzyV3FdfrBU3nmftncFzbr0FMse_0WEC1FdSxpMdL1jUhKxBQ1apfz4bGJ7Fzv3J6nwx35mgOEMe4YJHU-zeMdQAepdzNuIHbGRgMxsuRSvxaNFzV8XghNBm_mqu95wrJUIs-dt3zDY8/s572/ERcccccccc.png",
+            "options": [
+                "(1) Date_of_Birth",
+                "(2) Designation",
+                "(3) Employee_Name",
+                "(4) Employee_Number",
+                "(5) Qualifications"
+            ],
+            "correctAnswer": 4,
+            "explanation": "මෙහිදි ලබා දී ඇති පිලිතුරු අනුව Qualifications යන්න Employee වගුව සෑදීමේදී සදහන් නොකරයි ඒනම් ඒය බහු අගයන් සහිත උප ලක්ශනයකි ඒය සදහා දත්ත සමුදායක් සෑදීමේදී වෙනම වගුවක් සාදනු ලබයිලබයි "
+        },
+        {
+            "question": "<b>35. පහත ER රූපසටහන, සම්බන්ධක ආකෘතියට (relational model) නිවැරදිව අනුරූපණය (map) කළ විට දී ලැයිස්තු ගත කර ඇති කවර සම්බන්ධතා ලැබේද?</b>",
+            "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjVMxIw5juPYTTqGj2HMtvCwCz2fgRRDJBPQr-W4BWrTC0J5K5MsuHdHd8EpA4W9MbHkVSyuz0-k3LOPFU-wVuLZLLzPHCj-XfsPsWDVjVosT6RdHEcC_5kdyyRLCKe0ft5mxwLHsfDYEeyV4IIlAquVrCcp619YhYV5-SVl7S15DhCjjCTIRk8ifXAh2KU/s831/%E0%B7%80%E0%B6%B1.PNG",
+            "options": [
+                "(1) A සහ B පමණි",
+                "(2) A සහ C පමණි",
+                "(3) A සහ D පමණි",
+                "(4) B සහ C පමණි",
+                "(5) A, C සහ D පමණි"
+            ],
+            "correctAnswer": 2,
+            "explanation": "<ul><li>A - Customer (CustomerID, CustomerName, Address):<ul><li>Customer භූතාර්ථය CustomerID, CustomerName සහ Address යන උපලක්ෂණ වලින් සමන්විත වේ.</li><li>මෙය නිවැරදිව සම්බන්ධක ආකෘතියට අනුරූපණය වී ඇත.</li></ul></li><li>B - Loan (LoanNumber, LoanType, Amount):<ul><li>Loan භූතාර්ථය LoanNumber, LoanType සහ Amount යන උපලක්ෂණ වලින් සමන්විත වේ.</li><li>නමුත් Loan වගුවේ CustomerID ආගන්තුක යතුරක් ලෙස සඳහන් වී නොමැත.</li><li>Customer සහ Loan අතර එකිනෙකට එකක් (One to Many) සම්බන්ධතාවය නිසා CustomerID Loan වගුවේ ආගන්තුක යතුරක් ලෙස සඳහන් විය යුතුය.</li><li>එම නිසා මෙය වැරදියි.</li></ul></li><li>C - Payment (PaymentID, PaymentDate, Amount):<ul><li>Payment භූතාර්ථය PaymentID, PaymentDate සහ Amount යන උපලක්ෂණ වලින් සමන්විත වේ.</li><li>මෙය නිවැරදිව සම්බන්ධක ආකෘතියට අනුරූපණය වී ඇත.</li></ul></li><li>D - Loan_Payment (LoanNumber, PaymentID, CustomerID):<ul><li>Loan සහ Payment අතර බොහෝ සිට බොහෝ දක්වා (Many to Many) සම්බන්ධතාවය නිසා Loan_Payment වගුව සෑදිය යුතුය.</li><li>Loan_Payment වගුවේ LoanNumber, PaymentID සහ CustomerID යන ආගන්තුක යතුරු තුනම සඳහන් විය යුතුය.</li><li>එම නිසා මෙය නිවැරදි වේ.</li></ul></li></ul>"
+        },
+        {
+            "question": "<b>36. පහත ER රූප සටහන් සංරචක සහ සම්බන්ධක (relational) ආකෘතිය අතර නිවැරදි ගැළපීම කුමක්ද?</b>",
+            "image": "",
+            "options": [
+                "(1) භූතාර්ථය → ක්ෂේත්‍රය (field), උපලක්ෂණය (attribute) → වගුව (table), අනන්‍ය (unique) උපලක්ෂණය → ප්‍රාථමික යතුර, බහු අගය උපලක්ෂණය (multivalued attribute) → වගුව",
+                "(2) භූතාර්ථය → වගුව, උපලක්ෂණය → ක්ෂේත්‍රය, අනන්‍ය උපලක්ෂණය → ප්‍රාථමික යතුර, බහු අගය උපලක්ෂණය → වගුව",
+                "(3) භූතාර්ථය → වගුව, උපලක්ෂණය → ක්ෂේත්‍රය, අනන්‍ය උපලක්ෂණය → වගුව, බහු අගය උපලක්ෂණය → ප්‍රාථමික යතුර",
+                "(4) භූතාර්ථය → වගුව, උපලක්ෂණය → ප්‍රාථමික යතුර, අනන්‍ය උපලක්ෂණය → ප්‍රාථමික යතුර, බහු අගය උපලක්ෂණය → වගුව",
+                "(5) භූතාර්ථය → වගුව, උපලක්ෂණය → වගුව, අනන්‍ය උපලක්ෂණය → ප්‍රාථමික යතුර, බහු අගය උපලක්ෂණය → ප්‍රාථමික යතුර"
+            ],
+            "correctAnswer": 1,
+            "explanation": "<ul><li>භූතාර්ථය (Entity):<ul><li>ER රූප සටහනක භූතාර්ථය යනු දත්ත සමුදායේ වගුවකට අනුරූප වේ.</li></ul></li><li>උපලක්ෂණය (Attribute):<ul><li>ER රූප සටහනක උපලක්ෂණය යනු දත්ත සමුදායේ ක්ෂේත්‍රයකට (field) අනුරූප වේ.</li></ul></li><li>අනන්‍ය උපලක්ෂණය (Unique Attribute):<ul><li>ER රූප සටහනක අනන්‍ය උපලක්ෂණය යනු දත්ත සමුදායේ ප්‍රාථමික යතුරකට (primary key) අනුරූප වේ.</li></ul></li><li>බහු අගය උපලක්ෂණය (Multivalued Attribute):<ul><li>ER රූප සටහනක බහු අගය උපලක්ෂණය යනු දත්ත සමුදායේ වෙනම වගුවකට අනුරූප වේ.</li></ul></li></ul>"
+        },
+         {
+            "question": "<b>37. පහත සම්බන්ධක ආකෘතියට අනුව කවර ප්‍රකාශ නිවැරදි වේද?</b>",
+            "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5FmYSmCNO5K5LBkblO7Uq53t_wzoka_-8f0k7IEGGLg202X30g2sCRsAxNC2O97Nh_xh314ClfEqPbgi_8QkT8K-UMBISMasLwK99gCw9FTJrYtihFDp58LCu-18yHYVb2qCUSmXnHUFZDY9CwWQ8Z8W-2NnTtJkErcvUjiVzXruWeHzwFhAUMpl5Kr2k/s858/as.PNG",
+            "text":"A - එක් ගොවියෙකුට කාර්ය කිහිපයක් තිබිය හැකිය.<br><br>B - එක් උපදේශකයෙකුට කාර්ය කිහිපයකට උපදෙස් දිය හැකි ය.<br><br>C - එක් කාර්යක් සඳහා ගොවියෙකුට උපදේශකයන් කිහිපදෙනෙකු සිටිය හැකිය.",
+            "options": [
+                "(1) A පමණි",
+                "(2) A සහ B පමණි",
+                "(3) A සහ C පමණි",
+                "(4) B සහ C පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 2,
+            "explanation": ""
+        },
+
+        {
+            "question": "<b>38. දී ඇති සම්බන්ධතා පිළිබඳව පහත කවර ප්‍රකාශ නිවැරදි ද?</b>",
+            "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5FmYSmCNO5K5LBkblO7Uq53t_wzoka_-8f0k7IEGGLg202X30g2sCRsAxNC2O97Nh_xh314ClfEqPbgi_8QkT8K-UMBISMasLwK99gCw9FTJrYtihFDp58LCu-18yHYVb2qCUSmXnHUFZDY9CwWQ8Z8W-2NnTtJkErcvUjiVzXruWeHzwFhAUMpl5Kr2k/s858/as.PNG",
+            "text":"A - සියලු සම්බන්ධතා තෙවැනි ප්‍රමත අවස්ථාවේ (normal form) පවතී.<br><br>B - task සම්බන්ධතාවයෙහි ඇති startDate උපලක්ෂණය ව්‍යුත්පන්න කළ (derived) උපලක්ෂණයකි.<br><br>C - adviser සම්බන්ධතාවයෙහි ඇති adNIC යන්න අපේක්ෂක (candidate) යතුරකි.",
+            "options": [
+                "(1) A පමණි",
+                "(2) A සහ B පමණි",
+                "(3) A සහ C පමණි",
+                "(4) B සහ C පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 2,
+            "explanation": "<ul><li>A - සියලු සම්බන්ධතා තෙවැනි ප්‍රමත අවස්ථාවේ (normal form) පවතී:<ul><li>දී ඇති සම්බන්ධතා වල වගු සැලකීමේදී, එක් එක් උපලක්ෂණ ප්‍රාථමික යතුර මත පමණක් රඳා පවතී.</li><li>එම නිසා සියලු වගු තෙවැනි ප්‍රමත අවස්ථාවේ පවතී.</li></ul></li><li>B - task සම්බන්ධතාවයෙහි ඇති startDate උපලක්ෂණය ව්‍යුත්පන්න කළ (derived) උපලක්ෂණයකි:<ul><li>මෙය වැරදිය. start date යනු ඇතුලත් කලයුතු අගයකි.</li><li>එය ව්‍යුත්පන්න උපලක්ෂණයක් නොවේ.</li></ul></li><li>C - adviser සම්බන්ධතාවයෙහි ඇති adNIC යන්න අපේක්ෂක (candidate) යතුරකි:<ul><li>adviser වගුවේ adID යන්න ප්‍රාථමික යතුරයි.</li><li>adNIC යන්න අපේක්ෂක යතුරක් වේ. මන්ද adNIC මගින් එක් එක් Adviser වරුන් හදුනාගත හැකි වන අතර adNIC හි අගයන්ද අනන්‍යවේ.</li></ul></li><li>එබැවින්, A සහ C යන ප්‍රකාශ නිවැරදි වේ.</li></ul>"
+        },
+        {
+            "question": "<b>39. a = 10, b = 4, සහ c = 7 වන විට පහත පයිතන් කේතයේ ප්‍රතිදානය කුමක් වේද?</b><br><br>ans = a % b + c // (a - b)<br>print(ans)",
+            "image": "",
+            "options": [
+                "(1) 3",
+                "(2) 5",
+                "(3) 7",
+                "(4) 9",
+                "(5) 11"
+            ],
+            "correctAnswer": 0,
+            "explanation": "<ol><li >වරහන් තුළ ඇති ගණනය කිරීම:<ul><li>a - b = 10 - 4 = 6</li></ul></li><li>පූර්ණ සංඛ්‍යා බෙදීම:<ul><li>c // (a - b) = 7 // 6 = 1 (පූර්ණ සංඛ්‍යා බෙදීම නිසා ප්‍රතිඵලය 1 වේ)</li></ul></li><li>ප්‍රතිශේෂය:<ul><li>a % b = 10 % 4 = 2 (10/4 හි ශේෂය 2 වේ)</li></ul></li><li>එකතු කිරීම:<ul><li>ans = 2 + 1 = 3</li></ul></li><li>එම නිසා අවසාන ප්‍රතිඵලය 3 වේ.</li></ol>"
+        },
+        {
+            "question": "<b>40. පහත පයිතන් කේතය ක්‍රියාත්මක කළ පසු result විචල්‍යයේ අගය කුමක් වේද?</B><BR><br><p>def func1(a, b):<br>&nbsp;&nbsp;&nbsp;&nbsp;return a + b<br><br>def func2(a, b):<br>&nbsp;&nbsp;&nbsp;&nbsp;return a * b<br><br>result = func1(3, func2(2, 4))<br></p>",
+            "image": "",
+            "options": [ 
+                "(1) 11",
+                "(2) 12",
+                "(3) 14",
+                "(4) 15",
+                "(5) 20"
+            ],
+            "correctAnswer": 0,
+            "explanation": "<ul><li>කේතයේ ශ්‍රිත දෙකක් අර්ථ දක්වා ඇත:<ul><li><code>func1(a, b)</code>: මෙම ශ්‍රිතය ආදානය ලෙස සංඛ්‍යා දෙකක් (<code>a</code> සහ <code>b</code>) ලබාගෙන ඒවා එකතු කිරීමෙන් ලැබෙන අගය නැවත ලබා දෙයි.</li><li><code>func2(a, b)</code>: මෙම ශ්‍රිතය ආදානය ලෙස සංඛ්‍යා දෙකක් (<code>a</code> සහ <code>b</code>) ලබාගෙන ඒවා ගුණ කිරීමෙන් ලැබෙන අගය නැවත ලබා දෙයි.</li></ul></li><li>ප්‍රධාන කේත පේළිය වන්නේ <code>result = func1(3, func2(2, 4))</code> යන්නයි. මෙම පේළිය ක්‍රියාත්මක වන අනුපිළිවෙල මෙසේය:<ul><li>පළමුව, <code>func2(2, 4)</code> යන කොටස ක්‍රියාත්මක වේ. මෙහිදී <code>func2</code> ශ්‍රිතයට <code>a = 2</code> සහ <code>b = 4</code> ලෙස ආදාන ලැබේ.</li><li><code>func2</code> ශ්‍රිතය <code>2 * 4 = 8</code> යන අගය නැවත ලබා දෙයි.</li><li>ඉන්පසු, <code>func1(3, 8)</code> යන කොටස ක්‍රියාත්මක වේ. මෙහිදී <code>func1</code> ශ්‍රිතයට <code>a = 3</code> සහ <code>b = 8</code> (පෙර පියවරේ ප්‍රතිඵලය) ලෙස ආදාන ලැබේ.</li><li><code>func1</code> ශ්‍රිතය <code>3 + 8 = 11</code> යන අගය නැවත ලබා දෙයි.</li><li>අවසාන වශයෙන්, මෙම <code>11</code> යන අගය <code>result</code> නම් විචල්‍යයට පවරනු ලැබේ.</li></ul></li><li>එබැවින්, පයිතන් කේතය ක්‍රියාත්මක කළ පසු <code>result</code> විචල්‍යයේ අගය <b>11</b> වේ.</li><li>නිවැරදි පිළිතුර වන්නේ <b>(1) 11</b> යන්නයි.</li></ul>"
+        },
+        {
+            "question": "<b>41. පහත පයිතන් කේතය ක්‍රියාත්මක කළ විට ප්‍රතිදානය කුමක් වේද?</b><br><br><p>def modify_string(input_string):<br>&nbsp;&nbsp;&nbsp;&nbsp;input_string += &quot;World&quot;<br><br>text = &quot;Hello&quot;<br>modify_string(text)<br>print(text)<br></p>",
+            "image": "",
+            "options": [
+                "(1) Hello",    
+                "(2) Hello Hello",
+                "(3) Hello World",
+                "(4) World",
+                "(5) World Hello"
+            ],
+            "correctAnswer": 0,
+            "explanation": "<p><code>modify_string</code> ශ්‍රිතය තුළ <code>input_string += &quot;World&quot;</code> යනුවෙන් සිදු කරන්නේ, <code>input_string</code> හි අගය සහ &quot;World&quot; යන වචනය එකතු කර නව තන්තුවක් නිර්මාණය කිරීමයි. කෙසේ වෙතත්, මෙම නව තන්තුව ශ්‍රිතය තුළ පමණක් පවතින අතර, ශ්‍රිතයෙන් පිටත ඇති <code>text</code> විචල්‍යයට කිසිඳු බලපෑමක් සිදු නොවේ.</p><p>එබැවින්, <code>modify_string(text)</code> යන ශ්‍රිත ඇමතුමෙන් පසුවද <code>text</code> විචල්‍යයේ මුල් අගය වන &quot;Hello&quot; නොවෙනස්ව පවතියි. <code>print(text)</code> විධානය ක්‍රියාත්මක වූ විට ප්‍රතිදානය ලෙස ලැබෙන්නේ <b>Hello</b> යන්නයි.</p><p>එම නිසා, නිවැරදි පිළිතුර වන්නේ <b>(1) Hello</b> යන්නයි.</p>"
+        },
+        {
+            "question": "<b>42. පහත පයිතන් කේතය ක්‍රියාත්මක කළ විට ප්‍රතිදානය කුමක් වේද</b><br><br>original_list = [1, 2, 3, 4, 5]<br>new_list=original_list.copy()<br>new_list.clear()<br>original_list.append(6)<br>print(original_list)<br>print(new_list)</code></pre>",            
+            "image": "",
+            "options": [
+                "(1) <br>[]<br>[]",
+                "(2) <br>[6]<br>[]",
+                "(3) <br>[6]<br>[6]",
+                "(4) <br>[1, 2, 3, 4, 5, 6]<br>[]",
+                "(5) <br>[]<br>[1, 2, 3, 4, 5, 6]"
+            ],
+            "correctAnswer": 3,
+            "explanation": "<p>කේතයේ මුලින්ම <code>original_list</code> නමින් ලැයිස්තුවක් නිර්මාණය කර එහි <code>[1, 2, 3, 4, 5]</code> යන අගයන් ඇතුළත් කර ඇත.</p><p>ඉන්පසු, <code>new_list = original_list.copy()</code> යන විධානය මඟින් <code>original_list</code> හි පිටපතක් <code>new_list</code> වෙත පවරයි. මෙහිදී වැදගත් වන්නේ <code>.copy()</code> ක්‍රමය භාවිතා කිරීම නිසා <code>new_list</code> යනු <code>original_list</code> හි වෙනම පිටපතක් වන අතර එය <code>original_list</code> හා මතකයේ එකම ස්ථානයක් වෙත යොමු නොවීමයි.</p><p>පසුව, <code>new_list.clear()</code> යන විධානය මඟින් <code>new_list</code> හි ඇති සියලුම අංග ඉවත් කරයි. මේ නිසා <code>new_list</code> හි අගය හිස් ලැයිස්තුවක් (<code>[]</code>) බවට පත් වේ. මෙම ක්‍රියාව <code>original_list</code> ට බලපාන්නේ නැත.</p><p>අවසාන වශයෙන්, <code>original_list.append(6)</code> යන විධානය මඟින් <code>original_list</code> හි අවසානයට <code>6</code> යන අගය එකතු කරයි. මේ නිසා <code>original_list</code> හි අගය <code>[1, 2, 3, 4, 5, 6]</code> බවට පත් වේ.</p><p><code>print(original_list)</code> සහ <code>print(new_list)</code> යන විධාන මඟින් පිළිවෙලින් <code>original_list</code> සහ <code>new_list</code> හි අගයන් තිරය මත මුද්‍රණය කරයි.</p><p>එබැවින්, මෙම කේතය ක්‍රියාත්මක කළ විට ප්‍රතිදානය වන්නේ:</p><pre><code>[1, 2, 3, 4, 5, 6]<br>[]</code></pre>"
+        },
+        {
+            "question": "43. පහත ක්‍රමලේඛය * කොපමණ ප්‍රමාණයක් ප්‍රතිදානය කරයි ද?<br><br><p>i = 7</p><p>while i > 0 :</p><p>&nbsp;&nbsp;i -= 3</p><p>&nbsp;&nbsp;print ( ' * ' )</p><p>&nbsp;&nbsp;if i &lt;= 2 :</p><p>&nbsp;&nbsp;&nbsp;&nbsp;break</p><p>&nbsp;&nbsp;else :</p><p>&nbsp;&nbsp;&nbsp;&nbsp;print ( ' * ' )</p>",
+            "image": "",
+            "options": [
+                "(1) 1",
+                "(2) 3",
+                "(3) 5",
+                "(4) 7",
+                "(5) 9"
+            ],
+            "correctAnswer": 1,
+            "explanation": "<ul><li>ක්‍රමලේඛය පියවරෙන් පියවර විමසා බලමු:<ul><li><code>i = 7</code>: <code>i</code> නම් විචල්‍යයට 7 යන අගය පවරයි.</li><li><code>while i > 0 :</code>: <code>i</code> හි අගය 0ට වඩා වැඩි වන තාක් මෙම ලූපය ක්‍රියාත්මක වේ.<ul><li>පළමු වටය: <code>i</code> හි අගය 7 නිසා කොන්දේසිය සත්‍ය වේ.<ul><li><code>i -= 3</code>: <code>i</code> හි අගය 7 - 3 = 4 වේ.</li><li><code>print ( ' * ' )</code>: * එකක් මුද්‍රණය වේ.</li><li><code>if i <= 2 :</code>: <code>i</code> හි අගය 4 නිසා කොන්දේසිය අසත්‍ය වේ.</li><li><code>else :</code>: මෙම කොටස ක්‍රියාත්මක වේ.</li><li><code>print ( ' * ' )</code>: තවත් * එකක් මුද්‍රණය වේ.</li></ul></li><li>දෙවන වටය: <code>i</code> හි අගය 4 නිසා කොන්දේසිය සත්‍ය වේ.<ul><li><code>i -= 3</code>: <code>i</code> හි අගය 4 - 3 = 1 වේ.</li><li><code>print ( ' * ' )</code>: තවත් * එකක් මුද්‍රණය වේ.</li><li><code>if i <= 2 :</code>: <code>i</code> හි අගය 1 නිසා කොන්දේසිය සත්‍ය වේ.</li><li><code>break</code>: ලූපයෙන් පිට වේ.</li></ul></li></ul></li></ul></li><li>ලූපය දෙවරක් ක්‍රියාත්මක වූ අතර, එක් වරකට * දෙක බැගින් මුද්‍රණය විය. නමුත් දෙවන වටයේදී <code>break</code> වීම නිසා දෙවන <code>print ( ' * ' )</code> විධානය ක්‍රියාත්මක වූයේ නැත.</li><li>එම නිසා, මුළු * ගණන 2 (පළමු වටයේ) + 1 (දෙවන වටයේ) = 3 වේ.</li><li>නිවැරදි පිළිතුර වන්නේ <b>(2) 3</b> යන්නයි.</li></ul>"
+        },
+        {
+            "question": "<b>44. අනන්‍ය යතුරු සහිත යතුරු-අගය (key-value) යුගල එකතුවක් ගබඩා කිරීමට පයිතන්හි Dictionary, List සහ Tuple දත්ත ව්‍යුහ අතුරින් කුමක් භාවිත කළ හැකි ද?</b>",
+            "image": "",
+            "options": [
+                "(1) Dictionary පමණි",
+                "(2) List පමණි",
+                "(3) Tuple පමණි",
+                "(4) Dictionary සහ List පමණි",
+                "(5) List සහ Tuple පමණි"
+            ],
+            "correctAnswer": 0,
+            "explanation": "<ul><li><b>Dictionary:</b> යතුරු-අගය යුගල ආකාරයෙන් දත්ත ගබඩා කරයි. මෙහිදී සෑම යතුරක්ම අනන්‍ය විය යුතුය. යතුරු භාවිතයෙන් අදාළ අගයන් වෙත ක්ෂණිකව ප්‍රවේශ වීමට මෙය ඉඩ සලසයි.</li><li><b>List:</b> අනුපිළිවෙලකට අංග ගබඩා කරන දත්ත ව්‍යුහයකි. එහි අංග හඳුනා ගන්නේ දර්ශක (index) මගිනි. යතුරු-අගය යුගල ගබඩා කිරීමට ලැයිස්තු සුදුසු නොවේ.</li><li><b>Tuple:</b> ලැයිස්තුවක් හා සමාන වුවත්, නිර්මාණය කිරීමෙන් පසු එහි අංග වෙනස් කළ නොහැක. එය ද අනුපිළිවෙලකට අංග ගබඩා කරන අතර දර්ශක මගින් අංග හඳුනා ගනී. යතුරු-අගය යුගල ගබඩා කිරීමට ටියුපල් ද සුදුසු නොවේ.</li><li>එබැවින්, අනන්‍ය යතුරු සහිත යතුරු-අගය යුගල එකතුවක් ගබඩා කිරීමට සුදුසු වන්නේ <b>Dictionary</b> පමණි.</li</ul>"
+        },
+        {
+            "question": "<b>45. පහත පයිතන් කේතයේ ප්‍රතිදානය කුමක් වේද?</b><br><br><p>for i in range(1, 4):</p><p>&nbsp;&nbsp;for j in range(1, i + 1):</p><p>&nbsp;&nbsp;&nbsp;&nbsp;print(j * i, end=' ')</p><p>print()</p>",
+            "image": "",
+            "options": [
+                "(1) <br>1<br> 2 2<br> 3 3 3",
+                "(2) <br>1 <br>2 4<br> 3 6",
+                "(3) <br>1 <br>2 4 <br>3 6 9",
+                "(4) <br>1 2 3 <br>2 4 6",
+                "(5) <br>1 2 <br>2 4 6 <br>3 6 9 12"
+            ],
+            "correctAnswer": 2,
+            "explanation": "<ul><li>කේතයේ පිටත ලූපය <code>for i in range(1, 4):</code> මඟින් <code>i</code> විචල්‍යයට 1, 2, සහ 3 යන අගයන් ලබා දෙමින් තුන් වරක් ක්‍රියාත්මක වේ.</li><li>එක් එක් පිටත ලූපයේ පුනරාවර්තනය සඳහා, ඇතුළත ලූපය <code>for j in range(1, i + 1):</code> ක්‍රියාත්මක වේ. මෙම ලූපය <code>j</code> විචල්‍යයට 1 සිට <code>i</code> දක්වා (අන්තය ඇතුළුව) අගයන් ලබා දෙයි.</li><li>ඇතුළත ලූපය තුළ <code>print(j * i, end=' ')</code> විධානය මඟින් <code>j</code> සහ <code>i</code> ගුණ කිරීමෙන් ලැබෙන අගය මුද්‍රණය කරනු ලබන අතර, <code>end=' '</code> නිසා එක් එක් අගයෙන් පසුව හිස්තැනක් තැබේ.</li> <li>පිටත ලූපයේ එක් එක් පුනරාවර්තනය අවසානයේ <code>print()</code> විධානය මඟින් නව පේළියක් ආරම්භ කරයි.</li><li>කේතය ක්‍රියාත්මක වන ආකාරය පියවරෙන් පියවර බලමු:<ul><li><b>i = 1:</b><ul><li>ඇතුළත ලූපය: <code>for j in range(1, 1 + 1)</code> එනම් <code>range(1, 2)</code> නිසා <code>j</code> හි අගය 1 වේ.</li><li><code>print(1 * 1, end=' ')</code> ප්‍රතිදානය: <code>1 </code></li><li><code>print()</code> නව පේළියක් ආරම්භ කරයි.</li></ul></li><li><b>i = 2:</b><ul><li>ඇතුළත ලූපය: <code>for j in range(1, 2 + 1)</code> එනම් <code>range(1, 3)</code> නිසා <code>j</code> හි අගයන් 1 සහ 2 වේ.</li><li><code>print(1 * 2, end=' ')</code> ප්‍රතිදානය: <code>2 </code></li><li><code>print(2 * 2, end=' ')</code> ප්‍රතිදානය: <code>4 </code></li><li><code>print()</code> නව පේළියක් ආරම්භ කරයි.</li></ul></li><li><b>i = 3:</b><ul><li>ඇතුළත ලූපය: <code>for j in range(1, 3 + 1)</code> එනම් <code>range(1, 4)</code> නිසා <code>j</code> හි අගයන් 1, 2 සහ 3 වේ.</li><li><code>print(1 * 3, end=' ')</code> ප්‍රතිදානය: <code>3 </code></li><li><code>print(2 * 3, end=' ')</code> ප්‍රතිදානය: <code>6 </code></li><li><code>print(3 * 3, end=' ')</code> ප්‍රතිදානය: <code>9 </code></li><li><code>print()</code> නව පේළියක් ආරම්භ කරයි.</li></ul></li></ul></li><li>එබැවින්, සම්පූර්ණ ප්‍රතිදානය වන්නේ:1<br> 2 4<br> 3 6 9</li></ul>"
+        },
+        {
+            "question": "<b>46. HTML ගොනුවක ඇති පහත කේත ඛණ්ඩය සලකන්න.</b>",
+            "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjNvbzS_kIFTwz8tFrUTk70Hgl3JhcBlaS7QEcz-I3sXodQqlMZ0lZgwCYGXR-bwmj3-2J846osWMah_BUsUcSphc1FhDSI7AS88RrNISnMCPdbzObqCxGB1XZfNEKm1eGL9nLqYCMt57Csqyd8amRHnBjmzmCx6LhJocy_kC1Lb8OyFT-uSPr-Fx2LwTgf/s652/oooooii.PNG",
+            "text":"'highlight' පන්තිය (class), div  මූලාංගයකට යෙදවූ විට කුමක් සිදු වේ ද?",
+            "options": [
+                "(1) div මූලාංගයේ පාඨ (text) රතු පාටට හැරේ.",
+                "(2) div මූලාංගයේ පාඨ කහ පාටට හැරේ.",
+                "(3) div මූලාංගයේ අකුරුවල ප්‍රමාණය විශාල වේ.",
+                "(4) div මූලාංගයේ අකුරු Cambria වර්ගයට හැරේ.",
+                "(5) div මූලාංගයේ දාර (border) වර්ණය රතු පාටට හැරේ."
+            ],
+            "correctAnswer": 0,
+            "explanation": "<p>CSS කේතය තුළ, <code>.highlight</code> යන පන්තිය සඳහා පහත මෝස්තර (styles) අර්ථ දක්වා ඇත:</p><pre><code>CSS.highlight {color: red;}</code></pre><p>මෙම CSS රීතියෙන් අදහස් වන්නේ <code>highlight</code> යන පන්තියට අයත් ඕනෑම HTML මූලාංගයක (මෙම අවස්ථාවේදී <code>&lt;div&gt;</code> මූලාංගයේ) පාඨයේ (text) වර්ණය රතු පැහැයට හැරෙන බවයි.</p><p>එබැවින්, 'highlight' පන්තිය (class), div &nbsp;මූලාංගයකට යෙදවූ විට කුමක් සිදු වේ ද? යන ප්‍රශ්නයට පිළිතුර වන්නේ:</p><p>(1) div මූලාංගයේ පාඨ (text) රතු පාටට හැරේ.</p><p>නිවැරදි පිළිතුර වන්නේ <b>(1)</b> යන්නයි.</p>"
+        },
+        {
+            "question": "<b>47. සෙවුම් යන්ත්‍ර සඳහා ප්‍රශස්තකරණය (SEO) සම්බන්ධයෙන් පහත කවර ප්‍රකාශ නිවැරදි වේ ද?</b><br><br>A - වෙබ් පිටුවල ඇති අභිලේබල (meta tags) SEO සඳහා උදව් වේ.<br><br>B - එය වෙබ් පිටුවක් සෙවුම් යන්ත්‍ර හරහා දෘශ්‍යමාන වීම ඉහළ නංවයි.<br><br>C - SEO සඳහා හිතකර වෙබ් පිටු සෑදීමට ප්‍රබල පරිගණක භාවිත කළ යුතු ය.",
+            "image": "",
+            "options": [
+                "(1) A පමණි",
+                "(2) A සහ B පමණි",
+                "(3) A සහ C පමණි",
+                "(4) B සහ C පමණි",
+                "(5) A, B සහ C යන සියල්ලම"
+            ],
+            "correctAnswer": 1,
+            "explanation": "<p>සෙවුම් යන්ත්‍ර සඳහා ප්‍රශස්තකරණය (SEO) සම්බන්ධයෙන් පහත ප්‍රකාශයන් සලකා බලමු:</p><ul><li><b>A - වෙබ් පිටුවල ඇති අභිලේබල (meta tags) SEO සඳහා උදව් වේ.</b><p>මෙය නිවැරදි ප්‍රකාශයකි. අභිලේබල, විශේෂයෙන්ම විස්තර (description) සහ යතුරුපද (keywords) වැනි දෑ, සෙවුම් යන්ත්‍රවලට වෙබ් පිටුවේ අන්තර්ගතය තේරුම් ගැනීමට සහ එය අදාළ සෙවුම් ප්‍රතිඵලවල පෙන්වීමට උපකාරී වේ.</p></li><li><b>B - එය වෙබ් පිටුවක් සෙවුම් යන්ත්‍ර හරහා දෘශ්‍යමාන වීම ඉහළ නංවයි.</b><p>මෙය ද නිවැරදි ප්‍රකාශයකි. SEO හි මූලික අරමුණ වන්නේ වෙබ් අඩවියක් සෙවුම් ප්‍රතිඵලවල ඉහළින්ම දිස්වන පරිදි ප්‍රශස්ත කිරීමයි. එමඟින් වෙබ් අඩවියට වැඩි පිරිසක් පැමිණෙන අතර එහි දෘශ්‍යමානතාවය වැඩි වේ.</p></li><li><b>C - SEO සඳහා හිතකර වෙබ් පිටු සෑදීමට ප්‍රබල පරිගණක භාවිත කළ යුතු ය.</b><p>මෙය වැරදි ප්‍රකාශයකි. SEO සඳහා හිතකර වෙබ් පිටු නිර්මාණය කිරීමට අවශ්‍ය වන්නේ හොඳ අන්තර්ගතය, නිවැරදි HTML ව්‍යුහය, ප්‍රශස්ත රූප සහ වේගවත් වෙබ් අඩවි ක්‍රියාකාරිත්වය වැනි කරුණුයි. මේ සඳහා ප්‍රබල පරිගණක අවශ්‍ය නොවේ. සාමාන්‍ය පරිගණකයක් භාවිතයෙන් වුවද SEO සඳහා සුදුසු වෙබ් පිටු නිර්මාණය කළ හැකිය.</p> </li></ul><p>එබැවින්, A සහ B යන ප්‍රකාශ දෙක පමණක් නිවැරදි වේ.</p><p>නිවැරදි පිළිතුර වන්නේ <b>(2) A සහ B පමණි</b> යන්නයි.</p>"
+        },
+        {
+            "question": "<b>48. පෝරමයකට (form) අදාළ පහත HTML කේත පේළිය සලකන්න.</b>",
+            "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjzy7KosZvudHaxKLSPsSu5Kl6NEcHm6EQph0Ul7_SyDtHC8pil6noMuJdQvQSAII1w4Q_YDIilKXgjUZSbqttks-ELRd1_YxuDxU2PcRCbb3PW53lxWTdf2P2Ru1x3qSQC4ZxgE04r7NaM0CC_Gw-RLTany3UBMcgnvxv2LnZdm2O6SK-dSqKTRFzGs4sv",
+            "text":"එහි action ගුණාංගය,",
+            "options": [
+                "(1) පෝරමයේ දත්ත වර්ගය පැහැදිලිව දක්වයි.",
+                "(2) පෝරමයේ දත්ත හසුරුවන සේවාදායක ගොනුව පැහැදිලිව දක්වයි.",
+                "(3) වෙබ් පිටුව මත පෝරමයේ එකෙල්ල (alignment) කිරීම පාලනය කරයි.",
+                "(4) පෝරමය PHP උපදේශාවලියක් (script) ලෙස ප්‍රකාශ කරයි.",
+                "(5) process.php ගොනුව තිරයේ පෙන්වයි."
+            ],
+            "correctAnswer": 1,
+            "explanation": "<p>මෙම කේතයේ <code>action</code> යන ගුණාංගය process.php ලෙස දක්වා ඇත.</p><p><code>action</code> ගුණාංගය මඟින් පෝරමය ඉදිරිපත් කළ පසු (submit කළ පසු) දත්ත යැවිය යුතු URL එක නියම කරයි. මෙය සාමාන්‍යයෙන් දත්ත සැකසීම සඳහා සේවාදායකයේ (server) ක්‍රියාත්මක වන ගොනුවක ලිපිනය වේ.</p><p>මෙම අවස්ථාවේදී, පෝරමයේ දත්ත process.php නම් ගොනුව වෙත යවනු ලැබේ. මෙම ගොනුව සේවාදායකයේ පිහිටා ඇති අතර, පෝරමයෙන් ලැබෙන දත්ත ලබාගෙන ඒවාට අදාළ සැකසුම් සිදු කරනු ඇත.</p><p>එබැවින්, <code>action</code> ගුණාංගය <b>පෝරමයේ දත්ත හසුරුවන සේවාදායක ගොනුව පැහැදිලිව දක්වයි</b>.</p><p>නිවැරදි පිළිතුර වන්නේ <b>(2) පෝරමයේ දත්ත හසුරුවන සේවාදායක ගොනුව පැහැදිලිව දක්වයි</b>. යන්නයි.</p>"
+        },
+        {
+            "question": "<b>49. සමන්ගේ පියා වඩු කාර්මිකයෙකි. වෙබ් අඩවියක තම පියාගේ නිර්මාණ ප්‍රදර්ශනය කිරීමට සමන් අදහස් කරයි. තමන්ට දැරිය හැකි අඩු වියදමකින් එය කර ගැනීමට සමන් තම වෙබ් අඩවිය පහත කවර ආකාරයට ප්‍රසිද්ධ (host) කළ යුතු ද?</b>",
+            "image": "",
+            "options": [
+                "(1) වෙනත් වෙබ් අඩවිද ඉදිරිපත් කෙරෙන සේවාදායකයක (server) හවුලේ ප්‍රසිද්ධ කිරීම (shared hosting)",
+                "(2) අතථ්‍ය පෞද්ගලික සේවාදායකයක (virtual private server) ප්‍රසිද්ධ කිරීම",
+                "(3) සමන්ටම වෙන් වූ සේවාදායකයක ප්‍රසිද්ධ කිරීම (dedicated hosting)",
+                "(4) ඉ - වාණිජ්‍යය වෙබ් අඩවියක් භාවිත කිරීම",
+                "(5) ප්‍රචලිත වළාකුළු සේවාදායක (cloud service) සැපයුම්කරුවකුගේ සේවා භාවිත කිරීම"
+            ],
+            "correctAnswer":0,
+            "explanation": "<p>සමන්ට තම පියාගේ නිර්මාණ ප්‍රදර්ශනය කිරීමට අවශ්‍ය වෙබ් අඩවිය අඩු වියදමකින් ප්‍රසිද්ධ කිරීමට සුදුසුම ක්‍රමය වන්නේ <b>(1) වෙනත් වෙබ් අඩවිද ඉදිරිපත් කෙරෙන සේවාදායකයක (server) හවුලේ ප්‍රසිද්ධ කිරීම (shared hosting)</b> යන්නයි.</p><p>ඒ සඳහා හේතු කිහිපයක් පහත දැක්වේ:</p><ul><li><b>අඩු වියදම:</b> හවුලේ ප්‍රසිද්ධ කිරීම යනු එක් සේවාදායකයක (server) සම්පත් (මතකය, කලාප පළල, ගබඩා ඉඩ) බොහෝ වෙබ් අඩවි සමඟ බෙදා ගැනීමයි. එම නිසා, එක් එක් වෙබ් අඩවිය සඳහා දැරිය යුතු වියදම බෙදී යන අතර එය අනෙකුත් ප්‍රසිද්ධ කිරීමේ ක්‍රමවලට වඩා බෙහෙවින් අඩු වේ. සමන්ගේ අවශ්‍යතාව සරල නිර්මාණ ප්‍රදර්ශනය කිරීම පමණක් නම්, ඔහුට මිල අධික සේවාදායකයක සම්පූර්ණ ධාරිතාව අවශ්‍ය නොවනු ඇත.</li><li><b>පහසු කළමනාකරණය:</b> බොහෝ හවුලේ ප්‍රසිද්ධ කිරීමේ සේවා සපයන්නන් පරිශීලක-හිතකාමී පාලක පැනල (control panels) සපයයි. එමඟින් වෙබ් අඩවිය උඩුගත කිරීම, ඊමේල් ගිණුම් කළමනාකරණය කිරීම සහ මූලික සැකසුම් වෙනස් කිරීම වැනි කාර්යයන් සමන්ට පහසුවෙන් කර ගැනීමට හැකි වේ.</li></ul><p>අනෙකුත් විකල්ප සලකා බැලූ විට:</p><ul><li>(2) අතථ්‍ය පෞද්ගලික සේවාදායකයක (virtual private server) ප්‍රසිද්ධ කිරීම: මෙහිදී සේවාදායකයක සම්පත් කොටස් කිහිපයකට බෙදා එක් එක් කොටස වෙනම වෙබ් අඩවියකට වෙන් කරනු ලැබේ. මෙය හවුලේ ප්‍රසිද්ධ කිරීමට වඩා වැඩි සම්පත් සහ පාලනයක් ලබා දෙන නමුත්, එය වැඩි වියදම් සහ තාක්ෂණික දැනුම ද අවශ්‍ය කරයි.</li><li>(3) සමන්ටම වෙන් වූ සේවාදායකයක ප්‍රසිද්ධ කිරීම (dedicated hosting): මෙහිදී සම්පූර්ණ සේවාදායකයම එක් වෙබ් අඩවියක් සඳහා වෙන් කෙරේ. මෙය ඉතා ඉහළ කාර්යසාධනයක් සහ පාලනයක් ලබා දෙන නමුත්, එය වඩාත්ම මිල අධික විකල්පයයි.</li><li>(4) ඉ - වාණිජ්‍යය වෙබ් අඩවියක් භාවිත කිරීම: මෙය සුදුසු වන්නේ අන්තර්ජාලය හරහා භාණ්ඩ හෝ සේවා විකිණීමට අදහස් කරන්නේ නම් පමණි. සමන්ගේ අරමුණ නිර්මාණ ප්‍රදර්ශනය කිරීම පමණක් බැවින් මෙය අවශ්‍ය නොවේ.</li><li>(5) ප්‍රචලිත වළාකුළු සේවාදායක (cloud service) සැපයුම්කරුවකුගේ සේවා භාවිත කිරීම: වළාකුළු සේවා නම්‍යශීලී සහ පරිමාණය කළ හැකි වුවද, මූලික අවශ්‍යතාවක් සඳහා එහි වියදම හවුලේ ප්‍රසිද්ධ කිරීමට වඩා වැඩි විය හැකිය.</li></ul><p>එබැවින්, සමන්ගේ අවශ්‍යතාවට සහ දැරිය හැකි වියදමට වඩාත් සුදුසු වන්නේ <b>හවුලේ ප්‍රසිද්ධ කිරීම (shared hosting)</b> යන්නයි.</p>"
+        },
+        {
+            "question": "<b>50. සබැඳි ද්‍රව්‍ය අන්තර්ජාල (IoT) සංවේදකයක (sensor) මූලික කාර්ය කුමක් ද?</b>",
+            "image": "",
+            "options": [
+                "(1) ප්‍රතිදාන ලබා දී පරිසරයේ තත්වයක් (state) වෙනස් කිරීම",
+                "(2) උපාංගවල අනෙන්‍යෝන්‍ය ක්‍රියාකාරිත්වය සහතික කිරීම",
+                "(3) පරිසරයේ තත්ව වෙනසක් දැනගැනීම",
+                "(4) කලින් නියම කළ නීති මත තීරණ ගැනීම",
+                "(5) පරිශීලක අතුරු මුහුණත සඳහා චිත්‍රක (graphics) ගොඩනැගීම"
+            ],
+            "correctAnswer": 2,
+            "explanation": "<p>සබැඳි ද්‍රව්‍ය අන්තර්ජාල (IoT) සංවේදකයක (sensor) මූලික කාර්යය වන්නේ <b>(3) පරිසරයේ තත්ව වෙනසක් දැනගැනීම</b> යන්නයි.</p><p>IoT සංවේදක නිර්මාණය කර ඇත්තේ භෞතික ලෝකයේ විවිධ තොරතුරු රැස් කිරීමටයි. මේවා උෂ්ණත්වය, ආර්ද්‍රතාවය, ආලෝකය, චලනය, පීඩනය වැනි විවිධ පරාමිතීන් විය හැකිය. සංවේදකය මෙම තොරතුරු සංවේදනය කර විද්‍යුත් සංඥා බවට පරිවර්තනය කරයි. මෙම දත්ත පසුව විශ්ලේෂණය කිරීම සඳහා වෙනත් උපාංග හෝ පද්ධති වෙත යවනු ලැබේ.</p><p>අනෙකුත් විකල්ප සලකා බලමු:</p><ul><li>(1) ප්‍රතිදාන ලබා දී පරිසරයේ තත්වයක් (state) වෙනස් කිරීම: මෙය සාමාන්‍යයෙන් සිදු කරන්නේ ක්‍රියාකාරකයක් (actuator) මගිනි, සංවේදකයකින් නොවේ. සංවේදක තොරතුරු ලබා දෙන අතර, ක්‍රියාකාරක එම තොරතුරු මත පදනම්ව ක්‍රියා කරයි.</li><li>(2) උපාංගවල අනෙන්‍යෝන්‍ය ක්‍රියාකාරිත්වය සහතික කිරීම: මෙය IoT පද්ධතියක සමස්ත ක්‍රියාවලියට අදාළ වන අතර, සංවේදකයක මූලික කාර්යය නොවේ.</li><li>(4) කලින් නියම කළ නීති මත තීරණ ගැනීම: තීරණ ගැනීම සාමාන්‍යයෙන් සිදු කරන්නේ මධ්‍යම සැකසුම් ඒකකයක් හෝ වලාකුළු වේදිකාවක් වැනි බුද්ධිමත් පද්ධතියක් මගිනි, සංවේදකයක් මගින් නොවේ.</li><li>(5) පරිශීලක අතුරු මුහුණත සඳහා චිත්‍රක (graphics) ගොඩනැගීම: චිත්‍රක ගොඩනැගීම IoT පද්ධතියක ඉදිරිපත් කිරීමේ ස්ථරයට අදාළ වන අතර එය සංවේදකයක කාර්යයක් නොවේ.</li></ul><p>එබැවින්, IoT සංවේදකයක මූලික කාර්යය වන්නේ <b>පරිසරයේ තත්ව වෙනසක් දැනගැනීම</b>යි.</p><p>නිවැරදි පිළිතුර වන්නේ <b>(3)</b> යන්නයි.</p>"
+        }
+
+
+
+
+
+
+
+
+
+
+
+            
+                    ];
+        // Variables to track quiz state
+        let answers = Array(quizData.length).fill(null);
+        let timeLeft = 2 * 60 * 60 + 10 * 60; // 2 hours and 10 minutes in seconds
+        let timerInterval;
+        const marksPerQuestion = 2; // Each question is worth 2 marks
+
+        // DOM elements
+        const quizQuestionsEl = document.getElementById('quiz-questions');
+        const floatingTimerEl = document.getElementById('floating-timer');
+        const timerTimeEl = document.getElementById('timer-time');
+        const submitBtn = document.getElementById('submit-btn');
+        const incompleteModal = document.getElementById('incomplete-modal');
+        const resultsModal = document.getElementById('results-modal');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalMarksDisplay = document.getElementById('total-marks');
+        const wrongAnswersEl = document.getElementById('wrong-answers');
+        const continueBtn = document.getElementById('continue-btn');
+        const closeButtons = document.getElementsByClassName('close');
+
+        // Initialize the quiz
+        function initQuiz() {
+            // Set total marks
+            totalMarksDisplay.textContent = quizData.length * marksPerQuestion;
+            
+            displayQuestions();
+            startTimer();
+            
+            // Show floating timer when scrolling
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    floatingTimerEl.classList.add('visible');
+                } else {
+                    floatingTimerEl.classList.remove('visible');
+                }
+            });
+            
+            // Smooth scroll to question when clicking options
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.option')) {
+                    const questionEl = e.target.closest('.question');
+                    questionEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                // Add event listener for re-attempt button
+document.getElementById('reattempt-btn').addEventListener('click', resetQuiz);
+            });
+            
+            // Event listeners
+            submitBtn.addEventListener('click', submitQuiz);
+            continueBtn.addEventListener('click', () => {
+                incompleteModal.classList.remove('active');
+            });
+            
+            for (let i = 0; i < closeButtons.length; i++) {
+                closeButtons[i].addEventListener('click', function() {
+                    this.closest('.modal').classList.remove('active');
+                });
+            }
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target == incompleteModal) {
+                    incompleteModal.classList.remove('active');
+                }
+                if (event.target == resultsModal) {
+                    resultsModal.classList.remove('active');
+                }
+            });
+        }
+
+        // Start timer
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            const seconds = timeLeft % 60;
+            
+            const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            timerTimeEl.textContent = timeString;
+            
+            // Change color when time is running out
+            if (timeLeft <= 600) { // 10 minutes left
+                floatingTimerEl.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+                floatingTimerEl.style.borderColor = 'var(--highlight)';
+            } else if (timeLeft <= 1800) { // 30 minutes left
+                floatingTimerEl.style.background = 'linear-gradient(135deg, var(--highlight), #e67e22)';
+                floatingTimerEl.style.borderColor = 'var(--highlight)';
+            } else {
+                floatingTimerEl.style.background = 'linear-gradient(135deg, var(--highlight), #f1c40f)';
+                floatingTimerEl.style.borderColor = 'var(--highlight)';
+            }
+        }
+
+        // Display all questions
+// Display all questions with image captions
+function displayQuestions() {
+    quizQuestionsEl.innerHTML = '';
+    
+    quizData.forEach((question, index) => {
+        const questionEl = document.createElement('div');
+        questionEl.className = 'question';
+        questionEl.id = `question-${index}`;
+        
+        // Build question HTML
+        let questionHTML = `
+            <div class="question-text">${question.question}</div>
+        `;
+        
+        // Add image if exists with optional caption text
+        if (question.image) {
+            questionHTML += `
+                <img src="${question.image}" alt="Question ${index + 1} image" class="question-image">
+                ${question.text ? `<div class="image-caption" style="margin: 10px 0 20px; padding: 8px 12px; background: #f8f9fa; border-left: 3px solid var(--highlight); border-radius: 4px; font-size: 0.95rem;">${question.text}</div>` : ''}
+            `;
+        }
+        
+        // Add options
+        questionHTML += `
+            <div class="options">
+                ${question.options.map((option, i) => `
+                    <div class="option">
+                        <input type="radio" name="question-${index}" id="question-${index}-option-${i}" value="${i}" 
+                            ${answers[index] === i ? 'checked' : ''}>
+                        <label for="question-${index}-option-${i}">${option}</label>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        
+        questionEl.innerHTML = questionHTML;
+
+        // Add event listeners for radio buttons
+        const inputs = questionEl.querySelectorAll('input[type="radio"]');
+        inputs.forEach(input => {
+            input.addEventListener('change', function() {
+                answers[index] = parseInt(this.value);
+            });
+        });
+        
+        quizQuestionsEl.appendChild(questionEl);
+    });
+}
+
+        // Submit the quiz
+        function submitQuiz() {
+    // Check if any questions are answered
+    const answeredQuestions = answers.filter(answer => answer !== null).length;
+    
+    if (answeredQuestions === 0) {
+        incompleteModal.classList.add('active');
+        return;
+    }
+    
+    clearInterval(timerInterval);
+    floatingTimerEl.classList.remove('visible');
+    
+    // Calculate score
+    let score = 0;
+    const wrongAnswers = [];
+    
+    answers.forEach((answer, index) => {
+        const question = quizData[index];
+        if (answer === question.correctAnswer) {
+            score += marksPerQuestion;
+        } else {
+            wrongAnswers.push({
+                question: question.question,
+                image: question.image || null,
+                text: question.text || null,
+                explanationImage: question.explanationImage || null, // Add this line
+                userAnswer: answer !== null ? question.options[answer] : null,
+                correctAnswer: question.options[question.correctAnswer],
+                explanation: question.explanation
+            });
+        }
+    });
+    
+    // Display results
+    scoreDisplay.textContent = score;
+    
+    // Show wrong answers with explanations
+    if (wrongAnswers.length > 0) {
+        wrongAnswersEl.innerHTML = '<h3 style="color: var(--danger); margin-bottom: 15px;">වැරදි පිළිතුරු සහ පිළිතුරු නොදුන් ප්‍රශ්න:</h3>';
+        
+        wrongAnswers.forEach((wrong, index) => {
+            const wrongEl = document.createElement('div');
+            wrongEl.className = 'explanation';
+            wrongEl.style.marginBottom = '30px';
+            wrongEl.style.padding = '15px';
+            wrongEl.style.border = '1px solid #eee';
+            wrongEl.style.borderRadius = '8px';
+            wrongEl.style.backgroundColor = '#fff';
+            
+            let wrongHTML = `
+                <div style="font-weight: bold; margin-bottom: 10px; color:black;">
+                    ප්‍රශ්නය ${index + 1}: ${wrong.question}
+                </div>
+            `;
+            
+            // Add question image if exists
+            if (wrong.image) {
+                wrongHTML += `
+                    <img src="${wrong.image}" alt="Question image" 
+                         style="max-width: 100%; max-height: 200px; 
+                                margin: 10px 0; border-radius: 4px;">
+                `;
+            }
+            
+            // Add additional text if exists
+            if (wrong.text) {
+                wrongHTML += `
+                    <div style="margin: 10px 0; padding: 10px; 
+                         background-color: #f8f9fa; border-left: 4px solid var(--highlight);
+                         border-radius: 0 4px 4px 0;">
+                        ${wrong.text}
+                    </div>
+                `;
+            }
+            
+            // Add answer comparison
+            wrongHTML += `
+                <div style="margin: 15px 0;">
+                    <div style="display: flex; margin-bottom: 5px;">
+                        <span style="flex: 0 0 120px; font-weight: bold;">ඔබේ පිළිතුර:</span>
+                        <span style="${wrong.userAnswer === null ? 'color: #ff6d00; font-style: italic;' : 'color: var(--danger); font-weight: bold;'}">
+                            ${wrong.userAnswer !== null ? wrong.userAnswer : 'පිළිතුරු නොදී ඇත'}
+                        </span>
+                    </div>
+                    <div style="display: flex;">
+                        <span style="flex: 0 0 120px; font-weight: bold;">නිවැරදි පිළිතුර:</span>
+                        <span style="color: var(--success); font-weight: bold;">
+                            ${wrong.correctAnswer}
+                        </span>
+                    </div>
+                </div>
+            `;
+            
+            // Add explanation section
+            wrongHTML += `
+                <div style="margin-top: 15px;">
+                    <div style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">
+                        පැහැදිලි කිරීම:
+                    </div>
+            `;
+            
+            // Add explanation image if exists
+            if (wrong.explanationImage) {
+                wrongHTML += `
+                    <img src="${wrong.explanationImage}" alt="Explanation image" 
+                         style="max-width: 100%; max-height: 200px; 
+                                margin: 10px 0; border-radius: 4px;">
+                `;
+            }
+            
+            // Add explanation text
+            wrongHTML += `
+                    <div style="padding: 12px; background-color: #f0f8ff; 
+                         border-radius: 4px; border-left: 4px solid var(--secondary); color:red;">
+                        ${wrong.explanation || 'පැහැදිලි කිරීමක් නොමැත.'}
+                    </div>
+                </div>
+            `;
+            
+            wrongEl.innerHTML = wrongHTML;
+            wrongAnswersEl.appendChild(wrongEl);
+        });
+    } else {
+        wrongAnswersEl.innerHTML = `
+            <div style="text-align: center; padding: 20px; background-color: #e8f5e9;
+                 border-radius: 8px; border-left: 6px solid var(--success);">
+                <p style="color: var(--success); font-weight: bold; font-size: 1.2rem;">
+                    සියලු ප්‍රශ්නවලට නිවැරදිව පිළිතුරු දී ඇත!
+                </p>
+                <p style="margin-top: 10px;">ඔබ ලබාගත් ලකුණු: ${score}/${quizData.length * marksPerQuestion}</p>
+            </div>
+        `;
+    }
+
+
+    
+    // Show results modal
+    resultsModal.classList.add('active');
+    
+    // Smooth scroll to top
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+        // Initialize the quiz when the page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            initQuiz();
+        });
+    </script>
+</body>
+</html>

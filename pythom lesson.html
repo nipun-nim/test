@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python හැඳින්වීම - උසස්පෙළ ICT පාඩම්</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, rgba(5, 3, 129, 0.9), rgba(15, 126, 170, 0.9), rgba(153, 23, 228, 0.9), rgba(43, 108, 176, 0.9));
+            background-size: 400% 400%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-text {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+
+        .modal {
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .glass-card {
+                width: 95%;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body class="flex justify-center items-start py-10 px-4">
+    <div class="container mx-auto max-w-6xl">
+        <!-- SECTION 1: Main Lesson Video and Details -->
+        <div class="glass-card p-6 md:p-8 mb-8">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Lesson Thumbnail -->
+                <div class="md:w-1/3">
+                    <div class="rounded-xl overflow-hidden cursor-pointer" id="thumbnail">
+                        <!-- Changed to web URL - replace with your actual image URL -->
+                        <img src="https://i.ytimg.com/vi/KoFxD651IHo/maxresdefault.jpg" alt="Python හැඳින්වීම" class="w-full h-auto object-cover">
+                        <div class="relative -mt-16 flex justify-center">
+                            <div class="bg-red-600 rounded-full p-4 inline-flex transform hover:scale-110 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lesson Details -->
+                    <div class="mt-6 text-white">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>පාඩම් කාලය: 25:10</span>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <span>නරඹන්නන්: 1,245</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>පළකල දිනය: 2023-05-15</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lesson Content -->
+                <div class="md:w-2/3">
+                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 header-text">පාඩම 1: Python හැඳින්වීම</h1>
+                    
+                    <div class="bg-white bg-opacity-10 rounded-xl p-6 mb-6">
+                        <h2 class="text-xl font-bold text-white mb-3">පාඩම් සාරාංශය</h2>
+                        <p class="text-gray-200">
+                            මෙම පාඩමෙන් ඔබ Python පරිගණක භාෂාවේ මූලික කරුණු ඉගෙන ගනු ඇත. Python භාෂාවේ ඉතිහාසය, විශේෂාංග සහ භාවිතයන් පිළිබඳව මෙම පාඩමෙන් සාකච්ඡා කෙරේ. එසේම Python පරිසරය ස්ථාපනය කරන ආකාරය සහ පළමු Python වැඩසටහන ලියන ආකාරය පිළිබඳවද මෙම පාඩමෙන් ඉගෙන ගත හැකිය.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-10 rounded-xl p-6">
+                        <h2 class="text-xl font-bold text-white mb-3">පාඩම් අන්තර්ගතය</h2>
+                        <ul class="text-gray-200 space-y-2">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mt-0.5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Python භාෂාව හඳුන්වාදීම</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mt-0.5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Python ස්ථාපනය කිරීම</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mt-0.5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <span>පළමු Python වැඩසටහන</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: Python Lessons List -->
+        <h2 class="text-2xl font-bold text-white mb-6 header-text">Python පාඩම් ලැයිස්තුව</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <!-- Lesson 1 -->
+            <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="ROJKnm5YVE8" data-title="Python හැඳින්වීම" data-duration="25:10" data-summary="Python භාෂාවේ මූලික කරුණු" data-pdf="lesson1.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/07zka3Q7nO0/maxresdefault.jpg" alt="Python හැඳින්වීම" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 1: Python හැඳින්වීම</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 25:10</p>
+                </div>
+            </div>
+            
+            <!-- Lesson 2 -->
+            <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_2" data-title="දත්ත විශ්ලේෂණය" data-duration="32:45" data-summary="Python භාවිතා කරමින් දත්ත විශ්ලේෂණය" data-pdf="lesson2.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/9ydG-e8YHwc/maxresdefault.jpg" alt="දත්ත විශ්ලේෂණය" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 2: දත්ත විශ්ලේෂණය</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 32:45</p>
+                </div>
+            </div>
+            
+            <!-- Lesson 3 -->
+            <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_3" data-title="SQL මූලික කරුණු" data-duration="28:15" data-summary="Python සමඟ SQL දත්ත ගබඩා භාවිතා කිරීම" data-pdf="lesson3.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/ZAisZdWprj0/maxresdefault.jpg" alt="SQL මූලික කරුණු" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 3: SQL මූලික කරුණු</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 28:15</p>
+                </div>
+            </div>
+            
+            <!-- Lesson 4 -->
+            <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/Q3KFHMKkgwI/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+            </div>
+             <!-- Lesson 5 -->
+            <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/Fg86oO7ZMOE/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+                 <!-- Lesson 6 -->
+            </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/YNp34ml6Hgg/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+                    <!-- Lesson 7 -->
+            </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/1bTlmK2tUIM/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+                 <!-- Lesson 8 -->
+            </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/wmUoNDjAASk/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+                 <!-- Lesson 9 -->
+            </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/8wHxCiFFNFI/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+                 <!-- Lesson 10 -->
+            </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/FdQG0qmodSQ/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+                <!-- Lesson 11 -->
+            </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/D8NsBelBTyM/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+                 <!-- Lesson 12 -->
+            </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/I3U_JGqKc3I/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+                 <!-- Lesson 13 -->
+            </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/S-kBEoxJ3d8/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+                <!-- Lesson 14-->
+            </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                <div class="relative">
+                    <img src="https://i.ytimg.com/vi/z08J8Ks5WOU/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                        <div class="bg-red-600 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                    <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                </div>
+            </div>
+                      <!-- Lesson 15-->
+                    </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/PPhOdM7JBGk/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                                <div class="bg-red-600 rounded-full p-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                            <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                        </div>
+                    </div>
+                      <!-- Lesson 16-->
+                    </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/j7xv9kqRqBY/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                                <div class="bg-red-600 rounded-full p-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                            <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                        </div>
+                    </div>
+                      <!-- Lesson 17-->
+                    </div>    <div class="glass-card rounded-xl overflow-hidden transition transform hover:-translate-y-1 cursor-pointer lesson-card" data-video-id="YOUR_VIDEO_ID_4" data-title="HTML & CSS මූලික" data-duration="35:20" data-summary="Python වෙබ් අඩවි සඳහා HTML සහ CSS භාවිතා කිරීම" data-pdf="lesson4.pdf">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/K8AkLDD-x34/maxresdefault.jpg" alt="HTML & CSS මූලික" class="w-full h-40 object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                                <div class="bg-red-600 rounded-full p-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-white mb-1">පාඩම 4: HTML & CSS මූලික</h3>
+                            <p class="text-gray-300 text-sm">පාඩම් කාලය: 35:20</p>
+                        </div>
+                    </div>
+                    
+                                                            
+            <!-- Add more lessons as needed (up to 20) -->
+        </div>
+
+        <!-- SECTION 3: Lesson Summaries -->
+        <div class="glass-card p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6 header-text">පාඩම් සාරාංශ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="lesson-summaries">
+                <!-- Summary 1 -->
+                <div class="bg-white bg-opacity-10 rounded-xl p-4">
+                    <h3 class="text-lg font-bold text-white mb-2">Python හැඳින්වීම</h3>
+                    <p class="text-gray-300 text-sm mb-2">කාලය: 25:10</p>
+                    <p class="text-gray-200 text-sm mb-3">Python භාෂාවේ මූලික කරුණු සහ ස්ථාපන ක්‍රම</p>
+                    <a href="lesson1.pdf" download class="inline-flex items-center px-3 py-1 bg-red-600 text-white text-sm rounded-full hover:bg-red-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        PDF බාගන්න
+                    </a>
+                </div>
+                
+                <!-- Summary 2 -->
+                <div class="bg-white bg-opacity-10 rounded-xl p-4">
+                    <h3 class="text-lg font-bold text-white mb-2">දත්ත විශ්ලේෂණය</h3>
+                    <p class="text-gray-300 text-sm mb-2">කාලය: 32:45</p>
+                    <p class="text-gray-200 text-sm mb-3">Python භාවිතා කරමින් දත්ත විශ්ලේෂණය කිරීමේ මූලික කරුණු</p>
+                    <a href="lesson2.pdf" download class="inline-flex items-center px-3 py-1 bg-red-600 text-white text-sm rounded-full hover:bg-red-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        PDF බාගන්න
+                    </a>
+                </div>
+                
+                <!-- Summary 3 -->
+                <div class="bg-white bg-opacity-10 rounded-xl p-4">
+                    <h3 class="text-lg font-bold text-white mb-2">SQL මූලික කරුණු</h3>
+                    <p class="text-gray-300 text-sm mb-2">කාලය: 28:15</p>
+                    <p class="text-gray-200 text-sm mb-3">Python සමඟ SQL දත්ත ගබඩා භාවිතා කිරීම</p>
+                    <a href="lesson3.pdf" download class="inline-flex items-center px-3 py-1 bg-red-600 text-white text-sm rounded-full hover:bg-red-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        PDF බාගන්න
+                    </a>
+                </div>
+                
+                <!-- Add more summaries as needed -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Video Modal -->
+    <div class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-4" id="videoModal">
+        <div class="relative w-full max-w-4xl">
+            <!-- Close Button -->
+            <button class="absolute -top-12 right-0 text-white hover:text-red-500 transition" id="closeModal">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Video Player -->
+            <div class="video-container">
+                <iframe id="youtubeVideo" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <!-- Video Info -->
+            <div class="bg-white bg-opacity-10 rounded-b-xl p-4">
+                <h3 class="text-xl font-bold text-white" id="videoTitle">පාඩම් මාතෘකාව</h3>
+                <p class="text-gray-300" id="videoDuration">පාඩම් කාලය: 00:00</p>
+                <p class="text-gray-300 mt-2" id="videoSummary">පාඩම් සාරාංශය...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Video Modal Functionality
+        const thumbnail = document.getElementById('thumbnail');
+        const lessonCards = document.querySelectorAll('.lesson-card');
+        const videoModal = document.getElementById('videoModal');
+        const closeModal = document.getElementById('closeModal');
+        const youtubeVideo = document.getElementById('youtubeVideo');
+        const videoTitle = document.getElementById('videoTitle');
+        const videoDuration = document.getElementById('videoDuration');
+        const videoSummary = document.getElementById('videoSummary');
+        
+        // Main thumbnail click
+        thumbnail.addEventListener('click', () => {
+            youtubeVideo.src = "https://www.youtube.com/embed/ROJKnm5YVE8?autoplay=1";
+            videoTitle.textContent = "Python හැඳින්වීම";
+            videoDuration.textContent = "පාඩම් කාලය: 25:10";
+            videoSummary.textContent = "Python භාෂාවේ මූලික කරුණු සහ ස්ථාපන ක්‍රම";
+            videoModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // Lesson cards click
+        lessonCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const videoId = card.dataset.videoId;
+                const title = card.querySelector('h3').textContent;
+                const duration = card.querySelector('p').textContent;
+                const summary = card.dataset.summary;
+                
+                youtubeVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                videoTitle.textContent = title;
+                videoDuration.textContent = duration;
+                videoSummary.textContent = summary;
+                
+                videoModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        closeModal.addEventListener('click', () => {
+            videoModal.classList.remove('active');
+            youtubeVideo.src = '';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close modal when clicking outside
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                videoModal.classList.remove('active');
+                youtubeVideo.src = '';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>

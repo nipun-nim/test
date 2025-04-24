@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html>
+
+<html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateUrl='indie.xml' b:templateVersion='1.3.0' expr:dir='data:blog.languageDirection' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2000/01/blogger-rss' xmlns:data='http://www.google.com/2000/data' xmlns:expr='http://www.google.com/2005/expression'>
+
+<head>
+
+  <meta content='width=device-width, initial-scale=1' name='viewport'/>
+
+  <title>Nime Solutions</title>
+
+  <!-- Meta tags -->
+  <b:include data='blog' name='all-head-content'/>
+
+  <!-- CSS Styles -->
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+   
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+   
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+   
+    /* Header Styles - Modified Height */
+    header {
+      background-color: rgba(255, 255, 255, 0.514);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      height: 60px; /* Reduced height */
+    }
+   
+    header.scrolled {
+      background-color: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+      height: 60px; /* Consistent height when scrolled */
+    }
+   
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0; /* Reduced padding */
+      height: 100%;
+    }
+   
+    .logo {
+      font-size: 24px; /* Slightly smaller */
+      font-weight: 700;
+      color: #000000;
+      text-decoration: none;
+      position: relative;
+    }
+   
+    .logo span {
+      background: linear-gradient(90deg, #004675, #610a83);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+   
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+   
+    nav ul li {
+      margin-left: 20px; /* Reduced spacing */
+    }
+   
+    nav ul li a {
+      text-decoration: none;
+      color: #2c3e50;
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+      font-size: 14px; /* Slightly smaller */
+    }
+
+    /* Hero Background Particles */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    
+    .particle-1 { animation: float 15s linear infinite; }
+    .particle-2 { animation: float 20s linear infinite reverse; }
+    .particle-3 { animation: float 25s linear infinite; }
+    .particle-4 { animation: float 30s linear infinite reverse; }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-1000px) translateX(500px);
+        opacity: 0;
+      }
+    }
+
+    /* Hero Section - Fixed Typing Animation */
+    .hero {
+      padding: 150px 0 80px;
+      text-align: center;
+      background: linear-gradient(135deg, hsl(229, 82%, 35%), #ffffff);
+      position: relative;
+      overflow: hidden;
+    }
+   
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 0 50px;
+    }
+   
+    .hero-text h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      min-height: 1.2em;
+      height: 100%; /* Fixed height */
+      overflow: hidden; /* Prevent layout shift */
+    }
+   
+    .hero-text p {
+      font-size: 16px;
+      margin-bottom: 30px;
+      color: rgba(255,255,255,0.9);
+    }
+   
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background: linear-gradient(90deg, #3498db, #9b59b6);
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+   
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+   
+    .hero-image {
+      display: none; /* Hide image on mobile by default */
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 2;
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+   
+    .hero-img {
+      width: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1);
+      transition: transform 0.5s ease-out;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+      will-change: transform;
+    }
+   
+    .hero-image.loaded {
+      opacity: 1;
+      transform: translateX(0);
+    }
+   
+    .hero-image:hover .hero-img {
+      transform: scale(1.05);
+    }
+   
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background-color: white;
+      margin-left: 2px;
+      animation: blink 0.7s infinite;
+      vertical-align: middle;
+    }
+   
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+   
+    /* Cloud-shaped AI message */
+    .ai-message {
+      position: absolute;
+      left: 720px;
+      bottom: 300px;
+      background: rgba(255,255,255,0.95);
+      padding: 20px 30px;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      font-weight: 600;
+      color: #2c3e50;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.8s ease 0.5s, opacity 0.8s ease 0.5s;
+      z-index: 10;
+      display: none;
+      max-width: 250px;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+      animation: float 4s ease-in-out infinite;
+    }
+   
+    .ai-message:before {
+      content: "";
+      position: absolute;
+      right: -15px;
+      bottom: -10px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 50%;
+      z-index: -1;
+    }
+   
+    .ai-message:after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      bottom: -20px;
+      width: 30px;
+      height: 30px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 50%;
+      z-index: -1;
+    }
+   
+    .ai-message.animate {
+      transform: translateY(0);
+      opacity: 1;
+    }
+   
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+   
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23f8f9fa' fill-opacity='1' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,133.3C672,139,768,181,864,181.3C960,181,1056,139,1152,122.7C1248,107,1344,117,1392,122.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+      background-size: cover;
+      z-index: 3;
+    }
+   
+    /* Services Section */
+    .services {
+      padding: 80px 0;
+      background-color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .services-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.1;
+      background: radial-gradient(circle, #9b59b6 0%, transparent 70%);
+      animation: pulse 15s infinite alternate;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.1; }
+      50% { transform: scale(1.1); opacity: 0.15; }
+      100% { transform: scale(1); opacity: 0.1; }
+    }
+   
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+      z-index: 1;
+    }
+   
+    .section-title h2 {
+      font-size: 32px;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+   
+    .section-title p {
+      color: #7f8c8d;
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 16px;
+    }
+   
+    .services-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      position: relative;
+      z-index: 1;
+    }
+   
+    .service-card {
+      flex: 1;
+      min-width: 100%;
+      background-color: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      transform: translateY(50px);
+      opacity: 0;
+      transition: transform 0.8s ease, opacity 0.8s ease;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Different entry animations for each card */
+    .service-card:nth-child(1) {
+      transition-delay: 0.1s;
+      transform: translateX(-100px) translateY(50px);
+    }
+    
+    .service-card:nth-child(2) {
+      transition-delay: 0.3s;
+      transform: translateY(100px);
+    }
+    
+    .service-card:nth-child(3) {
+      transition-delay: 0.5s;
+      transform: translateX(100px) translateY(50px);
+    }
+   
+    .service-card.animate {
+      transform: translateX(0) translateY(0) !important;
+      opacity: 1;
+    }
+   
+    .service-icon {
+      background: linear-gradient(135deg, #3498db, #9b59b6);
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .service-icon:after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255,255,255,0.1);
+      transform: rotate(45deg);
+      animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+   
+    .service-content {
+      padding: 25px 20px;
+    }
+   
+    .service-content h3 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+   
+    .service-content p {
+      color: #7f8c8d;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+   
+    .service-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #3498db, #9b59b6);
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+   
+    .service-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+    }
+   
+    /* About Section */
+    .about {
+      padding: 80px 0;
+      background-color: #f8f9fa;
+    }
+   
+    /* Contact Section */
+    .contact {
+      padding: 80px 0;
+      background-color: #fff;
+    }
+   
+    /* Footer */
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      padding: 60px 0 30px;
+      position: relative;
+    }
+   
+    .footer-wave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      transform: rotate(180deg);
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23fff' fill-opacity='1' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,133.3C672,139,768,181,864,181.3C960,181,1056,139,1152,122.7C1248,107,1344,117,1392,122.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+      background-size: cover;
+    }
+   
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+   
+    .footer-section {
+      flex: 1;
+      min-width: 100%;
+      margin-bottom: 30px;
+    }
+   
+    .footer-section h3 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+   
+    .footer-section p, .footer-section li {
+      margin-bottom: 12px;
+      color: #ecf0f1;
+      font-size: 15px;
+    }
+   
+    .footer-section ul {
+      list-style: none;
+    }
+   
+    .footer-section ul li {
+      position: relative;
+      padding-left: 20px;
+    }
+   
+    .footer-section ul li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #3498db;
+    }
+   
+    .footer-section ul li a {
+      color: #ecf0f1;
+      text-decoration: none;
+    }
+   
+    .copyright {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: #bdc3c7;
+      font-size: 14px;
+    }
+   
+    /* Desktop Styles */
+    @media (min-width: 768px) {
+      .hero {
+        padding: 180px 0 120px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+      }
+     
+      .hero-content {
+        width: 50%;
+        padding: 0 40px;
+        text-align: left;
+      }
+     
+      .hero-text h1 {
+        font-size: 52px;
+        margin-bottom: 30px;
+      }
+     
+      .hero-text p {
+        font-size: 20px;
+        margin-bottom: 40px;
+      }
+     
+      .hero-image {
+        display: block;
+        width: auto;
+      }
+     
+      .ai-message {
+        display: block;
+      }
+     
+      .service-card {
+        min-width: 300px;
+        max-width: 350px;
+      }
+     
+      .footer-section {
+        min-width: 250px;
+      }
+    }
+   
+    /* Smooth scroll behavior */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+  
+</head>
+
+<body>
+  <!-- Skip links for accessibility -->
+  <a href='#main-content' style='position:absolute;left:-9999px;'>Skip to main content</a>
+
+  <!-- Header with reduced height -->
+  <header id="site-header">
+    <div class='container'>
+      <div class='header-inner'>
+        <a class='logo' href='/'>Nime<span>Solutions</span></a>
+        <nav>
+          <ul>
+            <li><a href='#'>Home</a></li>
+            <li><a href='#services'>Services</a></li>
+            <li><a href='#about'>About</a></li>
+            <li><a href='#contact'>Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section with fixed typing animation -->
+  <section class='hero' id="main-content">
+    <!-- Animated particles background -->
+    <div class="particles" id="particles"></div>
+    
+    <div class='container'>
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1><span id="typed-text"></span><span class="typing-cursor"></span></h1>
+          <p>Discover how our professional services can transform your business and personal growth.</p>
+          <a href='#services' class='btn'>Explore Services</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiuV621JdoHBU4c5T1LEYWUBYhtLP63HFFagwx3L_2Mje9bufVVFjr28pOm79G6scsZ5WyXCh7V2eMbNrtq7kjdbHbrJRsjyPL8LIu7ZGiBFqJWUIK1M5WeUM4Wn6I7XimZFXYR9FyXUMHOoFwsAMsg9ZppHQ-HDJWWvJljkz1qQpiV7cqyInNYBImPhR8j/s1536/nime%20ai.png" alt="Nime Services Illustration" class="hero-img">
+      </div>
+      <div class="ai-message animate">Nime AI Assistant Coming Soon...</div>
+    </div>
+    <div class="wave"></div>
+  </section>
+
+  <!-- Services Section -->
+  <section class='services' id='services'>
+    <div class="services-bg"></div>
+    <div class='container'>
+      <div class='section-title'>
+        <h2>Our Services</h2>
+        <p>Discover how our innovative solutions can transform your business operations and drive growth.</p>
+      </div>
+     
+      <div class='services-container'>
+        <!-- Service Card 1 -->
+        <div class='service-card'>
+          <div class='service-icon'>
+            <svg width='80' height='80' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+              <path d='M12 3L1 9L5 11.18V17.18L12 21L19 17.18V11.18L21 10.09V16H23V9L12 3Z' fill='white'/>
+              <path d='M12 5L5 9L12 13L19 9L12 5Z' fill='white'/>
+            </svg>
+          </div>
+          <div class='service-content'>
+            <h3>Nime Education</h3>
+            <p>Comprehensive learning solutions designed to empower individuals and organizations with cutting-edge knowledge and skills.</p>
+            <a href='NIME EDUCATION CARD .HTML' class='service-btn'>Learn More</a>
+          </div>
+        </div>
+       
+        <!-- Service Card 2 -->
+        <div class='service-card'>
+          <div class='service-icon'>
+            <svg width='80' height='80' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+              <path d='M19.4 7.34L16.66 4.6C16.28 4.22 15.8 4 15.3 4H9C7.9 4 7 4.9 7 6V18C7 19.1 7.9 20 9 20H19C20.1 20 21 19.1 21 18V9.04C21 8.54 20.78 8.06 20.4 7.68L19.4 7.34ZM15 5.5L19.5 10H15V5.5ZM5 6V4H3V20H5V18H6V16H5V8H6V6H5Z' fill='white'/>
+            </svg>
+          </div>
+          <div class='service-content'>
+            <h3>Nime Solutions</h3>
+            <p>Innovative business solutions that streamline operations, optimize performance, and drive sustainable growth.</p>
+            <a href='#' class='service-btn'>Learn More</a>
+          </div>
+        </div>
+       
+        <!-- Service Card 3 -->
+        <div class='service-card'>
+          <div class='service-icon'>
+            <svg width='80' height='80' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+              <path d='M20.71 5.63L18.37 3.29C18.17 3.09 17.92 3 17.66 3H6.5C5.67 3 5 3.67 5 4.5V19.5C5 20.33 5.67 21 6.5 21H17.5C18.33 21 19 20.33 19 19.5V6.34C19 6.08 18.91 5.83 18.71 5.63L20.71 5.63ZM12 19C10.9 19 10 18.1 10 17C10 15.9 10.9 15 12 15C13.1 15 14 15.9 14 17C14 18.1 13.1 19 12 19ZM15 9H9C8.45 9 8 8.55 8 8C8 7.45 8.45 7 9 7H15C15.55 7 16 7.45 16 8C16 8.55 15.55 9 15 9Z' fill='white'/>
+            </svg>
+          </div>
+          <div class='service-content'>
+            <h3>Nime Design</h3>
+            <p>Creative design services that capture your brand essence and deliver visually stunning experiences across all platforms.</p>
+            <a href='#' class='service-btn'>Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class='about' id='about'>
+    <div class='container'>
+      <div class='section-title'>
+        <h2>About Us</h2>
+        <p>Learn more about our company and our mission to deliver excellence.</p>
+      </div>
+      <!-- About content will go here -->
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class='contact' id='contact'>
+    <div class='container'>
+      <div class='section-title'>
+        <h2>Contact Us</h2>
+        <p>Get in touch with our team to discuss how we can help you achieve your goals.</p>
+      </div>
+      <!-- Contact form will go here -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class='footer-wave'></div>
+    <div class='container'>
+      <div class='footer-content'>
+        <div class='footer-section'>
+          <h3>Nime Services</h3>
+          <p>Providing professional solutions for modern businesses since 2020.</p>
+        </div>
+       
+        <div class='footer-section'>
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href='#'>Home</a></li>
+            <li><a href='#services'>Services</a></li>
+            <li><a href='#about'>About</a></li>
+            <li><a href='#contact'>Contact</a></li>
+          </ul>
+        </div>
+       
+        <div class='footer-section'>
+          <h3>Contact Us</h3>
+          <p>Email: info@nimeservices.com</p>
+          <p>Phone: +1 (555) 123-4567</p>
+          <p>Address: 123 Business Street, City</p>
+        </div>
+      </div>
+     
+      <div class='copyright'>
+        <p>&copy; <script>document.write(new Date().getFullYear())</script> Nime Services. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Blogger-required elements -->
+  <b:section class='hidden' id='hidden-widgets' maxwidgets='1' showaddelement='no'>
+    <b:widget id='Blog1' locked='true' title='Blog Posts' type='Blog' visible='false'/>
+  </b:section>
+
+  <!-- JavaScript for animations -->
+  <script>
+    // Create particles for hero background
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle', `particle-${(i % 4) + 1}`);
+        
+        // Random size between 3px and 10px
+        const size = Math.random() * 7 + 3;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation duration
+        const duration = Math.random() * 20 + 10;
+        particle.style.animationDuration = `${duration}s`;
+        
+        // Random delay
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      var header = document.getElementById('site-header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+     
+      // Trigger animations when elements come into view
+      animateElements();
+    });
+   
+    // Typing animation for hero text - Fixed version
+    function typeWriter(text, element, speed) {
+      let i = 0;
+      const cursor = document.querySelector('.typing-cursor');
+      const targetElement = document.getElementById('typed-text');
+      
+      function typing() {
+        if (i < text.length) {
+          targetElement.textContent = text.substring(0, i+1);
+          i++;
+          setTimeout(typing, speed);
+        } else {
+          cursor.style.animation = 'none';
+          setTimeout(() => {
+            cursor.style.animation = 'blink 0.7s infinite';
+          }, 500);
+        }
+      }
+      
+      // Initialize with empty text
+      targetElement.textContent = '';
+      typing();
+    }
+
+    // Mouse move parallax effect for hero image
+    function setupParallaxEffect() {
+      const heroImage = document.querySelector('.hero-image');
+      const heroImg = document.querySelector('.hero-img');
+      
+      if (!heroImage || !heroImg) return;
+      
+      // Set initial position
+      let mouseX = 0, mouseY = 0;
+      let posX = 0, posY = 0;
+      const speed = 0.03;
+      
+      // Mouse move event
+      document.addEventListener('mousemove', (e) => {
+        // Get mouse position
+        mouseX = (e.clientX - window.innerWidth / 2) / 20;
+        mouseY = (e.clientY - window.innerHeight / 2) / 20;
+      });
+      
+      // Animation loop
+      function animate() {
+        // Calculate new position with easing
+        posX += (mouseX - posX) * speed;
+        posY += (mouseY - posY) * speed;
+        
+        // Apply transform
+        heroImg.style.transform = `scale(1.05) translate(${posX}px, ${posY}px)`;
+        
+        // Continue animation
+        requestAnimationFrame(animate);
+      }
+      
+      // Start animation
+      animate();
+    }
+   
+    // Animate elements when they come into view
+    function animateElements() {
+      const heroImage = document.querySelector('.hero-image');
+      const serviceCards = document.querySelectorAll('.service-card');
+     
+      // Service cards animation
+      serviceCards.forEach((card, index) => {
+        if (isInViewport(card)) {
+          card.classList.add('animate');
+        } else if (window.scrollY < document.getElementById('services').offsetTop - 300) {
+          card.classList.remove('animate');
+        }
+      });
+    }
+   
+    // Check if element is in viewport
+    function isInViewport(element) {
+      if (!element) return false;
+      const rect = element.getBoundingClientRect();
+      return (
+        rect.top <= (window.innerHeight * 0.75) &&
+        rect.bottom >= (window.innerHeight * 0.25)
+      );
+    }
+   
+    // Initialize animations when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create particles
+      createParticles();
+      
+      // Start typing animation
+      const text = "Innovative Solutions For Your Life";
+      typeWriter(text, document.getElementById('typed-text'), 100);
+     
+      // Animate hero image on load
+      const heroImage = document.querySelector('.hero-image');
+      if (heroImage) {
+        // First make sure the image is loaded
+        const heroImg = heroImage.querySelector('img');
+        if (heroImg.complete) {
+          heroImage.classList.add('loaded');
+        } else {
+          heroImg.addEventListener('load', function() {
+            heroImage.classList.add('loaded');
+          });
+        }
+      }
+     
+      // Setup parallax effect on desktop
+      if (window.innerWidth >= 768) {
+        setupParallaxEffect();
+      }
+     
+      // Initial check for elements in viewport
+      animateElements();
+     
+      // Check for elements in viewport on scroll
+      window.addEventListener('scroll', animateElements);
+    });
+  </script>
+</body>
+</html>

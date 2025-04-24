@@ -1,0 +1,2867 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>පරිගණක විද්‍යා ප්‍රශ්නෝත්තර පරීක්ෂණය</title>
+    <style>
+        /* Modern, Professional Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&display=swap');
+        #reattempt-btn {
+            background: var(--highlight);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        #reattempt-btn:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        #reattempt-btn:active {
+            transform: translateY(0);
+        }
+        :root {
+            --primary: #e30062;
+            --secondary: #1900ff;
+            --danger: #ff1900;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --border: #dfe6e9;
+            --highlight: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Noto Sans Sinhala', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: #f9f9f9;
+            touch-action: manipulation;
+        }
+        
+        .exam-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .exam-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .exam-title-sinhala {
+            font-size: 1.4rem;
+        }
+        
+        .exam-title-tamil {
+            font-size: 1.2rem;
+            font-family: 'Noto Sans Tamil', sans-serif;
+            margin: 5px 0;
+        }
+        
+        .exam-title-english {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        
+        .exam-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .exam-info-item {
+            background: rgba(255,255,255,0.15);
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .exam-info-item.marks {
+            background: rgba(255,255,255,0.25);
+            font-weight: bold;
+        }
+        
+        .instructions {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 auto 30px;
+            max-width: 800px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .instructions-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary);
+            text-align: center;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .instructions-list {
+            padding-left: 25px;
+        }
+        
+        .instructions-list li {
+            margin-bottom: 10px;
+        }
+        
+        .quiz-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgb(255, 255, 255);
+            padding: 0 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .floating-timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 101;
+            opacity: 0;
+            transform: translateY(-30px) scale(0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border: 2px solid var(--highlight);
+            overflow: hidden;
+        }
+        
+        .floating-timer.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .timer-display {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .timer-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            opacity: 0.7;
+        }
+        
+        .questions-wrapper {
+            padding: 20px 0;
+        }
+        
+        .question {
+            padding: 25px 0;
+            border-bottom: 1px solid var(--border);
+            scroll-margin-top: 20px;
+        }
+        
+        .question:last-child {
+            border-bottom: none;
+        }
+        
+        .question-text {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .question-image {
+            max-width: 100%;
+            height: auto;
+            margin: 15px 0;
+            display: block;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .option {
+            position: relative;
+        }
+        
+        .option input {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .option label {
+            display: block;
+            padding: 14px 18px;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+        
+        .option input:checked ~ label {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: var(--secondary);
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+        }
+        
+        .option label:hover {
+            background: rgba(52, 152, 219, 0.05);
+          
+        }
+
+        .option-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 8px;
+            display: block;
+            border-radius: 4px;
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 90%;
+            max-width: 300px;
+            margin: 30px auto 0;
+            padding: 14px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .submit-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 95%;
+            max-width: 700px;
+            max-height: 85vh;
+            padding: 30px;
+            position: relative;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: transform 0.3s ease;
+            color: var(--dark);
+            line-height: 1;
+        }
+        
+        .close:hover {
+            color: var(--danger);
+        }
+        
+        .crying-boy {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            display: block;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--highlight);
+            animation: bounceIn 0.6s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 25px 0;
+            color: var(--primary);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .total-marks {
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--dark);
+            opacity: 0.8;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--highlight);
+            animation: fadeIn 0.3s ease;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .explanation img {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 0;
+            border: none;
+            margin: 10px 0;
+            display: block;
+        }
+        
+        .explanation h3, 
+        .explanation h4 {
+            color: var(--primary);
+            margin: 15px 0 10px;
+        }
+        
+        .explanation ul, 
+        .explanation ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        
+        .explanation li {
+            margin-bottom: 8px;
+        }
+        
+        .explanation p {
+            margin-bottom: 12px;
+        }
+        
+        .explanation strong {
+            color: var(--dark);
+        }
+        
+        #wrong-answers {
+            max-height: 50vh;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-top: 20px;
+        }
+        
+        #wrong-answers::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #wrong-answers::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        #wrong-answers::-webkit-scrollbar-thumb {
+            background: var(--highlight);
+            border-radius: 10px;
+        }
+        
+        #wrong-answers::-webkit-scrollbar-thumb:hover {
+            background: #e67e22;
+        }
+        
+        .answer-comparison {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 5px;
+            border-left: 3px solid var(--highlight);
+        }
+        
+        .answer-row {
+            display: flex;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .answer-label {
+            font-weight: bold;
+            min-width: 140px;
+            color: var(--dark);
+        }
+        
+        .correct-answer {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .user-answer {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        .unanswered {
+            color: #ff6d00;
+            font-style: italic;
+        }
+        
+        /* Styles for option images in explanations */
+        .explanation-option-image {
+            max-width: 100%;
+            max-height: 150px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+        
+        .option-container {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .correct-option {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-left: 3px solid var(--success);
+        }
+        
+        .user-option {
+            background-color: rgba(255, 59, 48, 0.1);
+            border-left: 3px solid var(--danger);
+        }
+        
+        .normal-option {
+            background-color: rgba(236, 240, 241, 0.5);
+        }
+
+        
+        @media (max-width: 768px) {
+            .exam-header {
+                padding: 20px 0 15px;
+            }
+            
+            .exam-title {
+                font-size: 1.5rem;
+            }
+            
+            .exam-title-sinhala {
+                font-size: 1.2rem;
+            }
+            
+            .exam-title-tamil {
+                font-size: 1rem;
+            }
+            
+            .exam-title-english {
+                font-size: 1.1rem;
+            }
+            
+            .exam-info {
+                gap: 10px;
+            }
+            
+            .exam-info-item {
+                font-size: 0.8rem;
+                padding: 6px 15px;
+            }
+            
+            .instructions {
+                padding: 15px;
+            }
+            
+            .question {
+                padding: 20px 0;
+            }
+            
+            .option label {
+                padding: 12px 15px;
+            }
+            
+            .floating-timer {
+                width: 80px;
+                height: 80px;
+                right: 15px;
+                top: 15px;
+            }
+            
+            .timer-display {
+                font-size: 0.9rem;
+            }
+            
+            .timer-label {
+                font-size: 0.6rem;
+            }
+            
+            .answer-label {
+                min-width: 120px;
+            }
+            
+            .modal-content {
+                padding: 25px 15px;
+                max-height: 80vh;
+            }
+            
+            .explanation {
+                padding: 15px;
+                font-size: 0.9rem;
+            }
+            
+            .crying-boy {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .answer-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .answer-label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            
+            .modal-content {
+                width: 98%;
+                padding: 20px 15px;
+            }
+        }
+        table {
+  border-collapse: collapse;
+  width: auto;
+}
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #f2f2f2;
+}
+.question-additional-text {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-left: 3px solid var(--highlight);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.question-image-in-explanation {
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid var(--border);
+}
+
+/* Drawing Tool Styles */
+#drawing-toolbar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    display: none;
+    transition: all 0.3s ease;
+}
+
+#show-drawing-toolbar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    background: var(--highlight);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+#show-drawing-toolbar:hover {
+    transform: scale(1.1);
+    background: #e67e22;
+}
+
+#drawing-toggle, #clear-drawing {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+#drawing-toggle:hover, #clear-drawing:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#drawing-toggle:active, #clear-drawing:active {
+    transform: translateY(0);
+}
+
+#drawing-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    pointer-events: none;
+    display: none;
+}
+
+#drawing-canvas.drawing-active {
+    pointer-events: auto;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M20 7l1-1-2-2-1 1c-1-1-3-1-4 0l-11 11c-1 1-1 3 0 4l1 1H4c-1 0-2-1-2-2v-4l5-5 3 3 5-5-3-3 5-5z' fill='black'/></svg>") 0 24, auto;
+}
+
+body.drawing-mode {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M20 7l1-1-2-2-1 1c-1-1-3-1-4 0l-11 11c-1 1-1 3 0 4l1 1H4c-1 0-2-1-2-2v-4l5-5 3 3 5-5-3-3 5-5z' fill='black'/></svg>") 0 24, auto;
+}
+
+/* Mobile-specific drawing tool styles */
+@media (max-width: 768px) {
+    #drawing-toolbar {
+        right: auto;
+        left: 20px;
+        bottom: 80px;
+        width: 200px;
+    }
+    
+    #show-drawing-toolbar {
+        right: auto;
+        left: 20px;
+        bottom: 20px;
+    }
+    
+    #drawing-canvas {
+        display: block;
+    }
+    
+    /* Adjust pen size for touch */
+    #pen-size {
+        width: 100%;
+    }
+    
+    /* Make buttons larger for touch */
+    #drawing-toggle, #clear-drawing {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+}
+</style>
+</head>
+<body>
+    <!-- Professional Exam Header -->
+    <header class="exam-header">
+        <div class="exam-title">
+            <div class="exam-title-sinhala">තොරතුරු හා සන්නිවේදන තාක්ෂණය</div>
+            <div class="exam-title-tamil">தகவல், தொடர்பாடல் தொழினுட்பவியல்</div>
+            <div class="exam-title-english">Information & Communication Technology</div>
+        </div>
+        <div class="exam-info">
+            <div class="exam-info-item">වර්ෂය: 2022</div>
+            <div class="exam-info-item">කාලය: පැය 2 </div>
+            <div class="exam-info-item">ප්‍රශ්න: 50</div>
+            <div class="exam-info-item marks">20 E I</div>
+        </div>
+    </header>
+    
+    <!-- Instructions Section -->
+    <div class="instructions">
+        <div class="instructions-title">උපදෙස්</div>
+        <ul class="instructions-list">
+            <li>මෙම ප්‍රශ්න පත්‍රයේ ප්‍රශ්න ගණන 50 කි</li>
+            <li>සෑම ප්‍රශ්නයකටම ලකුණු 2 ක් වශයෙන් ලබා දී ඇත</li>
+            <li>ප්‍රශ්නවලට ඇතුළත් විකල්ප අතුරින් වඩාත් සුදුසු පිළිතුර තෝරන්න</li>
+            <li>ප්‍රශ්න පත්‍රය ඉදිරිපත් කිරීම සඳහා පිටුවේ පහළට ඇති බොත්තම භාවිතා කරන්න</li>
+        </ul>
+    </div>
+    
+    <!-- Professional Floating Timer with Highlight Color -->
+    <div class="floating-timer" id="floating-timer">
+        <div class="timer-display" id="floating-timer-display">
+            <div class="timer-label">කාලය</div>
+            <div id="timer-time">02:00:00</div>
+        </div>
+    </div>
+    
+    <div class="quiz-container">
+        <div class="questions-wrapper" id="quiz-questions">
+            <!-- Questions will be inserted here -->
+        </div>
+        
+        <button id="submit-btn" class="submit-btn">පරීක්ෂණය ඉදිරිපත් කරන්න</button>
+    </div>
+    
+    <!-- Incomplete Quiz Modal -->
+    <div id="incomplete-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img src="https://media1.tenor.com/m/_snHGY2GiUIAAAAC/wei-ying-wei-wuxian.gif" alt="Crying boy" class="crying-boy">
+            <h2 style="color: var(--danger); margin-bottom: 15px; text-align: center; animation: fadeIn 0.4s ease 0.2s both;">ඔබ කිසිදු ප්‍රශ්නයකට පිළිතුරු දී නැත!</h2>
+            <p style="margin-bottom: 20px; text-align: center; animation: fadeIn 0.4s ease 0.3s both;">කරුණාකර අවම වශයෙන් එක් ප්‍රශ්නයකට හෝ පිළිතුරු දෙන්න.</p>
+            <button id="continue-btn" style="background: var(--highlight); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; display: block; margin: 0 auto; animation: fadeIn 0.4s ease 0.4s both; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">පරීක්ෂණය දිගටම කරගෙන යන්න</button>
+        </div>
+    </div>
+    
+    <!-- Results Modal -->
+    <div id="results-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 style="color: var(--primary); margin-bottom: 15px; text-align: center;">පරීක්ෂණ ප්‍රතිඵල</h2>
+            
+            <div class="total-marks">එක් ප්‍රශ්නයකට ලකුණු 2 ක්</div>
+            <div class="score">ඔබේ ලකුණු: <span id="score-display">0</span>/<span id="total-marks">100</span></div>
+            
+            <div id="wrong-answers" style="margin-top: 15px;">
+                <!-- Wrong answers will be inserted here -->
+            </div>
+            
+            <button id="reattempt-btn" class="submit-btn" style="margin-top: 30px; background: var(--highlight);">නැවත උත්සාහ කරන්න</button>
+        </div>
+    </div>
+
+    <!-- Drawing Tool Elements -->
+    <div id="drawing-toolbar">
+        <button id="drawing-toggle" style="background: var(--highlight); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-right: 10px;">Enable Drawing</button>
+        <button id="clear-drawing" style="background: var(--danger); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">Clear</button>
+        <div style="margin-top: 10px;">
+            <label style="display: block; margin-bottom: 5px;">Pen Size:</label>
+            <input type="range" id="pen-size" min="1" max="10" value="3" style="width: 100px;">
+        </div>
+        <div style="margin-top: 10px;">
+            <label style="display: block; margin-bottom: 5px;">Pen Color:</label>
+            <input type="color" id="pen-color" value="#000000">
+        </div>
+    </div>
+
+    <canvas id="drawing-canvas"></canvas>
+
+    <button id="show-drawing-toolbar">✏️</button>
+
+    <script>
+        // Sample quiz data (replace with your actual questions)
+        const quizData = [
+            {
+                "question": "<b>01. පහත කවර ප්‍රකාශ/ය නිවැරදි ද?</b><br><br>A - ස්ථිරාංගය (firmware) යනු සාමාන්‍යයෙන් පරිගණකයක  නශ්‍ය(volatile) මතකයේ කාවද්දන ලද පරිගණක ක්‍රමලේඛයකි.<br><br>B - මුද්‍රණ ධාවකය (printer driver), යෙදුම් මෘදුකාංගයක් (application software) සඳහා උදාහරණයකි.<br><br>C - ලිනක්ස් (Linux), පද්ධති මෘදුකාංගයක් (system software) සඳහා උදාහරණයකි.",
+                "image": "",
+                "options": [
+                    {
+                        "text": "(1) A පමණි",
+                        "image": ""
+                    },
+                    {
+                        "text": "(2) B පමණි",
+                        "image": ""
+                    },
+                    {
+                        "text": "(3) C පමණි",
+                        "image": ""
+                    },
+                    {
+                        "text": "(4) A සහ B පමණි",
+                        "image": ""
+                    },
+                    {
+                        "text": "(5) B සහ C පමණි",
+                        "image": ""
+                    }
+                ],
+                "correctAnswer": 2,
+                "explanation": "<ul><li><strong>A - ස්ථිරාංගය (firmware) යනු සාමාන්‍යයෙන් පරිගණකයක නශ්‍ය(volatile) මතකයේ කාවද්දන ලද පරිගණක ක්‍රමලේඛයකි.</strong><br>මෙම ප්‍රකාශය <strong>වැරදිය</strong>. ස්ථිරාංගය (firmware) යනු පරිගණකයක දෘඩාංගයක (hardware) මූලික ක්‍රියාකාරිත්වය පාලනය කරන කුඩා මෘදුකාංග කොටසකි. එය සාමාන්‍යයෙන් ගබඩා කරන්නේ <strong>නශ්‍ය නොවන (non-volatile) මතකයකයි</strong>. නශ්‍ය නොවන මතකයට උදාහරණ ලෙස ROM (Read-Only Memory), EPROM (Erasable Programmable Read-Only Memory), සහ ෆ්ලෑෂ් මතකය දැක්විය හැකිය. මෙවැනි මතකයන්ට විදුලිය විසන්ධි කළ විටත් දත්ත රඳවා ගැනීමේ හැකියාව ඇත. නශ්‍ය (volatile) මතකය (RAM - Random Access Memory වැනි) පරිගණකය ක්‍රියාත්මක වන විට පමණක් දත්ත තාවකාලිකව ගබඩා කරන අතර විදුලිය විසන්ධි කළ විට එහි දත්ත නැති වී යයි.</li><li><strong>B - මුද්‍රණ ධාවකය (printer driver), යෙදුම් මෘදුකාංගයක් (application software) සඳහා උදාහරණයකි.</strong><br>මෙම ප්‍රකාශය <strong>වැරදිය</strong>. මුද්‍රණ ධාවකයක් (printer driver) යනු <strong>පද්ධති මෘදුකාංගයක් (system software)</strong> සඳහා උදාහරණයකි. එය මෙහෙයුම් පද්ධතියට (system software) නිශ්චිත මුද්‍රණ යන්ත්‍රයක් සමඟ සන්නිවේදනය කිරීමට සහ නිවැරදිව ක්‍රියාත්මක කිරීමට අවශ්‍ය වන මෘදුකාංගයකි. මෙහෙයුම් පද්ධතිය සහ යෙදුම් මෘදුකාංග අතර අතරමැදියෙකු ලෙස මුද්‍රණ ධාවකය ක්‍රියා කරයි. යෙදුම් මෘදුකාංගයක් (application software - උදාහරණයක් ලෙස Microsoft Word) මුද්‍රණ කාර්යයක් සිදු කිරීමට විධානයක් දුන් විට, එම විධානය මුද්‍රණ යන්ත්‍රයට තේරුම් ගත හැකි භාෂාවට පරිවර්තනය කරන්නේ මුද්‍රණ ධාවකයයි.</li><li><strong>C - ලිනක්ස් (Linux), පද්ධති මෘදුකාංගයක් (system software) සඳහා උදාහරණයකි.</strong><br>මෙම ප්‍රකාශය <strong>නිවැරදිය</strong>. ලිනක්ස් යනු මෙහෙයුම් පද්ධතියක කර්නලයයි. මෙහෙයුම් පද්ධතියක් යනු පරිගණකයේ දෘඩාංග (hardware) සහ මෘදුකාංග (software) සම්පත් කළමනාකරණය කරන මූලික පද්ධති මෘදුකාංගයකි. එය පරිශීලකයාට සහ යෙදුම් මෘදුකාංගවලට පරිගණකයේ දෘඩාංග සමඟ අන්තර්ක්‍රියා කිරීමට අවශ්‍ය වේදිකාව සපයයි. වින්ඩෝස් (Windows) සහ මැක් ඕඑස් (macOS) වැනි අනෙකුත් මෙහෙයුම් පද්ධති මෙන්ම ලිනක්ස් ද පද්ධති මෘදුකාංගයක් සඳහා කදිම උදාහරණයකි.</li></ul><p>එබැවින්, නිවැරදි ප්‍රකාශය වන්නේ <strong>C පමණි</strong>.</p>"
+            },
+            {
+                "question": "<b>02. පහත කවරක් සදහා තථ්‍ය කාලීන සැකසුම් (real-time processing) අවශ්‍ය වේ ද?</b><br><br>A - ගනුදෙනුකරුවෙකුගේ මාසික විදුලි බිල් ගණනය කිරීම<br><br>B - ගනුදෙනුකරුවෙකු ස්වයංක්‍රීය ටෙලර් යන්ත්‍රයක් (ATM) මුදල් ලබාගන්නා විට ඔහුගේ/ඇයගේ බැංකු ගිණුමේ ශේෂය යාවත්කාලීන කිරීම<br><br>C - සාර්ථකව අවසන් වූ සෑම ගනුදෙනුවකට පසුව ගබඩාවක ඉතිරි තොගය යාවත්කාලීන කිරිම",
+                "image": "",
+                "options": [
+                    {
+                        "text": "(1) A පමණි",
+                        "image": ""
+                    },
+                    {
+                        "text": "(2) B පමණි",
+                        "image": ""
+                    },
+                    {
+                        "text": "(3) C පමණි",
+                        "image": ""
+                    },
+                    {
+                        "text": "(4) A සහ B පමණි",
+                        "image": ""
+                    },
+                    {
+                        "text": "(5) B සහ C පමණි",
+                        "image": ""
+                    }
+                ],
+                "correctAnswer": 4,
+                "explanation": "<ul><li><strong>A - ගනුදෙනුකරුවෙකුගේ මාසික විදුලි බිල් ගණනය කිරීම:</strong> මෙය සාමාන්‍යයෙන් සිදු කරන්නේ නිශ්චිත කාල පරිච්ඡේදයකට පසුව වන අතර, ඒ මොහොතේම ප්‍රතිචාරයක් අවශ්‍ය නොවේ. එබැවින් මෙය තථ්‍ය කාලීන සැකසුම් සඳහා උදාහරණයක් නොවේ.</li><li><strong>B - ගනුදෙනුකරුවෙකු ස්වයංක්‍රීය ටෙලර් යන්ත්‍රයක් (ATM) මුදල් ලබාගන්නා විට ඔහුගේ/ඇයගේ බැංකු ගිණුමේ ශේෂය යාවත්කාලීන කිරීම:</strong> මෙය අනිවාර්යයෙන්ම තථ්‍ය කාලීන සැකසුම් අවශ්‍ය වන ක්‍රියාවලියකි. ගනුදෙනුව සිදු වූ වහාම ගිණුමේ ශේෂය යාවත්කාලීන විය යුතු අතර, පසුව සිදු කරන ඕනෑම ගනුදෙනුවක් යාවත්කාලීන කළ ශේෂය මත පදනම් විය යුතුය. ප්‍රමාදයක් සිදුවුවහොත් වැරදි තොරතුරු පෙන්වීමට හෝ අනවසර මුදල් ලබාගැනීම් වැනි ගැටළු ඇතිවිය හැකිය.</li><li><strong>C - සාර්ථකව අවසන් වූ සෑම ගනුදෙනුවකට පසුව ගබඩාවක ඉතිරි තොගය යාවත්කාලීන කිරිම:</strong> මෙය ද තථ්‍ය කාලීන සැකසුම් අවශ්‍ය වන ක්‍රියාවලියකි. භාණ්ඩයක් අලෙවි වූ වහාම තොග ප්‍රමාණය යාවත්කාලීන කළ යුතුය. එසේ නොවුවහොත්, නැති භාණ්ඩ පවා පාරිභෝගිකයින්ට මිලදී ගැනීමට හැකි වීම හෝ තොගයේ ඇති ප්‍රමාණයට වඩා වැඩි ප්‍රමාණයක් විකිණීම වැනි ගැටළු ඇතිවිය හැකිය. කාර්යක්ෂම තොග කළමනාකරණය සඳහා තථ්‍ය කාලීන යාවත්කාලීන කිරීම අත්‍යවශ්‍ය වේ.</li></ul><p>එබැවින්, B සහ C යන ප්‍රකාශ දෙකටම තථ්‍ය කාලීන සැකසුම් අවශ්‍ය වේ.</p>"
+            },
+            {
+                "question": "<b>03. පරිගණක මතක ධූරාවලියේ ප්‍රවේශ වේගයේ අවරෝහණ පටිපාටියට සකසා ඇත්තේ  පහත සඳහන් කවරක් ද?\n\n\n\n\n</b>",
+                "image": "",
+                "options": [
+                    {
+                        "text": "(1) දෘඩ ඩිස්කය, රෙජිස්තර, L2 නිහිත මතකය, L1 නිහිත මතකය, ප්‍රධාන මතකය",
+                        "image": ""
+                    },
+                    {
+                        "text": "(2) ප්‍රධාන මතකය, L1 නිහිත මතකය, රෙජිස්තර, L2 නිහිත මතකය, දෘඩ ඩිස්කය",
+                        "image": ""
+                    },
+                    {
+                        "text": "(3) රෙජිස්තර, ප්‍රධාන මතකය, දෘඩ ඩිස්කය, L1 නිහිත මතකය, L2 නිහිත මතකය",
+                        "image": ""
+                    },
+                    {
+                        "text": "(4) රෙජිස්තර, L1 නිිහිත මතකය, L2 නිහිත මතකය, ප්‍රධාන මතකය, දෘඩ ඩිස්කය",
+                        "image": ""
+                    },
+                    {
+                        "text": "(5) L1 නිහිත මතකය, L2 නිිහි. මතකය, රෙජිස්තර, ප්‍රධාන මතකය, දෘඩ ඩිස්කය",
+                        "image": ""
+                    }
+                ],
+                "correctAnswer": 3,
+                "explanation": "<p>පරිගණක මතක ධූරාවලියක් යනු පරිගණකයක භාවිතා වන විවිධ මතක වර්ග ඒවායේ වේගය, ධාරිතාව සහ පිරිවැය අනුව පෙළගස්වා ඇති ආකාරයයි. ප්‍රවේශ වේගය යනු දත්ත ලබා ගැනීමට ගත වන කාලයයි. අවරෝහණ පටිපාටිය යන්නෙන් අදහස් කරන්නේ වැඩිම වේගයේ සිට අඩුම වේගය දක්වා අනුපිළිවෙලට සකස් කිරීමයි. ඒ අනුව, පරිගණක මතක ධූරාවලියේ ප්‍රවේශ වේගයේ අවරෝහණ පටිපාටිය පහත පරිදි වේ:</p><ol><li><strong>රෙජිස්තර (Registers):</strong> මේවා CPU (මධ්‍යම සැකසුම් ඒකකය) තුළම පිහිටා ඇති ඉතා කුඩා හා වේගවත්ම මතකයයි. දත්ත හා උපදෙස් සෘජුවම සැකසීම සඳහා CPU විසින් මේවා භාවිතා කරයි.</li><li><strong>L1 නිහිත මතකය (L1 Cache):</strong> මෙය CPU චිපය තුළම පිහිටා ඇති කුඩා හා වේගවත් මතක ස්ථරයකි. නිතර භාවිතා කරන දත්ත සහ උපදෙස් ඉතා ඉක්මනින් ප්‍රවේශ වීම සඳහා මෙහි තාවකාලිකව ගබඩා කර ඇත. රෙජිස්තරවලට වඩා තරමක් මන්දගාමී නමුත් ප්‍රධාන මතකයට වඩා බෙහෙවින් වේගවත්ය.</li><li><strong>L2 නිහිත මතකය (L2 Cache):</strong> මෙය L1 නිහිත මතකයට වඩා තරමක් විශාල වන අතර CPU චිපය තුළ හෝ ඒ ආසන්නයේ පිහිටා ඇත. L1 නිහිත මතකයේ නොමැති නමුත් නිතර භාවිතා වන දත්ත මෙහි ගබඩා කරයි. L1 ට වඩා මන්දගාමී නමුත් ප්‍රධාන මතකයට වඩා වේගවත්ය. සමහර පරිගණකවල L3 නිහිත මතකයක් ද තිබිය හැකිය.</li><li><strong>ප්‍රධාන මතකය (Main Memory/RAM):</strong> මෙය පරිගණකයේ ප්‍රධාන වැඩ කරන මතකයයි. යෙදුම් සහ ඒවායේ දත්ත ක්‍රියාත්මක වන විට මෙහි තාවකාලිකව ගබඩා කර ඇත. නිහිත මතකයන්ට වඩා විශාල ධාරිතාවක් ඇති නමුත් ඒවාට වඩා මන්දගාමී වේ.</li><li><strong>දෘඩ ඩිස්කය (Hard Disk Drive/HDD) / ඝන තත්වයේ ධාවකය (Solid State Drive/SSD):</strong> මේවා දත්ත ස්ථිරව ගබඩා කිරීම සඳහා භාවිතා කරන මතක උපාංග වේ. ප්‍රධාන මතකයට වඩා විශාල ධාරිතාවක් ඇති නමුත් ප්‍රවේශ වීමට වැඩි කාලයක් ගත වේ. SSD HDD වලට වඩා වේගවත් වුවද, ඒවා තවමත් ප්‍රධාන මතකයට වඩා සැලකිය යුතු ලෙස මන්දගාමී වේ.</li></ol><p>ඉහත පැහැදිලි කිරීම අනුව, ප්‍රවේශ වේගයේ අවරෝහණ පටිපාටියට නිවැරදිව සකසා ඇති පිළිතුර වන්නේ:</p><p><strong>රෙජිස්තර, L1 නිහිත මතකය, L2 නිහිත මතකය, ප්‍රධාන මතකය, දෘඩ ඩිස්කය</strong></p><p>මෙය විකල්ප අංක <strong>(4)</strong> ට අනුරූප වේ.</p>"
+            },
+            {
+                "question": "<b>04. 01010100₂ සහ 11101001₂ යන ද්විමය සංඛ්‍යා දෙක අතර බිටු අනුසාරිත(Bit-wise) AND සහ බිටු අනුසාරිත(Bit-wise) OR මෙහෙයුම්වල නිවැරදි ප්‍රතිඵල පිළිවෙළින් දැක්වෙන්නේ පහත කවරක් ද?</b>",
+                "image": "",
+                "options": [
+                    {
+                        "text": "(1) 01000000₂, 11111101₂",
+                        "image": ""
+                    },
+                    {
+                        "text": "(2) 00000010₂, 10111001₂",
+                        "image": ""
+                    },
+                    {
+                        "text": "(3) 10111101₂, 11001010₂",
+                        "image": ""
+                    },
+                    {
+                        "text": "(4) 11000000₂, 00101100₂",
+                        "image": ""
+                    },
+                    {
+                        "text": "(5) 11111101₂, 01010011₂",
+                        "image": ""
+                    }
+                ],
+                "correctAnswer": 0,
+                "explanation": "<p>ද්විමය සංඛ්‍යා දෙකක් අතර බිටු අනුසාරිත AND සහ OR මෙහෙයුම් සිදු කරන්නේ එක් එක් ස්ථානයේ ඇති බිටු යුගල වශයෙන් සලකා බැලීමෙනි.</p><p><b>බිටු අනුසාරිත AND මෙහෙයුම (Bit-wise AND):</b></p><p>AND මෙහෙයුමේ ප්‍රතිඵලය 1 වන්නේ අනුරූප බිටු දෙකම 1 නම් පමණි. වෙනත් ඕනෑම අවස්ථාවක ප්‍රතිඵලය 0 වේ.</p><pre>01010100₂<br>& 11101001₂<br>-----------<br>01000000₂<br></pre><ul><li>පළමු බිටුව: 0 AND 1 = 0</li><li>දෙවන බිටුව: 1 AND 1 = 1</li><li>තුන්වන බිටුව: 0 AND 1 = 0</li><li>හතරවන බිටුව: 1 AND 0 = 0</li><li>පස්වන බිටුව: 0 AND 1 = 0</li><li>හයවන බිටුව: 1 AND 0 = 0</li><li>හත්වන බිටුව: 0 AND 0 = 0</li><li>අටවන බිටුව: 0 AND 1 = 0</li></ul><p>එබැවින්, බිටු අනුසාරිත AND මෙහෙයුමේ ප්‍රතිඵලය වන්නේ <b>01000000₂</b> යන්නයි.</p><br><p><b>බිටු අනුසාරිත OR මෙහෙයුම (Bit-wise OR):</b></p><p>OR මෙහෙයුමේ ප්‍රතිඵලය 1 වන්නේ අනුරූප බිටු දෙකෙන් එකක් හෝ දෙකම 1 නම් ය. බිටු දෙකම 0 නම් පමණක් ප්‍රතිඵලය 0 වේ.</p><pre>01010100₂<br>| 11101001₂<br>-----------<br>11111101₂</pre><ul><li>පළමු බිටුව: 0 OR 1 = 1</li><li>දෙවන බිටුව: 1 OR 1 = 1</li><li>තුන්වන බිටුව: 0 OR 1 = 1</li><li>හතරවන බිටුව: 1 OR 0 = 1</li><li>පස්වන බිටුව: 0 OR 1 = 1</li><li>හයවන බිටුව: 1 OR 0 = 1</li><li>හත්වන බිටුව: 0 OR 0 = 0</li><li>අටවන බිටුව: 0 OR 1 = 1</li></ul><p>එබැවින්, බිටු අනුසාරිත OR මෙහෙයුමේ ප්‍රතිඵලය වන්නේ <b>11111101₂</b> යන්නයි.</p><br><p>පිළිවෙළින් බිටු අනුසාරිත AND සහ OR මෙහෙයුම්වල නිවැරදි ප්‍රතිඵල වන්නේ <b>01000000₂</b> සහ <b>11111101₂</b> යන්නයි.</p><p><b>නිවැරදි පිළිතුර: (1) 01000000₂, 11111101₂</b></p>"
+            },
+            {
+    "question": "<b>5. දශමය 12.75₁₀ ට තුල්‍ය වන නිවැරදි ද්වීමය සංඛ්‍යාව කුමක් ද ?</b>",
+    "image": "",
+    "options": [
+      {
+        "text": "(1) 1011.01₂",
+        "image": ""
+      },
+      {
+        "text": "(2) 1011.11₂",
+        "image": ""
+      },
+      {
+        "text": "(3) 1100.00₂",
+        "image": ""
+      },
+      {
+        "text": "(4) 1100.11₂",
+        "image": ""
+      },
+      {
+        "text": "(5) 1100.01₂",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation":"<p>දශමය 12.75 ද්වීමය බවට පරිවර්තනය කරන්නේ පූර්ණ සංඛ්‍යා කොටස සහ භාගික කොටස වෙන වෙනම පරිවර්තනය කිරීමෙනි.</p><h3>පූර්ණ සංඛ්‍යා කොටස (12) පරිවර්තනය:</h3><p>12 දශමය සංඛ්‍යාව 2න් අනුක්‍රමිකව බෙදීමෙන් ද්වීමය බවට පරිවර්තනය කළ හැක:</p><ul><li>12 ÷ 2 = 6 ඉතිරි 0</li><li>6 ÷ 2 = 3 ඉතිරි 0</li><li>3 ÷ 2 = 1 ඉතිරි 1</li><li>1 ÷ 2 = 0 ඉතිරි 1</li></ul><p>පහළ සිට ඉහළට ඉතිරි අගයන් කියවීමෙන් 12₁₀ හි ද්වීමය නිරූපණය 1100₂ වේ.</p><h3>භාගික කොටස (0.75) පරිවර්තනය:</h3><p>0.75 දශමය භාගය 2න් අනුක්‍රමිකව ගුණ කිරීමෙන් ද්වීමය බවට පරිවර්තනය කළ හැක:</p><ul><li>0.75 × 2 = 1.50 (පූර්ණ සංඛ්‍යා කොටස: 1)</li><li>0.50 × 2 = 1.00 (පූර්ණ සංඛ්‍යා කොටස: 1)</li></ul><p>පූර්ණ සංඛ්‍යා කොටස්වල අනුපිළිවෙලින් භාගික 0.75 හි ද්වීමය නිරූපණය .11₂ වේ.</p><h3>එකතු කිරීම:</h3><p>දැන් පූර්ණ සංඛ්‍යා කොටසේ සහ භාගික කොටසේ ද්වීමය නිරූපණයන් එකට එකතු කරන්න:</p><p>1100₂ + .11₂ = 1100.11₂</p><p>එබැවින්, දශමය 12.75₁₀ ට තුල්‍ය වන නිවැරදි ද්වීමය සංඛ්‍යාව <b>1100.11₂</b> වේ.</p>"  },
+  {
+    "question": "<b>6. බිටු 8 භාවිතයෙන් දශමය -41₁₀ හි නිවැරදි 2 හි අනුපුරක ද්විමය (2's complement) නියෝජනය කුමක්ද ?</b>",
+    "image": "",
+    "options": [
+      {
+        "text": "(1) 00101001",
+        "image": ""
+      },
+      {
+        "text": "(2) 01010110",
+        "image": ""
+      },
+      {
+        "text": "(3) 10101001",
+        "image": ""
+      },
+      {
+        "text": "(4) 11010110",
+        "image": ""
+      },
+      {
+        "text": "(5) 11010111",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 4,
+    "explanation":"<p>දශමය -41 හි 2 හි අනුපුරක ද්විමය නියෝජනය ලබා ගන්නේ පහත පියවරයන් මගිනි:</p><ol><li><b>41 හි ධන ද්විමය නියෝජනය සොයන්න:</b><p>41 දශමය සංඛ්‍යාව ද්විමය බවට පරිවර්තනය කරන්න.<br>32 + 8 + 1 = 41<br>එබැවින්, 41₁₀ හි ද්විමය නියෝජනය 101001 වේ.</p></li><li><b>බිටු 8කට පුළුල් කරන්න:</b><p>බිටු 8ක නියෝජනයක් සඳහා වම් පසින් බිංදු එකතු කරන්න.<br>00101001</p></li><li><b>1 හි අනුපූරකය සොයන්න:</b><p>සෑම බිටුවක්ම ප්‍රතිවිරුද්ධ අගයට හරවන්න (0 -> 1, 1 -> 0).<br>00101001 හි 1 හි අනුපූරකය 11010110 වේ.</p></li><li><b>2 හි අනුපූරකය සොයන්න:</b><p>1 හි අනුපූරකයට 1 එකතු කරන්න.<br>  11010110<br>+        1<br>----------<br>  11010111</p></ol><p>එබැවින්, බිටු 8 භාවිතයෙන් දශමය -41₁₀ හි නිවැරදි 2 හි අනුපුරක ද්විමය නියෝජනය <b>11010111</b> වේ.</p>"
+  },
+  {
+    "question": "<b>7. උපදෙසක යොමුව (address) ෂඩ්දශමය 10F9 ලෙස පෙන්වයි. එම යොමුව දශමය ආකාරයට කුමක් වේද ?</b>",
+    "image": "",
+    "options": [
+      {
+        "text": "(1) 25",
+        "image": ""
+      },
+      {
+        "text": "(2) 1249",
+        "image": ""
+      },
+      {
+        "text": "(3) 4345",
+        "image": ""
+      },
+      {
+        "text": "(4) 10159",
+        "image": ""
+      },
+      {
+        "text": "(5) 16249",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 2,
+    "explanation": "<p>ෂඩදශමය 10F9 දශමයට පරිවර්තනය කරන්නේ මෙලෙසයි:</p><p>(1 × 16³) + (0 × 16²) + (15 × 16¹) + (9 × 16⁰)</p><p>= (1 × 4096) + (0 × 256) + (15 × 16) + (9 × 1)</p><p>= 4096 + 0 + 240 + 9</p><p>= 4345</p><p>එබැවින්, ෂඩදශමය 10F9 හි දශමය අගය <b>4345</b> වේ.</p>"
+  },
+  {
+    "question": "<b>8. පාඨ ගොනුවක් (text file) එහි ද්වීමය ආකාරයෙන් පෙන්වීමට යම් විධානයක් භාවිත කළ හැකි ය .</b><br><b>එක්තරා ගොනුවක් පහත පාඨයෙන් සමන්විත යැයි උපකල්පනය කරන්න .</b><br>0 Waste !<br><br>පහත දක්වා ඇති වැදගත් සටහන් ( 1 ) සහ ( 2 ) සලකා බලමින් එකී විධානය ඉහත ගොනුව මත ක්‍රියාත්මක කළ විට ලබාදෙන නිවැරදි ප්‍රතිදානය තෝරන්න .</b><br><p><b>වැදගත් සටහන් :</b></p><ol><li>ගොනුව LINE FEED අනු ලක්ෂණයෙන් අවසන් වේ .</li><li>7 - bit ASCII වගුවේ තෝරාගත් පේළි කිහිපයක් පහත දැක් වේ .</li></ol><table><thead><tr><th>අනු ලක්ෂණය</th><th>ද්විමය</th><th>අනු ලක්ෂණය</th><th>ද්විමය</th></tr></thead><tbody><tr><td>(LINE FEED)</td><td>0001010</td><td>a</td><td>1100001</td></tr><tr><td>(SPACE)</td><td>0100000</td><td>e</td><td>1100101</td></tr><tr><td>!</td><td>0100001</td><td>s</td><td>1110011</td></tr><tr><td>0</td><td>0110000</td><td>t</td><td>1110100</td></tr><tr><td>W</td><td>1010111</td><td>w</td><td>1110111</td></tr></tbody></table></div></div>",
+    "image": "",
+    "options": [
+      {
+        "text": "(1) 00110000 00100000 01010111 01100001 01110011 01110100 01100101 00001010",
+        "image": ""
+      },
+      {
+        "text": "(2) 00110000 01010111 01100001 01110011 01110100 01100101 00100001 00001010",
+        "image": ""
+      },
+      {
+        "text": "(3) 00110000 00100000 01010111 01100001 01110011 01110100 01100101 00100001 00001010",
+        "image": ""
+      },
+      {
+        "text": "(4) 00110000 00100000 01110111 01100001 01110011 01110100 01100101 00100001 00001010",
+        "image": ""
+      },
+      {
+        "text": "(5) 00110000 00100000 01010111 01100001 01110011 01110100 01100101 00100000 00001010",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 2,
+    "explanation": "..."
+    },
+  {
+    "question": "<b>9. පහත තාර්කික පරිපථය සලකන්න.</b>",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjdMxxguwtJ-Uxwh8H2LhG4uqwBBm4rL8HNFWtk37OG8NjLBm_AJkrNtRwraWN-TTYvqzknzpJgK8skiNCmiqxw9qMlvYcSHmkumcJTwsV2CWJIKsk9vI3LHncTEsknN9qaILw_pVhzxjPeHI4JD3P8rNS_2xME7ZGcLJe9WWZH_BoJeae4W9_ahAn_KW9m",
+    "text":"B=1 වන විට Q හි ප්‍රතිදානය නියත වශයෙන්ම වනුයේ කුමක්ද?",
+    "options": [
+      {
+        "text": "(1) A",
+        "image": ""
+      },
+      {
+        "text": "(2) A'",
+        "image": ""
+      },
+      {
+        "text": "(3) B",
+        "image": ""
+      },
+      {
+        "text": "(4) B'",
+        "image": ""
+      },
+      {
+        "text": "(5) 0",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 1,
+    "explanation": "මෙම ප්‍රශ්නයට පිලිතුරු සෙවීමේදි ඔබ NOR ද්වාරයෙහි සථ්‍යතා වගුව කෙරෙහි අවදානය යොමු කල යුතුය<br><table><tr><th>Input A</th><th>Input B</th><th>Output (Q)</th></tr><tr><td>0</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr> <tr><td>1</td><td>1</td><td>0</td></tr></table><br><br> ප්‍රශ්නයේ ලබා දී ඇති පරිපථයට අනුව B සදහා 1 අදානය වීමේන් පසු එය NOT ද්වාරය හරහා යෑමේදි B හී අගය 0 වේ ඒ් අනුව ඉහත NOR ද්වාරයේ සථ්‍යතා වගුව සැලකීමේදී B අදානයෙහි අගය 0 වී ඇති සෑම අවස්ථාවකදීම Q ප්‍රතිදානය ලෙස ලැබී ඇත්තේ A අගයෙහි ප්‍රතිවිරුද්ධ අගයයි ඒනම් A' වේ "
+  },
+  {
+    "question": "<b>10.සුළු කළ බූලීය ප්‍රකාශ වඩාත් සරල පරිපථ ලබා ගැනීමට ඉවහල් වේ.</b><BR><b>X + X'Y හි සුළු කළ ප්‍රකාශනයක් වන්නේ පහත කුමක්ද ?</b>",
+    "image": "",
+    "options": [
+      {
+        "text": "(1) X",
+        "image": ""
+      },
+      {
+        "text": "(2) Y",
+        "image": ""
+      },
+      {
+        "text": "(3) XY",
+        "image": ""
+      },
+      {
+        "text": "(4) X'Y",
+        "image": ""
+      },
+      {
+        "text": "(5) X + Y",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 4,
+    "explanation": "මෙම ප්‍රකාශය  අපට සමතිරික්තතා න්‍යාය භාවිතා කිරීමෙන් පහසුවෙන් පිලිතුර ගත හැක සම තිරික්තතා න්‍යාය පහත පරිදි වේ<BR><B>A + AB = A</B><BR><B>A + A'B = A + B</B> ඒ අනුව මෙම ගැටලුවේ සදහන් පරිදි X+X'Y ප්‍රකාහයට අනුව එය සමතිරික්තතා න්‍යායට අනුව සුළු කිරීමෙන් සරලතම ආකාරය X+Y වේ"
+  },
+  {
+    "question": "<b>11. පහත සත්‍යතා වගුව සලකන්න; </b>",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiIhuVWLLHyYZCQ0xU6R20HnHeYUvsjJGLT2m37LKgBM1ZAFhEEgvIUshUEnqjmrxHaOt1M-5kWrAKgPD5fVqA30fZSX9guKEtzlGxyfqvFruNDIx8bu0mFQU_4F5cdnOXiPvPycni_3-HEVH04NMyZCHk77HsPpGR_0WV5GDadB3_0n7Id19bChGfcDDUS",
+    "text":"ඉහත සත්‍යතා වගුව සදහා නිවැරදි කානෝ සිතියම කුමක්ද",
+    "options": [
+      {
+        "text": "(1)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjWW4ddgcm39iKG7nMC_wjBCh15w_BVTyCM8StqDOsV-KOcl5PqfF_aytQ4hMu6d3DkX09gMi12B7fUlsVufzJ4RqUHWkEgplSBrnXHCxj6pq0akh3Dt94o8nxtEtQNE45tRQmDrRV434LWP9HD9P-wxTpA6BVdhROgrxhBGMQ2IV_PpF-koZcebgTOXlyt"
+      },
+      {
+        "text": "(2)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgrCxqvG2Lu5rTODCHcNpyqDt_t7VgtV-chD1A1xjI1mr40ArTigj5KDsDv2C_mKJm8HqhtH2RnhpdHdZPEu7zUkKzf43vBrnY02gpRt_515axpeJr9opIQ5DYKrej8J7NPaYaSjJ8tjDE10SfHzZcpj_gIJjWo8xvzSQSOM99ksVXl52gvDkuDuTf4_HX4"
+      },
+      {
+        "text": "(3)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgT6shKDnqxWdv52caZZ6G9LVGvJmCoocQ6eR3JSqQVFCDg9euPy2WKClVAf92Y-i8bQH1n_mMlRdqtntqUMTOZhn264Tz1_KeFL4bhJJOcKTgFm9P63ivelcwpXVvwAhnfXloHsInBYPF--yFuLO-bIx7TTupjoXzXzqQDwuq0ISKl9nHRQ_5KMMISE7z2"
+      },
+      {
+        "text": "(4)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgVR1s1Zp3D0IToAr8cC5rrihF-PLfkoK7z2KpLvgXGOftUr4L-nG0m7PS6u0at_JbCZIR0SLXXrjqR8YH-CrAYCei6rLfclN0PgIHrtBrpD0cEBtnC42rineMyo87wL6I-3RgPjprLCjL31A_SGEbapwdDUiNvDio2uQVv5wxqjtWjzhYBDsYDuHw62l5N"
+      },
+      {
+        "text": "(5)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjlCt7sWRCXPmuHy4lKzQh-3y38byyjCw77pqzKkR_oI_dgbClsiwY6jqLcMcskDsOaOTix8zyTFJtEkjJBLswcSlBb1Kc_-qA1tTPhdcY8guv9PPR97OehXQCFjY8B9VC14O22BdHIuqN3NvfD8vNpkGZisG-7w_bsTZA1Wz7KTD3cj3_cIvkFy-FLDHs0"
+      }
+    ],
+    "correctAnswer":1,
+    "explanation": "මෙහි පිලිතුරැ ලෙස 2 සහ 4 ගත හැකිය"
+  },
+  {
+    "question": "<b>12. පරිගණකයක ක්‍රියාත්මක වන ක්‍රමලේඛයක් ක්‍රියායනයක්(Process) ලෙස හැදින්වේ. එවැනි ක්‍රියායනයක් තම ජීවීත කාලයේදී තත්ව(States) කිහිපයක් අතර සංක්‍රමණය වේ. ක්‍රියායනයකට අදාළ තත්ව සංක්‍රාන්ති පිළිවෙළක්(State Transition sequence) පහත කවරක නිවැරදිව නිරූපණය කරයිද? </b>",
+    "image": "",
+    "options": [
+      {
+        "text": "(1)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEh8N2HoaqxHnoIjgcKd5ZVZ7xqf8DNgSAPERiyjfX0QvFpRKL7gZy08mKqD9ZCLjmApd4AjsRhUyvtuXRLqBvN6SSyDUmPJmbPY4BRFhm6TmCBrpL63tGmnONlh1L_UH_ksP8caQyIBZ7d2URduOhb7p3AINSZ2DUNKJOWvQVx5H-QEfd89EVNW5mUDQAa3"
+      },
+      {
+        "text": "(2)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEj9vyE1oYWbt_alJYtWK6kLylrm5cQ1ALRz3ozQM6VyHzXvezuL77cTtbL2v6WCBMW1bkCufmudNQJPmt0Xu_9tUD0CplXLox1KT3p7qR_oOWjyUHceSt467Ux7chYvdgpXDNvo4diGeTfbNOTpf_yidZdRGOArTty1QBvZsYhr2wa4L8u99oZ00DGN8Rhp"
+      },
+      {
+        "text": "(3)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjYxnMmXfwT3kSkHF9wLsTlXFQTj0l1_TilH7rcKAEhKkPisIhSrNGV692hyZPKwerPw6yPM7BDpUDYuzTksAFJJ27nmjnY20KP4BQbz_gFeN0IUESLnaJEfwuvXpqTe8jTuiAHUAe1G5otBiotCzfyjmk_2NOlUiP586CzTdZyORR_kuF8k_CSK6XkHVhL"
+      },
+      {
+        "text": "(4)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgWAPhi5d08n2A1x1bm58mOAuxlbhkUZzYNxqm1nQLxa8mCsO0dEnAbg31tpNco2tLw93-EMTveFO6qKr6kc_1HzMT-o2LLiRqqN8YwFcCBiAoZCa96zeOgsniIFjbI41jsViMJa4y7sXrq7dCoe8p3HyuUGZtCk1IX-vWy8OjKTACNABS7zAs3uS_ea2Go"
+      },
+      {
+        "text": "(5)",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjoKMF9CFOAJ6GEywqBWiKMdiQhweSovBHBvXDm69YCBsLmBUHrkaDsWaXsOyWHQ2sjTp80bq2dzEw-oxoQ-G5Jfe2XMfxLq27nvj3D6uZA2Uq7plce3pCtET6vgTDiRSnUxMzEe6ERa2V_6gMmuLmdmq25XMKq5tUxGIHxzaj96rUQBtVg1aKMJgGmcAwY"
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": " ",
+    "explanationImage":"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBALVG1UC86Z9oTQi8AR4Cz9U53Fp0O9nX9EgUPKQn7zv0nM__Go6RaNYZDUT3vVmC8-5xsYHRc1d5Bfre3AiD5sTrWxaWgfQi_S0fEtS5oygOcSypv2x6-lOyf2GuWptlY_mX9k1eHA7j/s1600/os4.PNG"
+  },
+  {
+    "question": "<b>13. පරිගණක මෙහෙයුම් පද්ධතියක කාර්යයක් නොවන්නේ පහත කවරක්ද?</b>",
+    "image": "",
+    "options": [
+      {
+        "text": "(1) ක්‍රියායන පිටුවක් සදහා මතක රාමුවක් තොරාගැනීම",
+        "image": ""
+      },
+      {
+        "text": "(2) නිදහස්(දෑනට භාවිතයේ නොමැති ) මතක රාමු(Memory Frame) ලැයිසුතුවක් පවත්වා ගැනීඹ",
+        "image": ""
+      },
+      {
+        "text": "(3) එක් එක් ක්‍රියායනය සදහා පිටු වගුවක්(Page Table) පවත්වා ගැනීම",
+        "image": ""
+      },
+      {
+        "text": "(4)දෘඩ ඩිස්කයන ඇති ද්වීමය ගොනුවල(Binary File) භාවිතය අධීක්ශනය කිරීම",
+        "image": ""
+      },
+      {
+        "text": "(5)ප්‍රධාන මතකය හා දෘඩ ඩිස්කය අතර ක්‍රියායන ප්‍රතිහරණය(Swapping)",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": "<div><p><b>(1) ක්‍රියායන පිටුවක් සදහා මතක රාමුවක් තොරාගැනීම:</b> මෙය මෙහෙයුම් පද්ධතියේ මතක කළමනාකරණයේ ප්‍රධාන කාර්යයකි. ක්‍රියාවලියකට මතකය අවශ්‍ය වූ විට, පද්ධතිය නොමිලේ ඇති මතක රාමු තෝරා ඒවාට වෙන්කර දෙයි.</p><p><b>(2) නිදහස්(දෑනට භාවිතයේ නොමැති ) මතක රාමු(Memory Frame) ලැයිසුතුවක් පවත්වා ගැනීඹ:</b> මෙයද මතක කළමනාකරණයට අත්‍යවශ්‍ය වේ. පද්ධතිය භාවිතයට නොමැති මතක කොටස් පිළිබඳ වාර්තාවක් තබා ගනී.</p><p><b>(3) එක් එක් ක්‍රියායනය සදහා පිටු වගුවක්(Page Table) පවත්වා ගැනීම:</b> මෙය ව්‍යාප්ත මතක කළමනාකරණයේ කොටසකි. ක්‍රියාවලීන් භාවිතා කරන අතථ්‍ය මතක ලිපින සැබෑ භෞතික මතක ලිපිනවලට පරිවර්තනය කිරීම සඳහා පිටු වගු භාවිතා වේ. එක් එක් ක්‍රියාවලිය සඳහා වෙනම පිටු වගුවක් පවත්වා ගෙන යනු ලබන්නේ එම ක්‍රියාවලියේ මතකය අනෙක් ක්‍රියාවලීන්ගෙන් ආරක්ෂා කර ගැනීම සඳහාය.</p><p><b>(5) ප්‍රධාන මතකය හා දෘඩ ඩිස්කය අතර ක්‍රියායන ප්‍රතිහරණය(Swapping):</b> මෙය මතක කළමනාකරණයේදී ප්‍රධාන මතකය (RAM) පිරී ගිය විට භාවිතා කරන ක්‍රමයකි. අක්‍රිය ක්‍රියාවලීන්ගේ කොටස් තාවකාලිකව දෘඪ තැටියට මාරු කිරීමෙන් ප්‍රධාන මතකයේ ඉඩ නිදහස් කර ගනී.</p><p><b>පිළිතුර (4) නොවන්නේ මන්ද:</b></p><p>මෙහෙයුම් පද්ධතිය දෘඪ තැටක ගොනු කළමනාකරණය කරන අතර, ගොනු නිර්මාණය කිරීම, මකා දැමීම, කියවීම සහ ලිවීම වැනි කාර්යයන් සිදු කරයි. කෙසේ වෙතත්, දෘඪ තැටක ඇති <b>විශේෂිත ද්වීමය ගොනු කොපමණ වාරයක් හෝ කුමන අරමුණක් සඳහා භාවිතා වේද යන්න නිරන්තරයෙන් අධීක්ෂණය කිරීම</b> මෙහෙයුම් පද්ධතියේ මූලික කාර්යයක් නොවේ.</p><p>එවැනි අධීක්ෂණ කටයුතු සාමාන්‍යයෙන් සිදු කරනු ලබන්නේ විශේෂිත පද්ධති නිරීක්ෂණ මෙවලම් හෝ ආරක්ෂක මෘදුකාංග මගිනි. මෙහෙයුම් පද්ධතියේ හරය (kernel) එවැනි සවිස්තරාත්මක භාවිත රටා නිරීක්ෂණය කිරීම සඳහා සැලසුම් කර නැත. එහි ප්‍රධාන අවධානය යොමු වී ඇත්තේ පද්ධතියේ සම්පත් (මතකය, සකසනය, ආදාන/ප්‍රතිදාන උපාංග) කාර්යක්ෂමව කළමනාකරණය කිරීම සහ ක්‍රියාවලීන් ඵලදායී ලෙස ක්‍රියාත්මක කිරීම සහතික කිරීමයි.</p></div> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgoP79SzpQyEkHjlt-hZp1wVeFZGt26wxzOolxB2Yjm2fVtIX7bLtuM_UsSxxNi8n0jBBRYlsBFZXVkqDNtcRcf5Vr6TvnaKYWB4k4_RUOCkRMy8lYMEx5kp64-DnNoHAum5w2RvqVXIQ7YXLVCOO-blP-41CUbspKe1RR-KCYWKGX96ImkjguXAp4Ld5At",
+    "text":"<b>average.py ගොනුවේ නාමාවලි තොරතුර සහ average.py ගොනුව සදහා ඩිස්කයේ වෙන්කර ඇති ඉඩ ප්‍රමාණය පිළිවෙළින් දැක්වෙන්නේ පහත කවරක ද?</b>",
+    "options": [
+      {
+        "text": "(1)200,12KB",
+        "image": ""
+      },
+      {
+        "text": "(2)200,16KB",
+        "image": ""
+      },
+      {
+        "text": "(3)203,20KB",
+        "image": ""
+      },
+      {
+        "text": "(4)203,16KB",
+        "image": ""
+      },
+      {
+        "text": "(5)203,20KB",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": " ",
+    "explanationImage":"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiRtX07E27j1FkzPYlTYFj6r6UabI5DfobQstxgP-BRkMWwPPUrEIBMwZgYlRCpi0WnlSi8O6GxPP3neKsy_faktkkAGn3TltgDdUactIzvWyKZPw89FzpzjXfcGakeIlv7p4M2-gffyJzcN6jFOtyfi3I7btVAiu6WjD4Y5Ocm6BnFuuNIoNvJfeTTiwFD/s451/Capture.PNG"
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiExawx1KVT-qT7PZeIwgCZq4xeAueZez4R1Pb2nN7zLgzkj2NJ9bKqWkiBKzL-jwXBCswA2WOYHDotM3enkBPeYYudb25-GZgfhlc-t9BFA1G4Jl4bLHcQATUGO5mbtZGuDoXa1vDNm2tHZzMh94ZZXcIyCISBwtDvmnnOEfJAptsjqBv0cO-nooJp-MLS",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) A සහ B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(2)  A සහ C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(3)  B සහ C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(4)  B සහ D පමණි",
+        "image": ""
+      },
+      {
+        "text": "(5)  A,B,C සහ D සියල්ලම",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 0,
+    "explanation": "<p><b>A - සම්ප්‍රේෂණ පාලන නියමාවලිය (TCP - Transmission Control Protocol):</b> මෙය ප්‍රවාහන ස්තරයේ ඇති ප්‍රධාන නියමාවලියකි. TCP මඟින් දත්ත විශ්වාසදායකව, පිළිවෙලට සහ දෝෂ රහිතව සම්ප්‍රේෂණය කිරීම සහතික කරයි. සම්බන්ධතා-නැඹුරු (connection-oriented) සේවාවක් සපයන අතර දත්ත පැකට් නැවත සම්ප්‍රේෂණය කිරීම, අනුපිළිවෙල පවත්වා ගැනීම වැනි කාර්යයන් සිදු කරයි.</p><p><b>B - පරිශීලක දත්ත පණිවිඩ නියමාවලිය (UDP - User Datagram Protocol):</b> මෙයද ප්‍රවාහන ස්තරයේ ඇති තවත් නියමාවලියකි. UDP මඟින් දත්ත වේගවත් නමුත් විශ්වාසදායක නොවන ආකාරයෙන් සම්ප්‍රේෂණය කරයි. සම්බන්ධතා රහිත (connectionless) සේවාවක් සපයන අතර දත්ත පැකට් නැවත සම්ප්‍රේෂණය කිරීම හෝ අනුපිළිවෙල පවත්වා ගැනීම වැනි කාර්යයන් සිදු නොකරයි. වේගය වැදගත් වන අවස්ථා වලදී (උදාහරණයක් ලෙස සජීවී විකාශන, වීඩියෝ ක්‍රීඩා) UDP බහුලව භාවිතා වේ.</p><p><b>C - ගොනු හුවමාරු නියමාවලිය (FTP - File Transfer Protocol):</b> මෙය යෙදුම් ස්තරයේ (Application Layer) ඇති නියමාවලියකි. FTP මඟින් පරිගණක අතර ගොනු හුවමාරු කර ගැනීමට පහසුකම් සපයයි. එය ප්‍රවාහන ස්තරයේ TCP මත පදනම් වේ.</p><p><b>D - අන්තර්ජාල නියමාවලිය (IP - Internet Protocol):</b> මෙය අන්තර්ජාල ස්තරයේ (Internet Layer) ඇති නියමාවලියකි. IP මඟින් දත්ත පැකට් එක ජාලයකින් තවත් ජාලයකට යැවීම සඳහා අවශ්‍ය ලිපිනකරණය (addressing) සහ මාර්ගගතකරණය (routing) සිදු කරයි.</p><p>ප්‍රශ්නයෙන් විමසන්නේ ප්‍රවාහන ස්තරයේ නියමාවලි මොනවාද යන්නයි. අපගේ විග්‍රහයට අනුව, ප්‍රවාහන ස්තරයේ ඇති නියමාවලි වන්නේ <b>TCP (A)</b> සහ <b>UDP (B)</b> පමණි.</p><p>එබැවින්, නිවැරදි පිළිතුර වන්නේ <b>(1) A සහ B පමණි</b> යන්නයි.</p>",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhCj7vU24baB3MyMtIXhUN2Des2ikakv_wZyGBCXp91GZk6rESuibuG64D-q-A02yi_4tZP-j2j7z5I0DsuIkAclNr2jyKS8T5cVFUTwmIZNcSJ4-muddiPB8xzCX_toAOvAylZZgvd-ChXhBXZx_Wclgl6loAQZZeDLtw-34qsxDbKyq30zrFWrK4UxXEi",
+    "text":"",
+    "options": [
+      {
+        "text": "(1)  A පමණි",
+        "image": ""
+      },
+      {
+        "text": "(2)  B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(3)  C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(4)  A සහ C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(5)  B සහ C පමණි",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 4,
+    "explanation": "<p><b>A - MAC ලිපියොමුවල දිග බිටු 32 ක් වන අතර ඒවා ජාල (network) ස්තරයේ භාවිත වේ.</b></p><p>MAC ලිපින වල දිග සාමාන්‍යයෙන් බිටු 48 කි.</p><p>MAC ලිපින භාවිතා කරන්නේ දත්ත සබැඳි (data link) ස්තරයේදීය, විශේෂයෙන්ම ඊතර්නෙට් (Ethernet) වැනි තාක්ෂණයන්හිදී එකම දේශීය ජාලයක (LAN) උපාංග හඳුනා ගැනීම සඳහාය.</p> <p><b>එබැවින්, A ප්‍රකාශය වැරදිය.</b></p><p><b>B - MAC ලිපියොමුවල දිග බිටු 48 ක් වන අතර ඒවා දත්ත සබැඳි (datalink) ස්තරයේ භාවිත වේ.</b></p><p>මෙම ප්‍රකාශය MAC ලිපින වල නිවැරදි දිග (බිටු 48) සහ ඒවා භාවිතා කරන ස්තරය (දත්ත සබැඳි ස්තරය) නිවැරදිව දක්වයි.</p><p><b>එබැවින්, B ප්‍රකාශය නිවැරදිය.</b></p><p><b>C - IPv4 ලිපියොමුවල දිග බිටු 32 ක් වන අතර ඒවා ජාල (network) ස්තරයේ භාවිත වේ.</b></p><p>IPv4 ලිපින වල දිග බිටු 32 කි.</p><p>IPv4 ලිපින භාවිතා කරන්නේ ජාල (network) ස්තරයේදීය, අන්තර්ජාලය හරහා උපාංග හඳුනා ගැනීම සහ දත්ත මාර්ගගත කිරීම සඳහාය.</p><p><b>එබැවින්, C ප්‍රකාශය නිවැරදිය.</b></p><p>දැන් අපි ලබා දී ඇති පිළිතුරු විකල්ප සලකා බලමු:</p><ul> <li>(1) A පමණි - වැරදිය</li><li>(2) B පමණි - නිවැරදි ප්‍රකාශයක් ඇත, නමුත් තවත් නිවැරදි ප්‍රකාශයක් තිබිය හැකිය.</li><li>(3) C පමණි - නිවැරදි ප්‍රකාශයක් ඇත, නමුත් තවත් නිවැරදි ප්‍රකාශයක් තිබිය හැකිය.</li><li>(4) A සහ C පමණි - වැරදිය (A වැරදිය)</li><li>(5) B සහ C පමණි - B සහ C යන ප්‍රකාශ දෙකම නිවැරදිය.</li></ul><p>එබැවින්, MAC සහ IPv4 ලිපින සම්බන්ධයෙන් නිවැරදි ප්‍රකාශ දෙක වන්නේ B සහ C යන්නයි.</p><p><b>නිවැරදි පිළිතුර වන්නේ (5) B සහ C පමණි.</b></p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEha5JoJeNVkbG4wCDbCp5aeZ0tzV2oGHFhipDC-fHHN6D3KWuugOuQXpyEwfQmC8_KH1zfbavAr4qLHrQP4mw2I0-q05SeUMnL_6o3ieiMCTqKlxQ8xPZrOAaX4HrAmGiY8snq34W5UUbjXKy4KdqJ7DzhEnb7pVr1ulHHjTrPmbXiUA3_Cc1tN3A-Ze9ap",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) A පමණි",
+        "image": ""
+      },
+      {
+        "text": "(2) A සහ B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(3) A සහ C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(4) B සහ C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(5) A,B සහ C සියල්ලම",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 4,
+    "explanation": " <p>ගිනි පවුරක් (firewall) සම්බන්ධයෙන් A, B සහ C යන ප්‍රකාශ තුනම නිවැරදි වේ.</p><ul><li><b>A නිවැරදිය:</b> ගිනි පවුරක ප්‍රධාන කාර්යයක් වන්නේ අභ්‍යන්තර ජාලයකින් පිටතට යන සහ පිටතින් අභ්‍යන්තර ජාලයට එන දත්ත ප්‍රවාහයන් නිරීක්ෂණය කර අනවසර දත්ත පෙරීමයි.</li><li><b>B නිවැරදිය:</b> ගිනි පවුරක් ජාලයක් අනවසර ප්‍රවේශයන්ගෙන් ආරක්ෂා කරන අතර, විශ්වාසදායක සහ විශ්වාස කළ නොහැකි ජාල අතර බාධකයක් ලෙස ක්‍රියා කරයි.</li><li><b>C නිවැරදිය:</b> ගිනි පවුරු දෘඪාංග උපාංග ලෙසත්, මෘදුකාංග යෙදුම් ලෙසත්, නැතහොත් මේ දෙකෙහිම සංයෝජනයක් ලෙසත් ක්‍රියාත්මක කළ හැකිය.</li></ul><p><b>එබැවින්, නිවැරදි පිළිතුර වන්නේ (5) A, B සහ C සියල්ලම යන්නයි.</b></p>",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEi4c4L0gidUosLIo0-lvoxLVOVENhAOMMUzfR8K-pln8ouwhxVPSGFhgMKcs49Hi7p9oEr7g1Pk3VPUnJt3SCJcg55wYSiIBfFIy-P6f1oatbXR6eOs7g0eRvo4pQqKndiitk2qd-ym3Kp5izMNBN9dzxRxynVmf8ZBGYm777oT8l1aiVMVQ44vLVqcrt3z",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) 24,3,5",
+        "image": ""
+      },
+      {
+        "text": "(2) 24,5,3",
+        "image": ""
+      },
+      {
+        "text": "(3) 24,27,5",
+        "image": ""
+      },
+      {
+        "text": "(4) 27,3,5",
+        "image": ""
+      },
+      {
+        "text": "(5) 27,30,2",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 2,
+    "explanation": "  .. ",
+    "explanationImage":"   "
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEipafVv1leCGrM8IRGFpB-hXP_3Fm7USHEA3Vyenyj5hxW1be1nUNDK24ErrH-9AcWGpGpSUCY346IFGvPONLv2-alBNFADAz4V0xeh-dHXzRDG2frnMtseRJv7kAMmZd8aSeFbKgDdZqTcTsZdAh7WlpA8qgg3hPCjVspF1Bywuvx8sujpeRELI2iNxvkQ",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgaBZ-GmkGvDbEGmtHvQyGKT87YW7U0pu1UtYizcRb61eyost_3cYHYTSzN0922EGLYLIa4xrf_Ju9_B9LPX532r1vqf4OWMaFtR3SdD2UxW58AXoYsugZLdPaoF_JjS8puc1hSZQ276yslREd5kGDenB8ePD3AjJTEHNBEjY_EHsVFcJ5cRJa5Jn5EKnMf"
+      },
+      {
+        "text": " ",
+        "image": " https://blogger.googleusercontent.com/img/a/AVvXsEhDzFrtuv7B0hEtn76J_IztdmPFhXGjjxRNJlaGbnmYkNGr-kvlE1CPK0cTo3OHaZOK1y3nTORhfDMwzKRVKeZCfEpmN3yvWxnqTeeXhqIRNCzRfYt8deEro_TsA1LVV41KhOV9zKonh1h-pdCexlL96Hro5JnWwDwb7f2272XH3bIGGPdqsxZiU7_Q9-Hf"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjKaCY9AHyAItPuKJF4hSdw0V2ax61fv6stp8-Ywo0BhIZooIxaqlPMDvgUDxhXzXVPxyFCFPXZABxb35umYCfK55nMahkiTyg6mNTvLlv3xG85yqi0Tc2I4EBf1akqN02NmsELsjjhDPRyO1praIoSIurUjgZtV0StluNVvzNKULEMBpll2mUq5a1tY0sG"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjT6zrZdXZnUxxCZZQ_J1fr3iUcnMiYU-HRZyMxWCCQkN2e2e9Q-c3WLKh-2B4eXncXV8erRxlhSIFLoL2OGhMVO8wE8C21aHWSayzv6JMYLmLTNuvsAO8wvi5lT5coo8UHubhmAUvBk4v-CYdPyyJvUstUfn-imrZDmrIaYp5KLit1tJWoDvwHRfOD3xlj"
+      },
+      {
+        "text": " ",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEibgCHwFWqx2YbUBwlqUEcQtfDHEVpUWxsQ-cErmSX2_YRZv27v13CWt32yA6vz7Jg7YBJrt1BwTh_BYCdbRr9u-09Hi6vVgNqIT-e1nn22O0ZIEKoBan90lGodvUQSlJPJFO1Hji-OIr8M4rikpo-I3Ng1_JvGC3f2heutn_ch8RLirldidCtV_MdoJbTE"
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": "  <p>ජාල ස්ථලකයක් යනු ජාලයක ඇති උපාංග (නෝඩ්) එකිනෙකට සම්බන්ධ වී ඇති ආකාරය විස්තර කරන භෞතික හෝ තාර්කික සැකැස්මයි.</p><p>දැන් අපි එක් එක් ප්‍රකාශය විමසා බලමු:</p><p><b>(1) බස් ස්ථලකයේදී, සියලුම නෝඩු (nodes) සම්බන්ධ කිරීමට මධ්‍යගත ජාල නාභියක් (hub) භාවිත වේ.</b></p><p>බස් ස්ථලකයක සියලුම නෝඩ් සම්බන්ධ වන්නේ එකම රේඛීය කේබලයකටයි (bus). එහි මධ්‍යගත ජාල නාභියක් (hub) භාවිතා නොවේ. හබ් භාවිතා කරන්නේ තාරකා ස්ථලකයකය.</p><p><b>එබැවින්, මෙම ප්‍රකාශය වැරදිය.</b></p><p><b>(2) තාරකා ස්ථලකයේදී, සියලුම නෝඩු සම්බන්ධ කිරීමට රේඛීය කේබලයක් භාවිත වේ.</b></p><p>තාරකා ස්ථලකයක සියලුම නෝඩ් මධ්‍යගත උපාංගයකට (සාමාන්‍යයෙන් හබ් එකක් හෝ ස්විච් එකක්) වෙන වෙනම සම්බන්ධ වී ඇත. එහි රේඛීය කේබලයක් භාවිතා නොවේ. රේඛීය කේබලයක් භාවිතා කරන්නේ බස් ස්ථලකයකය.</p><p><b>එබැවින්, මෙම ප්‍රකාශය වැරදිය.</b></p><p><b>(3) මුදු ස්ථලකයේදී, පණිවිඩ යවනු ලබන්නේ දක්ෂිණාවර්තව (clockwise) පමණි.</b></p><p>මුදු ස්ථලකයක පණිවිඩ එක් නෝඩයකින් ඊළඟ නෝඩයට සම්ප්‍රේෂණය වන අතර එය මුද්දක ආකාරයට සකස් වී ඇත. සාමාන්‍යයෙන් පණිවිඩ යැවිය හැක්කේ එක් දිශාවකට පමණි, නමුත් එය අනිවාර්යයෙන්ම දක්ෂිණාවර්තව පමණක් විය යුතු නැත. වාමාවර්තව ද ගමන් කළ හැකි මුදු ස්ථලක තිබේ. කෙසේ වෙතත්, සරල මුදු ස්ථලකයක ඒක දිශානුගත සම්ප්‍රේෂණය සිදු වේ.</p><p>මෙම ප්‍රකාශයේ පමණි යන වචනය නිසා එය තරමක් සීමාකාරී වේ. නමුත් බොහෝ සම්මත මුදු ස්ථලකවල ඒක දිශානුගත ගමනාන්තයක් ඇත.</p><p><b>(4) මුදු ස්ථලකයේදී, එක් එක් නෝඩුව සෘජුවම සම්බන්ධ වන්නේ අසල්වැසි නෝඩු දෙකකට පමණි.</b></p><p>මුදු ස්ථලකයක සෑම නෝඩුවක්ම හරියටම අසල්වැසි නෝඩු දෙකකට (එකක් ඉදිරියට සහ එකක් පසුපසට) සෘජුවම සම්බන්ධ වී ඇත. මෙය මුදු ස්ථලකයේ මූලික ලක්ෂණයකි.</p><p><b>එබැවින්, මෙම ප්‍රකාශය නිවැරදිය.</b></p><p><b>(5) බැඳි (mesh) ස්ථලකයේදී, එක් එක් නෝඩුව සැමවිටම තවත් එක් නෝඩුවකට පමණක් සම්බන්ධ වේ.</b></p><p>බැඳි ස්ථලකයක නෝඩ් එකිනෙකට බොහෝ මාර්ග ඔස්සේ සම්බන්ධ වී ඇත. සම්පූර්ණ බැඳි ස්ථලකයක සෑම නෝඩුවක්ම ජාලයේ ඇති අනෙකුත් සියලුම නෝඩ් වලට කෙලින්ම සම්බන්ධ වේ. අර්ධ බැඳි ස්ථලකයක නෝඩ් කිහිපයක් පමණක් අනෙකුත් සියලුම නෝඩ් වලට කෙලින්ම සම්බන්ධ වේ. සැමවිටම තවත් එක් නෝඩුවකට පමණක් යන ප්‍රකාශය බැඳි ස්ථලකයකට අදාළ නොවේ.</p><p><b>එබැවින්, මෙම ප්‍රකාශය වැරදිය.</b></p><p>අපගේ විග්‍රහයට අනුව, නිවැරදි ප්‍රකාශය වන්නේ <b>(4) මුදු ස්ථලකයේදී, එක් එක් නෝඩුව සෘජුවම සම්බන්ධ වන්නේ අසල්වැසි නෝඩු දෙකකට පමණි</b> යන්නයි.</p><p><b>එබැවින්, නිවැරදි පිළිතුර වන්නේ (4) යන්නයි.</b></p>",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhF2_s5RQzoZQngC3Wxat5ysC1pGD1zrn7bfGV0oaKJYyadqNXMH6vOdy0LRwox5WTTYOncZ3KnoitejA3IOWVdGPJ1DMvDhoAYzxz4bsN619CgkCfslI2QYGrKwgK06-aftsI9nmfvb-D35Jg22Ig0c8iJ1Uen3cX_Fhe8IXkp_GztSUma01Qu5a8Ipayg",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiy8m5tbWX3KYzTk6itq1bg9TmGvSqfnk202otg_taRsNh-P8_ipuTlZ4zMuR_1KgWaEkpDUNpP_fZwAs1kKzjlxJ89ndZx-m_vAxfhTrrhsZKO2AIt73Xnv0m586iRz5GqiG2yp67sGU6HErE03bbpNPY1wiKpF2n3-CU_3A1uugBB99pnZeIK2xsVf7rA"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiI4Z2_h7LooUrUIkn3dh91QZd0JugC5zPWwnZdc3Hiu_H30q4mUr-HokLMvgEdO_VDG4yexNrnZI1y4qaX39-7elOSmadFXB48k7RC7B2AmF2_E7w1joz3AoOKWSJ7mR2Ysl_5xrjyk1gHxTFluLdnlbzs43kor2C0vXGz_mLJ5PcD8tgDrUf-AjCR1QV2"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgcH8EDPgb_f4QJT6nMidOLWi-0P05jVCWKTB-8TIyxI5fHNGyUUkYY12p3MdAhGzO2yNzl-GevcIHFTELYcZWLcl0RbRJpDIFtTK--xK0wQbKbfmuHHb2HUiQ6wLqDPSqM0ygj-t-7SQ6ojNntbqsHCSmrAjFq2_RSp8rQDYxaB_bYfzhUxDyVQa4Abwln"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEggqj9brBGrPO79LwrviHGbm7YQ1IN2bQOGvq0JzYPg8TKRGPzrLWr_XrviWKi_GTw4MMp4Tf_O_VBGCjoRkH2sYXRAPo6bKEQCfbhh8DOLy0XFeQbHEZ219BLO83PrMvOvyOkCZm28whWAKDTsTMPszfu3jILsR6pYK0fAiMoukPyqfP1-hkSNcESQoxXg"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhaaXNHgMEqSgyaZaaSVxiyrFfyQX1K02ImAv6HOOLiH956kOVAPuxAv70mjhKv8ks1nfnDVmS77JeSQs3Zo4P9u45YkNWSctxTYw0Z8miesvnIbj8yN1f6sGEErjfkwFPL4L_FikNZIMfUdcFXfeu3F5A77eEueJyN-DrtNn1o_B_pIjBSvAL3nfzxX79T"
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": "<p>OSI ආකෘතියේ ස්ථර සහ ඒවායේ ප්‍රධාන වගකීම් පහත පරිදි වේ:</p><ul><li><b>P - යෙදුම් (application) ස්තරය:</b> මෙය පරිශීලකයාට සෘජුවම අන්තර්ක්‍රියා කළ හැකි ස්ථරයයි. ගොනු හුවමාරුව, විද්‍යුත් තැපෑල, වෙබ් බ්‍රව්සින් වැනි පරිශීලක සේවා මෙම ස්ථරයේදී ක්‍රියාත්මක වේ. එබැවින්, P ස්ථරය 3 වන වගකීම සමඟ ගැළපේ.</li><li><b>Q - භෞතික (physical) ස්තරය:</b> මෙය OSI ආකෘතියේ පහළම ස්ථරය වන අතර, සන්නිවේදන මාධ්‍ය හරහා දත්ත බිටු (ද්වීමය) සම්ප්‍රේෂණය කිරීම මෙහිදී සිදු වේ. විද්‍යුත් සංඥා, වෝල්ටීයතා මට්ටම් වැනි භෞතික ලක්ෂණ මෙම ස්ථරයේදී නිර්වචනය වේ. එබැවින්, Q ස්ථරය 1 වන වගකීම සමඟ ගැළපේ.</li><li><b>R - ප්‍රවාහන (transport) ස්තරය:</b> මෙම ස්ථරයේ ප්‍රධාන කාර්යය වන්නේ එක් යෙදුමක සිට තවත් යෙදුමකට (ක්‍රියාවලියෙන් ක්‍රියාවලියට) දත්ත විශ්වාසදායකව හෝ විශ්වාසදායක නොවන ආකාරයෙන් සම්ප්‍රේෂණය කිරීමයි. TCP සහ UDP වැනි ප්‍රොටෝකෝල මෙහිදී ක්‍රියාත්මක වේ. එබැවින්, R ස්ථරය 4 වන වගකීම සමඟ ගැළපේ.</li><li><b>S - ජාල (network) ස්තරය:</b> මෙම ස්ථරයේ ප්‍රධාන කාර්යය වන්නේ දත්ත පැකට් එක ජාලයකින් තවත් ජාලයකට යැවීම සඳහා මාර්ග නිර්ණය (routing) කිරීමයි. IP ලිපිනකරණය සහ මාර්ගගත කිරීම මෙහිදී සිදු වේ. එබැවින්, S ස්ථරය 2 වන වගකීම සමඟ ගැළපේ.</li></ul><p>දැන් අපි අපගේ ගැළපීම් සාරාංශ කරමු:</p><ul><li>P - 3</li><li>Q - 1</li><li>R - 4</li><li>S - 2</li></ul><p>මෙම ගැළපීම් (4) වන පිළිතුරට අනුරූප වේ: <b>(4) P - 3 , Q - 1 , R - 4 , S - 2</b></p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgaT9L-QzgJLVt5YZiy3_-i43dZM49iQJ2Z6v5eVZj2DykEBRb6cw83veLkqRtEG6ghnW-8W-JVW0z5FDI-iz1ezhz3roQainTlek-tVi725x7RnN4fKz2Df_qLYDJ2X4peqIvSDpc7566EqTpqNFD3sZJR3PUpJFrpcb8IPagE4eqbh5Vedc6mrnewLaDW",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) පමණි",
+        "image": ""
+      },
+      {
+        "text": "(2) B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(3) C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(4) A සහ B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(5) A,B සහ C සියල්ලම",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 4,
+    "explanation": "<p>අපි එක් එක් ප්‍රකාශය විමසා බලමු:</p><p><b>A - අංකිත අත්සන (digital signature) පණිවිඩයක සත්‍යතාව සහතික කරයි.</b></p><p>අංකිත අත්සනක් යනු පණිවිඩයක මූලාශ්‍රය සහ අඛණ්ඩතාව තහවුරු කිරීමට භාවිතා කරන ක්‍රමවේදයකි. එය පණිවිඩය යවන්නාගේ පුද්ගලික යතුර (private key) භාවිතයෙන් නිර්මාණය කර පණිවිඩය සමඟ යවනු ලැබේ. ලබන්නාට යවන්නාගේ පොදු යතුර (public key) භාවිතයෙන් අත්සන සත්‍යාපනය කළ හැකි අතර, එමඟින් පණිවිඩය සැබෑ යවන්නාගෙන් පැමිණි බවත්, අතරමගදී වෙනස් කර නොමැති බවත් තහවුරු කළ හැකිය.</p><p><b>එබැවින්, A ප්‍රකාශය නිවැරදිය.</b></p><p><b>B - අසමමිතික යතුරු කේතනයේදී (asymmetric key encryption), ගුප්ත කේතනය (encryption) සහ විකේතනය (decryption) සඳහා විවිධ යතුරු භාවිත වේ.</b></p><p>අසමමිතික යතුරු කේතනයේදී, යතුරු දෙකක් භාවිතා වේ: පොදු යතුර (public key) සහ පුද්ගලික යතුර (private key). පොදු යතුර ඕනෑම කෙනෙකුට ලබා ගත හැකි අතර, එය දත්ත ගුප්ත කේතනය කිරීමට භාවිතා කරයි. පුද්ගලික යතුර රහසිගතව තබා ගන්නා අතර, ගුප්ත කේතනය කළ දත්ත විකේතනය කිරීමට භාවිතා කරන්නේ එය පමණි.</p><p><b>එබැවින්, B ප්‍රකාශය නිවැරදිය.</b></p><p><b>C - ගුප්ත කේතන ක්‍රියාවලිය සරල අක්ෂර (plain text), රහස් අක්ෂර (ciphertext) බවට පරිවර්තනය කරයි.</b></p><p>ගුප්ත කේතනය යනු තේරුම්ගත හැකි දත්ත (සරල අක්ෂර) තේරුම්ගත නොහැකි ආකෘතියකට (රහස් අක්ෂර) පරිවර්තනය කිරීමේ ක්‍රියාවලියයි. මෙහි අරමුණ වන්නේ අනවසර පුද්ගලයින්ට දත්ත කියවීම හෝ තේරුම් ගැනීම වැළැක්වීමයි.</p><p><b>එබැවින්, C ප්‍රකාශය නිවැරදිය.</b></p><p>A, B සහ C යන ප්‍රකාශ තුනම නිවැරදි බැවින්, නිවැරදි පිළිතුර වන්නේ:</p><p><b>(5) A, B සහ C සියල්ලම</b></p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjqA3ZNeoZVHeRbx1Yun37qyQm1x5ErYNS6eOcdlq7qv1TEDg734WpVolOw3UsPlE8xSV_bSq_ow3ckB0mnop763UFgLCun3jcp5YQnF5eL5jsVsnLt9RWYMi9pRNHeSs0s9Ma6WCsXZ46UgRubtB8Hq6jRigQDUqxxLAwvWVVf6dpQtAoT7Vl9wsTfbaE0",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhSpadRKj6pnaCXZro88xuld0099IJ49SuGd5FZKlaU_ppRIC_jkwylbhySG0ggMRUAAThkYHEXgiGVRd0Po5c6VylVXlH7TOQ8x7GbLu8k3sS9N_V_wNsZ2aHwX0kKW7jeDOtTCl3ig7eKzGXCoZe9KYzf0-CBgxC6OVtb94PBQuRLdhI0G4IM3omku539"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgwyp4XVqLkBNTHIaaSUvKqhfuN0Kbto78-Uhe22lTAoNFh3CrY0uQuiJdpGXb_foymQxWlZ_br4I9c1BaPi-yFy9AlIoXudlWyo-Nn-ybbOofLy9twkzeRpU1iHt9MLFPEZbzpqxKlHV_r3Mp0vJqXzR3_xUJTDJsKVPBbUhGnkqtvgN2syC505j5m8mb4"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEg4uR1UUDmZdl-QOn4FeDCHpJo0gr6AtrQrKHIC7_XCdbnkFCHJ3RyXLTqFxeKIwFcoZJp0Sj9siC6N97zVQAhTdEv3bEinpmjcq9Gu2CKS675L0PfJlido1hJuUVUjP7jOmY-eag0a3zBtaEK-es8vewu9qi-a-aMYz4LpyPZBJZPOtOx9SNMiUqmOoPAp"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiv9ZRer2mZo3xq7h9A0tjRKv7LQd-OU9sZxXqS0OO2sWMu6buweeUQ2ZCbwfiUYAW_T1Nj9Rwau1iPBe_qO58WTc6WxKiBnwBYuOpI2KTmID_1-STWUiuPFJvZrxjPDFsZWhTAMZCLxgLfNck7SWmixun6Je70iWBfRIuytQpsT6OR9_MLaiVh-YvFwcE0"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhXqVyoKhpBVpWtLJdgqbkfHaODV0MoQ45ghRpNJGFNJCPo4zlt3EpCPWWcXJz1HYONxlgd5BAR5YBxGL1E4b9lZCTLg1Z0sqsa6r_TGMX9gAJIE_ly0N7B7m80evZ2yEtnbtIku4Sn0rIktwt2C3QhgUM1ASe03HiEd5xTZLf7wIRz9MQKW-NX7C4jhQ9X"
+      }
+    ],
+    "correctAnswer": 2,
+    "explanation": " <p>දැන් අපි එක් එක් නියමාවලිය සහ එහි අදාළ විස්තරය විමසා බලමු:</p><ul><li><b>P - අධි පාඨ සම්ප්‍රේෂණ නියමාවලිය (HTTP):</b> මෙය ලෝක විසිරි වියමනෙහි (World Wide Web) වෙබ් සේවාදායකයන්ගෙන් වෙබ් පිටු ලබා ගැනීමට සහ ප්‍රදර්ශනය කිරීමට භාවිතා කරන යෙදුම් ස්තරයේ නියමාවලියයි. එබැවින්, P ගැලපෙන්නේ <b>3 - ලෝක විසිරි වියමනෙහි භාවිත වේ</b> යන විස්තරය සමඟයි.</li><li><b>Q - සම්ප්‍රේෂණ පාලන නියමාවලිය (TCP):</b> මෙය ප්‍රවාහන ස්තරයේ ඇති විශ්වාසදායක, සම්බන්ධතා-නැඹුරු දත්ත හුවමාරු සේවාවක් සපයන නියමාවලියකි. දත්ත පැකට් පිළිවෙලට සහ දෝෂ රහිතව සම්ප්‍රේෂණය කිරීම TCP මඟින් සහතික කරයි. එබැවින්, Q ගැලපෙන්නේ <b>2 - ඉතා විශ්වාසදායක දත්ත හුවමාරු සේවාවක් සපයයි</b> යන විස්තරය සමඟයි.</li><li><b>R - වසම් නාම පද්ධති (DNS) නියමාවලිය:</b> මෙය අන්තර්ජාලයේ භාවිතා වන නාමාවලි සේවාවකි. එය පරිශීලකයන්ට හුරුපුරුදු වසම් නම් (domain names) අන්තර්ජාල සත්කාරකයන්ගේ (hosts) සංඛ්‍යාත්මක IP ලිපින බවට පරිවර්තනය කරයි. එබැවින්, R ගැලපෙන්නේ <b>1 - ලබා දී ඇති වෙබ් ලිපින සහ URL සඳහා නාමාවලී සෙවීමේ සේවාව සපයයි</b> යන විස්තරය සමඟයි.</li><li><b>S - අන්තර්ජාල නියමාවලිය (IP):</b> මෙය ජාල ස්තරයේ ඇති ප්‍රධාන නියමාවලිය වන අතර, අන්තර්ජාලයේ දත්ත පැකට් එක ස්ථානයක සිට තවත් ස්ථානයකට යැවීම සඳහා අවශ්‍ය ලිපිනකරණය (IP ලිපින) සහ මාර්ගගතකරණය (routing) සිදු කරයි. සෑම අන්තර්ජාල සත්කාරකයකටම අනන්‍ය IP ලිපිනයක් පැවරීම මෙහෙයවනු ලබන්නේ IP මඟිනි. එබැවින්, S ගැලපෙන්නේ <b>5 - අන්තර්ජාල සත්කාරක (hosts) සඳහා අනන්‍ය ලිපින ලබාදීම මෙහෙයවයි</b> යන විස්තරය සමඟයි.</li><li><b>T - පරිශීලක දත්ත පණිවිඩ නියමාවලිය (UDP):</b> මෙය ප්‍රවාහන ස්තරයේ ඇති වේගවත් නමුත් විශ්වාසදායක නොවන, සම්බන්ධතා රහිත ප්‍රවාහන සේවාවක් සපයන නියමාවලියකි. දත්ත පැකට් නැවත සම්ප්‍රේෂණය කිරීම හෝ අනුපිළිවෙල පවත්වා ගැනීම UDP මඟින් සිදු නොකරයි. එබැවින්, T ගැලපෙන්නේ <b>4 - සම්බන්ධතා රහිත ප්‍රවාහන සේවාවක් සපයයි</b> යන විස්තරය සමඟයි.</li></ul><p>අපගේ ගැළපීම් සාරාංශගත කළහොත්:</p><ul><li>P - 3</li><li>Q - 2</li><li>R - 1</li><li>S - 5</li><li>T - 4</li></ul><p>මෙම ගැළපීම් <b>(3)</b> වන පිළිතුරට අනුරූප වේ: <b>(3) P - 3 , Q - 2 , R - 1 , S - 5 , T - 4</b></p><p><b>එබැවින්, නිවැරදි පිළිතුර වන්නේ (3) යන්නයි.</b></p>",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhkTF1wkmHZjTNFB7GLfOZ0SMhSBkD4Dkr0YVPb726wWi7nowhivvwBFWiesqFkCqFpvRfnhxX46O0vSYrJvnnD-PcFSkU9rIEB5LrO2iEys4lPrQWxRczPw7VCfMRtyf0tjrhAo3MS03qQoMlK6fp-A2XZFrgBf1Wfy0RF8_w53LIBvMsY8XZivYucSZLR",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgaXTb0twSrxAJXHs3jLd96TvFQUNJ6AXGN2jcee6Gd1UlQ42ycc8ogCuDS7ihznoxUvfp_HUDlwcfmHYH0vrJg_6-UFCa5mjP2Y7684qXbQwZdyIe-ISx79gWpvCOH5UeKpmnpxpgtxOg8_PWV6Hor6VptN-x4ehN2wCbJ8TfcyqZjIybRoYSzkCKWhAfU"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEg7pElyJAc4fqJSiMSOc3RLGlB_0g5Q_MshGeV40SFX_C29TXabZ1mc2q50IkcNsAPZIyf1GY4gnWn7cuNd2Pxy6fvrDPefsj3vknea3KCBJCHM4vU9cAYpMhys4eNY1MmDSLPV0jCRjzGT8dYyPHr2Q9BeXAMATSiH4ClX6OVMsv1klOX0514GF1hNMA8k"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiz5Z52sEiRLfJZup1mROE_IDaOhwP1cYPEmZCcLhcrw9bl0ZegpJKIo27IM-9gRMeFEoMTpv9BBWCcL2K8Nqcw3gBU97Lorc6BEeowpHu7HA0Gt1wRUSXpe57Plu0nzEFE8FOao9c4yuj0k5_FH5P48IMWn7LdASNWtKTLoysexC3yG6pW1fAnMj-Iz20T"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiPT2u3Laea439gCrZTdm1EWiAtBuyENUbx7vZxVLbhQeY-OW0rLPGGaOx0dtMkmXdqFunDb6tjzspUmGxEYOOPsKa-bNRC4oKz78eZ79X9YfLOzho3Zofg3xU2xZxOau8z98_nqswSV10RumaqvoG1WpFcXTPTn4H5Kreq1ssUCFPwASaeCPSxVH2gPyRd"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjhSmv_AWlwLNAKuz9-EAO17aEZ5o4rr3rrPfr_5S2FUIdEMiWjUaOMGpEpk7kNQ1FTRp3R5XmhsYNT5I959UCUNTt6vkm2ehbMqAtJIJMnT3tZbnJKieVDEAKonYJlS2iFtX6-SuwzU_IzXkxtc1I2kEjInYo5SMddT7YpDgo_5a-3uDCWLkiD9S3wQSsj"
+      }
+    ],
+    "correctAnswer": 0,
+    "explanation": "<p>එක් එක් රූප සටහන දෙස අවධානයෙන් බලමු:</p><p><b>(A) රූප සටහන:</b> මෙහි පැරණි පද්ධතිය ක්‍රමයෙන් අභාවයට යන අතර නව පද්ධතිය එකවරම ක්‍රියාත්මක වන බව පෙනේ. පැරණි පද්ධතිය සම්පූර්ණයෙන්ම ඉවත් කර නව පද්ධතිය එකවර ස්ථාපනය කිරීමේ මෙම ක්‍රමය <b>ඍජු (direct)</b> හෝ <b>කැපුම් (cutover)</b> ස්ථාපනය ලෙස හැඳින්වේ.</p><p><b>(B) රූප සටහන:</b> මෙහි පැරණි පද්ධතිය ක්‍රමයෙන් කොටස් වශයෙන් නව පද්ධතිය මගින් ප්‍රතිස්ථාපනය වන බව පෙනේ. කාලයත් සමඟ පැරණි පද්ධතියේ කොටස් එකින් එක ඉවත් කර ඒ වෙනුවට නව පද්ධතියේ අනුරූප කොටස් ස්ථාපනය කිරීමේ මෙම ක්‍රමය <b>අවධි (phased)</b> ස්ථාපනය ලෙස හැඳින්වේ.</p><p><b>(C) රූප සටහන:</b> මෙහි පැරණි පද්ධතිය සහ නව පද්ධතිය යන දෙකම යම් කාලයක් එකට ක්‍රියාත්මක වන බව පෙනේ. නව පද්ධතිය නිවැරදිව ක්‍රියාත්මක වන බව තහවුරු වන තුරු පැරණි පද්ධතිය අඛණ්ඩව ක්‍රියාත්මක වන අතර පසුව එය ඉවත් කරනු ලැබේ. මෙම ක්‍රමය <b>සමාන්තර (parallel)</b> ස්ථාපනය ලෙස හැඳින්වේ.</p><p>එබැවින්, රූප සටහන් (A), (B) සහ (C) පිළිවෙලින් නිරූපණය කරන්නේ:</p><ul><li><b>(A) -</b> ඍජු (direct)</li><li><b>(B) -</b> අවධි (phased)</li><li><b>(C) -</b> සමාන්තර (parallel)</li></ul><p>මෙම පිළිවෙලට ගැලපෙන විකල්පය වන්නේ <b>(1) ඍජු (direct), අවධි (phased) සහ සමාන්තර (parallel)</b> යන්නයි.</p><p><b>එබැවින්, නිවැරදි පිළිතුර වන්නේ (1) යන්නයි.</b></p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhGoBHJF9RvQP0t6IqTjroPREdbLxuS5zbVn7dHr-43He4zG8SZVqqWS222esjUtw01TkoTR1EwEgsUHWABADre42nJEKYlka_pquMoFQ7LjiE4km00VaAZtOHVtLyRqH2leAAfAF3y_V1sx2d1q4UVUI4JYKM6lZLuRh1F4jytthzxOYIcD3mjHIz6BJTV",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhSLjkaadj33yrfhIMyZa4y-cbhEKZCKtDGmgvJCY5ib9I_HzYUjA-lh47_DNJjY_Yqebu6Dg1K028D8BN5l4rQH1S_ty3t8VkiTP-rTfBiYnSv82vUw0TzdsSQfqVUqteTa2Gj7K5r5sUyEoGuQbUo5oCG0KPmoTvYHhHeVXWdoQpNI0ukxBP4q4iDYzTA"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjnKLHvRsLOQp_5T_SgjPxYJJz2hNMQ5BAr0k-8LjEKjat9K_yxSrBpARcZ42KDtINYAz7uLxIyZueWghREB2jijzjdEudTc5dELAssV2YKNZ0E8XcZLWD8rNi92KhP1FK0a7oB_o8Q2I5cLK4cgp305yQrrXcYz2fLx9ovj4guBLO9oQ2Q_qc0VRzrtWLc"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEh4SN63ToshKTUeRzSCN6LXkIrA02EAXYJjWiyhxg-tEB4XxuALMdopk0jdfsq9hWhqg0xQh-HDCH7Xh5NimFGQjMx8ceZmdTwjwJvHsOgEYryMQ1II1IH8vwBgxHjoo-1rdVSboCi5gwJOuJGb7Rg1zdgQGWHwSX-dr6up-P_wlfUMqgPzQLoIaw8cjdeJ"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjHu10XlGvWDPgStvo5M5Jhd7Grh_9YX2sAoPvCDJH9YoAvdgnn-UbD_6sRki3dhNrC9WfFeWJfYZcRz2y6C2_8mwb6W-uxMqY3j6b2Fnj8d4CVmbNmGXj6ZgiB-3bD94Yo86kv_JkICDLO0flYUfuX-PXqnAGJTdaIT1bHDOFORGR8-thAGu_vpNniqfLJ"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhvQJBREaV6NdMwFYE10x9E0Np6MnOsiGiGa1FBdBWjH4EvfzSwAT0N-T8fWyTvEjJiWrQRceYSK9OGRRqzkXWN_2sqAeVJy_K6idcg-I8HoYGANUxcEvaC_JzYe6k-3bHa264RrZgVsPGp_NfnjRHP9HL-G6kjmu2XlZLb_-2Do5fMjKFhxn08aF_nGxrM"
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": "<p>දැන් අපි එක් එක් තොරතුරු පද්ධති වර්ගය සහ ඒවායේ අදාළ විය හැකි විස්තර සලකා බලමු:</p><p><b>A1 - තීරණ සහාය පද්ධතිය (Decision Support System - DSS):</b> තීරණ සහාය පද්ධතියක් නිර්මාණය කර ඇත්තේ සංකීර්ණ ගැටළු විශ්ලේෂණය කිරීමට සහ තීරණ ගැනීමට සහාය වීම සඳහාය. එය සාමාන්‍යයෙන් ඓතිහාසික දත්ත සහ විශ්ලේෂණ මෙවලම් ඒකාබද්ධ කරයි. B ලැයිස්තුවේ <b>B3 - ඓතිහාසික දත්ත මත පදනම්ව විකුණුම් පුරෝකථනය සඳහා දත්ත සහ විශ්ලේෂණ මෙවලම් ඒකාබද්ධ කරන පද්ධතියකි</b> යන විස්තරය DSS සඳහා වඩාත් සුදුසු වේ.</p><p><b>A2 - අන්තර්ගත කළමනාකරණ පද්ධතිය (Content Management System - CMS):</b> අන්තර්ගත කළමනාකරණ පද්ධතියක් යනු වෙබ් අඩවියක හෝ වෙනත් ඩිජිටල් වේදිකාවක අන්තර්ගතය නිර්මාණය කිරීමට, සංස්කරණය කිරීමට, සංවිධානය කිරීමට සහ ප්‍රකාශනය කිරීමට ඉඩ සලසන මෘදුකාංග යෙදුමකි. B ලැයිස්තුවේ <b>B1 - පුවත් වෙබ් අඩවියක විස්තර යාවත්කාලීන කිරීම, නිර්මාණය කිරීම සහ කළමනාකරණය කිරීමට ඉඩ දෙන පද්ධතියකි</b> යන විස්තරය CMS සඳහා වඩාත් සුදුසු වේ.</p><p><b>A3 - ගනුදෙනු සැකසුම් පද්ධතිය (Transaction Processing System - TPS):</b> ගනුදෙනු සැකසුම් පද්ධතියක් නිර්මාණය කර ඇත්තේ එදිනෙදා ව්‍යාපාරික ගනුදෙනු විශාල ප්‍රමාණයක් කාර්යක්ෂමව හා නිරවද්‍යතාවයෙන් සැකසීම සඳහාය. B ලැයිස්තුවේ <b>B2 - ඉලෙක්ට්‍රොනික මුදල් හුවමාරු හසුරුවන පද්ධතියකි</b> යන විස්තරය TPS මඟින් සිදුකරන එක් ආකාරයක ගනුදෙනු සැකසුමක් නිරූපණය කරයි.</p><p>අපගේ ගැළපීම් සාරාංශගත කළහොත්:</p><ul><li>A1 (තීරණ සහාය පද්ධතිය) - B3 (ඓතිහාසික දත්ත මත පදනම්ව විකුණුම් පුරෝකථනය)</li><li>A2 (අන්තර්ගත කළමනාකරණ පද්ධතිය) - B1 (පුවත් වෙබ් අඩවි විස්තර කළමනාකරණය)</li><li>A3 (ගනුදෙනු සැකසුම් පද්ධතිය) - B2 (ඉලෙක්ට්‍රොනික මුදල් හුවමාරු හැසිරවීම)</li></ul><p>මෙම ගැළපීම් <b>(4) A1 - B3 , A2 - B1 , A3 - B2</b> යන විකල්පයට අනුරූප වේ.</p><p><b>එබැවින්, නිවැරදි පිළිතුර වන්නේ (4) යන්නයි.</b></p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEj1lchfDCI2-MKOvXRyRosInyeVFkn60lUePQyvB_RnTzaRCNZhojzVXLjFrUiZTWXWrnC8oXP32LUFEKDgTR4GT46cdYjNO0wOwvAqm2KBOj56f6oM_2mBrOMIrkRGgjXyJV3rIgQ2UiBmSq2EZQgmkX7WA7GKp1wK0KoMjPLJugjvZRDdSzH_cr-bj2Ei",
+    "text":"",
+    "options": [
+      {
+        "text": "(1)  A පමණි",
+        "image": ""
+      },
+      {
+        "text": "(2)  B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(3)  C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(4)  A සහ B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(5)  A සහ C පමණි",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 0,
+    "explanation": "<p>පද්ධති සංවර්ධන ජීවන චක්‍ර (SDLC) ආකෘති සම්බන්ධයෙන් දක්වා ඇති ප්‍රකාශයන් එකින් එක විමසා බලමු:</p><p><b>A - සුචල්‍ය (agile) ආකෘතියේදී, ක්‍රමානුකූලව සංවර්ධනය කළ ක්‍රියාකාරී මෘදුකාංගවල කුඩා කොටස් නිරන්තරයෙන් සේවාදායකයාට ලබා දෙනු ලැබේ.</b><br>මෙම ප්‍රකාශය නිවැරදිය. සුචල්‍ය (Agile) ක්‍රමවේදයේ මූලික ලක්ෂණයක් වන්නේ කුඩා, ක්‍රියාකාරී මෘදුකාංග කොටස් වරින් වර සේවාදායකයාට ලබා දීමයි. එමඟින් සේවාදායකයාට සංවර්ධන ක්‍රියාවලිය නිරන්තරයෙන් නිරීක්ෂණය කිරීමට සහ ප්‍රතිපෝෂණය ලබා දීමට අවස්ථාව ලැබේ.</p><p><b>B - අවශ්‍යතාවන්ගේ පසු වෙනස්කම් සඳහා දිය ඇලි ආකෘතියේදී (waterfall model) පහසුවෙන් ඉඩ ලබාගත හැකිය.</b><br>මෙම ප්‍රකාශය වැරදිය. දිය ඇලි (Waterfall) ආකෘතිය අනුක්‍රමික ක්‍රියාවලියක් වන අතර, එක් අදියරක් සම්පූර්ණ වූ පසු ඊළඟ අදියරට ගමන් කරයි. අවශ්‍යතාවන් නිර්වචනය කිරීමේ අදියරෙන් පසු වෙනස්කම් සිදු කිරීම මෙම ආකෘතියේදී අපහසු සහ වියදම් අධික විය හැක.</p><p><b>C - සේවාදායකයාගේ අන්තර් ක්‍රියාකාරිත්වයෙන් තොරව මූලාකෘති (prototyping) ආකෘතිය ක්‍රියාවෙහි යෙදවිය හැකි ය.</b><br>මෙම ප්‍රකාශය වැරදිය. මූලාකෘති (Prototyping) ආකෘතියේදී මූලාකෘති නිර්මාණය කර සේවාදායකයාට පෙන්වා ඔවුන්ගේ ප්‍රතිපෝෂණය ලබා ගැනීම අත්‍යවශ්‍ය වේ. සේවාදායකයාගේ අන්තර් ක්‍රියාකාරිත්වය නොමැතිව සාර්ථක මූලාකෘතියක් නිර්මාණය කළ නොහැකිය.</p><p>ඒ අනුව, නිවැරදි ප්‍රකාශය වන්නේ <b>A</b> පමණි.</p><p>එම නිසා, නිවැරදි පිළිතුර වන්නේ <b>(1) A පමණි</b> යන්නයි.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhhaFD1whFAsWddeVxcaw5u-3jy3HMxsrmFfXe_SIucH68gDOpUuZS11MIO6w2gl7RbrRQQnlZERy7eGOIOzg9bncfGTTDDxqCvafNMNoP0kIuz1wZCJN2OXvzXFcCquit5S4WzCV8ehDnPBlPeAuwPKXiDWi6S7jqX5TUHEv_zugWMkQKFHMUYW3G-RtN1",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEic7QGOgCj2PbZa0mOjXMZY8pvYk9EiP_ZHpXEinxYnAaiKV8rQyib-GAkEgKOryi2nHZ9n-kAgGsORMawkIDzc0vmHb-grwFPO7CfWB9SY_p5NEc-sx6dEXSzNndtmN097yR--nde_oDJZalfgt73ndRn3AdJwu3_UQ9JgxK_vSDFzw2LhTJLfnXbeAfU1"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEio3UDxir7Sjsu7Y-UYKBdwoHxatCcn-1aGEvZJbBQxfF5-5fWL1VDnlDXAKI-y103SkmDo8t_wrbZI_K8wpmAVu4wFZkAic50wL7pcYPbrGyHsFqKhfpxBU-8HvUgAyZRBMcb1gI5IG7S20nTW4A3Mu_OHa_pFm2qgngVDzpcW6luT4ujOzqMjnVItSFEN"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjA8sYuo_cTw2pmk7t32zrbAg3td893IvuLEO2cYPyzT_OiPddJpn8eaSliujHxMSYxmh5bHY5d0rX1xJMSIWJC9lijn7fyja3VVz_3u5TTzhUUirwMB7FCWTnCj2JyAKkWLdpLOxtEf52mCSQFZ18jxyazTTTIIjohbHh5GdZnFK-ZOZ10UG1W0p6ZMoZF"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhyBUEs2ZU16iJlumlDgizvdA0mGUe6qDPkOGvgd3M2S3o8Y8GeOhdtiTQ_G52j-BobMBTQHUZjnoXXSENssCVMWCgjKp59SoM2C1UO6KtXIhIDJGd-W6ImPGGDAxbwjtH2E3snAluRVrZgw6823oJLTPvScyoz_VAx9jfVzQMRlPxwLafbBaxgkz9FYvay"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgQZTNRQA0AewFI5MPNYePQkkR7v_4pVTOM5eMNfl6QOEQoSzXt2dwoAu8PBIcq28qWc2kz0lG9tKgbQYB8WCTrbjBu-esMrLJkWWTJbiPAzYiei3jI88aW29-SwNgu47K9ezK-I3VWvDz77yUvE3wPLCST889UJCyBWAJp9eyb6CGrCyvZs2TnlPUdqfIh"
+      }
+    ],
+    "correctAnswer": 1,
+    "explanation": " <p>කාර්යබද්ධ නොවන (non-functional) අවශ්‍යතා යනු පද්ධතියක් ක්‍රියා කරන ආකාරය පිළිබඳ ගුණාත්මක ලක්ෂණ නිර්වචනය කරන අවශ්‍යතා වේ. ඒවා පද්ධතියේ විශේෂිත කාර්යයන් (functional requirements) ගැන නොව, එහි ක්‍රියාකාරීත්වය, කාර්යක්ෂමතාව, ආරක්ෂාව, භාවිතයේ පහසුව වැනි ගුණාංග ගැන සැලකිලිමත් වේ.</p><p>දැන් අපි එක් එක් විකල්පය පරීක්ෂා කර බලමු:</p><p><b>(1) විද්‍යුත් තැපැල් පද්ධතිය පරිශීලකයින්ට ගොනු ඇමිණීමට ඉඩ ලබාදිය යුතුය.</b><br>මෙය කාර්යබද්ධ අවශ්‍යතාවයකි. මන්ද මෙහි විද්‍යුත් තැපැල් පද්ධතියක් මගින් සිදු කළ යුතු විශේෂිත කාර්යයක් (ගොනු ඇමිණීම) විස්තර කෙරේ.</p><p><b>(2) වෙබ් අඩවියේ සෑම පිටුවක්ම තත්පර 4 ක් ඇතුළත පූරණය (load) විය යුතු ය.</b><br>මෙය කාර්යබද්ධ නොවන අවශ්‍යතාවයකි. මන්ද මෙහි වෙබ් අඩවියක විශේෂිත කාර්යයක් නොව, එහි කාර්යක්ෂමතාව (වේගය) පිළිබඳ ගුණාත්මක ලක්ෂණයක් විස්තර කෙරේ. තත්පර 4ක් ඇතුළත පිටුව පූරණය වීම යනු පද්ධතියේ ක්‍රියාකාරීත්වයේ වේගය සහ ප්‍රතිචාර දැක්වීමේ හැකියාව පෙන්නුම් කරන ගුණාංගයකි.</p><p><b>(3) ඊ-වාණිජ්‍ය වෙබ් අඩවියේ පරිපාලකට, ගනුදෙනුකරුවන්ගේ ලැයිස්තුවක් බැලීමට හැකි විය යුතුය.</b><br>මෙය කාර්යබද්ධ අවශ්‍යතාවයකි. මන්ද මෙහි ඊ-වාණිජ්‍ය වෙබ් අඩවියක පරිපාලකයෙකුට කළ හැකි විශේෂිත කාර්යයක් (ගනුදෙනුකරුවන්ගේ ලැයිස්තුව බැලීම) විස්තර කෙරේ.</p><p><b>(4) මාර්ගගත බැංකු පද්ධතිය භාවිත කරන්නෙකුට අවසන් ගනුදෙනු බැලීමට හැකි විය යුතු ය.</b><br>මෙය කාර්යබද්ධ අවශ්‍යතාවයකි. මන්ද මෙහි මාර්ගගත බැංකු පද්ධතියක පරිශීලකයෙකුට කළ හැකි විශේෂිත කාර්යයක් (අවසන් ගනුදෙනු බැලීම) විස්තර කෙරේ.</p><p><b>(5) ATM යන්ත්‍රය භාවිත කරන්නන්ට රිසිට් පතක් මුද්‍රණය කිරීමට ඉඩ ලබාදිය යුතු ය.</b><br>මෙය කාර්යබද්ධ අවශ්‍යතාවයකි. මන්ද මෙහි ATM යන්ත්‍රයක් මගින් සිදු කළ යුතු විශේෂිත කාර්යයක් (රිසිට් පතක් මුද්‍රණය කිරීම) විස්තර කෙරේ.</p><p>ඒ අනුව, කාර්යබද්ධ නොවන අවශ්‍යතාවක් සඳහා උදාහරණය වන්නේ <b>(2) වෙබ් අඩවියේ සෑම පිටුවක්ම තත්පර 4 ක් ඇතුළත පූරණය (load) විය යුතු ය</b> යන්නයි.</p><p>එම නිසා, නිවැරදි පිළිතුර වන්නේ <b>(2)</b> ය.</p>",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjKtml677KpivtpNouK17519HvQkh9Y8pS3FrqmTlpctlDMVIXvIYq3HPbv43ntb_ee_g7ZAG40-Vnt59gkQKmzujLcKcdF6JKNmvtpi-iCYPmMm8R6aeQ5edFyc-7Jdx8wsTYtxXg92tflzkhq2xEl4PwI79qjZU4IZg2_92nXVTVJ0Mlust_UdgrSrDDs",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhu_nK6mBov_EPeE7mwE1Oxyvb16-U0-RVHZvLVDsFDrxZqI7iwx577Volvzcdle-t_L2nGokUWKTFTKLPAFoRcw2jkME1DPQmlCIzBoC6wV43_ICm9yRKtCzUI8FB-Bkq10iMRk0o4JrVtGbuSR6KINmVGKlQrLCPkpWwr7t54_E8s4Cbo18UJIxnOW4cn"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjbRd2cGwxFy2aRwvGNVYM2dGyoNokaffccHqnWdslLYa7PsgAtxfg44OJCqx5ISx1gadS5P1eTAHRSbdhkk4PHA7u_nAMxkXNx8KCqr_BoUI_Xrg84mrr855HiKLr8h7zhoGUBychGVkpWML7Mexl6DUJ5Ddn0WFD1cZdLYv8c94OovOwI8SireLPB6Llj"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgX8a_tiQPfeg8yX2LgBaoU4u67X1qibl_ixbjLsjr_wsV5RT4YvyDaww4HnLZQxhRYrOjgVu_ETKHeMANfB6TEIG-qnKNa9jnzMpxNuVUPB7uEyotUQKhiub0qbYuddup0I_-2M52xYKy9IqK0WGN1s4ZsvQjtl2PmGqanVoCEEhfH0DaJxJPnWCDENfL1"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEi4HKtZLMlxmD0aT9hWA03IHdnwKwOztM4zdUE5bCBO0UQdejVERtuQEg8KtPY7gl2mXztR2ZjdpVbRqa5_-KygYek41wclFNRzqlMy8YgryVc32TjZ5FZ-a4nrx2F82u8UdanZ6y1drmNOq29ceoHvFF53EyhvV2Ws14PGvEXvpH9zyJFVYTzex2Gkpk52"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiXxvyDgMwXZDSrlkBHacl4QK8i3oiVshCsDs7H_ILKMrxHwByWPPrCEYeycdWYO_8AP99M3vnq9feh3diNVVPFY73_S3RkVhWy_PDrmPnM4W5m_-iG80EbmtdUnIGEkHiJ8ssExwhApbdFd1RF61h1-9aODYh2FeefghkRyGEFHQkGc-XTIJvhzC7L2MDB"
+      }
+    ],
+    "correctAnswer": 0,
+    "explanation": "<p>දත්ත ගැලීම් රූප සටහනක (DFD) නිවැරදි ව්‍යුහය සම්බන්ධයෙන් ඔබගේ පැහැදිලි කිරීම ඉතා නිවැරදියි. ඒ අනුව, එක් එක් විකල්පය HTML ආකෘතියෙන් විස්තර කරමු:</p><p><b>(1)</b> A (බාහිර භූතාර්ථය) සිට B (ක්‍රියාවලිය) වෙත දත්ත ගලා යයි. B සිට C (දත්ත ගබඩාව) වෙත දත්ත ගලා යයි. C සිට නැවත B වෙත දත්ත ගලා එයි. බාහිර භූතාර්ථයකින් දත්ත ක්‍රියාවලියකට පැමිණ, ක්‍රියාවලියෙන් දත්ත ගබඩාවට ගොස්, නැවත දත්ත ගබඩාවෙන් ක්‍රියාවලියට පැමිණ බාහිර භූතාර්ථය සමඟ අන්තර් ක්‍රියා කිරීම DFD හි නිතර දක්නට ලැබෙන තාර්කික දත්ත ගැලීම් රටාවකි.</p><p><b>(2)</b> B (ක්‍රියාවලිය) සිට A (බාහිර භූතාර්ථය) වෙත දත්ත ගලා යයි. A සිට C (දත්ත ගබඩාව) වෙත දත්ත ගලා යයි. මෙහිදී, ක්‍රියාවලියකින් සෘජුවම බාහිර භූතාර්ථයකට දත්ත යැවීම සහ බාහිර භූතාර්ථයකින් සෘජුවම දත්ත ගබඩාවකට දත්ත යැවීම සාමාන්‍ය DFD නීතිවලට එතරම් අනුකූල නොවේ. බාහිර භූතාර්ථයක් සාමාන්‍යයෙන් දත්තවල මූලාශ්‍රයක් හෝ අවසාන ගමනාන්තයක් ලෙස සැලකේ.</p><p><b>(3)</b> C (දත්ත ගබඩාව) සිට සෘජුවම A (බාහිර භූතාර්ථය) වෙත දත්ත ගලා යයි. DFD නීතිවලට අනුව, දත්ත ගබඩාවකින් බාහිර භූතාර්ථයකට දත්ත යාමට නම්, අතරමැදි ක්‍රියාවලියක් අනිවාර්යයෙන්ම තිබිය යුතුය.</p><p><b>(4)</b> B (ක්‍රියාවලිය) සිට A (බාහිර භූතාර්ථය) වෙත දත්ත ගලා යයි. A සිට C (දත්ත ගබඩාව) වෙත දත්ත ගලා යයි. මෙය විකල්ප (2) හි ඇති ගැටළුවම පෙන්නුම් කරයි.</p><p><b>(5)</b> A (බාහිර භූතාර්ථය) සිට සෘජුවම C (දත්ත ගබඩාව) වෙත දත්ත ගලා යයි. බාහිර භූතාර්ථයකින් දත්ත ගබඩාවකට දත්ත යාමට නම්, අතරමැදි ක්‍රියාවලියක් අනිවාර්යයෙන්ම තිබිය යුතුය.</p><p>ඔබගේ විශ්ලේෂණයට අනුව, <b>(1)</b> වන විකල්පයයි වඩාත්ම නිවැරදි දත්ත ගැලීම් රූප සටහන ලෙස සැලකිය හැක්කේ, එහි මූලික DFD නීති උල්ලංඝනය නොවන බැවිනි.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhBpbfZ8nxMR9ES0-ULV1fMaXKWqnHROEpxDtXu7EPnrcvUPIRFpDYZvujpTl5IkxDqFzqgqu4HhXdHwDPE4ksneJwfyAJ8fw5T8vriuytJwh6DFcde8rFvGgh73RwOMwd5KF3z6Wsygga7GhuicOFTd9M-3pBkIMbd-Nkm7TwOuESMF_ViQvB_POCAfWNX",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgNFJ_Hytmsr05ROHD_AZhANomtNPSoCVt-5z-XN8v2f7GRXrSQcyImTko04coGfK_Cg0lJmNk3M5dTrTV9Xy4LVGm9d6t7up-8YLo5aVWBwSac0NeMw3_ULEEQ75LAgd8F64YDpB4Ozi0zNR6RslFHr_1vC0a0GG8KXDJdCJev6E3jRfqy97S-XnncABp_"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhv4sPVFrNiWwp-q6EzylB4cqCcnd71SdbNgEDMwZbS5fLPdhXaiYMQUw1mg6Xc0Y3kT7lb7JtvL1Jr83m_fHqotmxC4M1uTnvPRf_3GzdrSdfEubmFedchWMTv5SQOV8q5bBqM15zfqoabLFzFMxebKlwQZgEuc_5G_JY9_OeBK3LsPhJMyY1mINbyUX4-"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgjt7X831vDA6xt_Xpx7bwB2NA-Mb4QVLibNBxQnsOcwgX4wZCHq2LjpJJ3h6uI-DhwfHlr6JwCMuHIXfEzQicffSj41V6Q0Cu3WyBkykMjqgdl3dXhZVdjGRMPciKzSHUD89Gp2nkN-nxjKg13lqD_DS5WLBPtHAN3m7bhZV7voYNM6i3QvPsqE0ExspjH"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEj6PvoDKP4WHpX_7uFYZIAqYE-ASOEuRkRZaOjEk6CIimZS1oWWtu5iH8N2UeMHTm03Ye2cQ1Fbro7ZsIODHIoVHJPu5ubtfuA4Z-e_gcTtovICH8OuY-R_2WnE3Gdut_iU1rlwaaTaUzz30eejo968kCnh64Dij-65Bru2fxzUusF-a7Q7cznSbTR3CNqh"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEj3DkKLDsU_CjlI8dsqWIUQwwH5-29lUEmecq_5GSVohsec8EzgHFJpvpulBF1_rM4EyNgitweCyeBsGxw5SDraCqO_BWRD7P-8losrh_-tmSB1DF-ZBF_d60HL2_NnVrhlFTF5Bei8l2FRv-L6-oYxjEwjLW1dzC0ThraZCuahwuomJ9nV6FKDkT699FSF"
+      }
+    ],
+    "correctAnswer": 1,
+    "explanation": "<p>මෘදුකාංග පරීක්ෂාව සම්බන්ධයෙන් දක්වා ඇති ප්‍රකාශයන් පහත දැක්වේ:</p><p><b>(1) ඒකාබද්ධ (integration) පරීක්ෂාව සාමාන්‍යයෙන් ඒකක (unit) පරීක්ෂාවට පෙර සිදු කෙරේ.</b><br>මෙම ප්‍රකාශය <b>වැරදිය</b>. ඒකාබද්ධ පරීක්ෂාව සිදු කරනු ලබන්නේ ඒකක පරීක්ෂාවෙන් පසුවය.</p><p><b>(2) කාලමංජුස්සා (black-box) පරීක්ෂාවේ ශිල්පීය ක්‍රම සාමාන්‍යයෙන් ප්‍රතිග්‍රහණ (acceptance) පරීක්ෂාවේදී භාවිත වේ.</b><br>මෙම ප්‍රකාශය <b>නිවැරදිය</b>. ප්‍රතිග්‍රහණ පරීක්ෂාවේදී පරිශීලකයින් මෘදුකාංගයේ බාහිර ක්‍රියාකාරිත්වය පමණක් සලකා බලන අතර, කාලමංජුස්සා පරීක්ෂණ ශිල්පීය ක්‍රම ඒ සඳහා සුදුසු වේ.</p><p><b>(3) ශ්වේත මංජුසා (white-box) පරීක්ෂාවේ දී මෘදුකාංගයක හැසිරීම, පද්ධතියට ලබා දෙන ආදාන මත පමණක් පදනම්ව පරීක්ෂා කෙරේ.</b><br>මෙම ප්‍රකාශය <b>වැරදිය</b>. ශ්වේත මංජුසා පරීක්ෂාවේදී මෘදුකාංගයේ අභ්‍යන්තර ව්‍යුහය සහ කේතය පදනම් කරගෙන පරීක්ෂා කරනු ලැබේ.</p><p><b>(4) ඒකක පරීක්ෂාවේදී සම්පූර්ණ පද්ධතියේ ක්‍රියාකාරිත්වය, සමස්තයක් ලෙස පරීක්ෂා කෙරේ.</b><br>මෙම ප්‍රකාශය <b>වැරදිය</b>. ඒකක පරීක්ෂාවේදී පද්ධතියේ කුඩාම ඒකක වෙන වෙනම පරීක්ෂා කරනු ලැබේ.</p><p><b>(5) පද්ධති (system) පරීක්ෂාව සාමාන්‍යයෙන් සේවාදායක ප්‍රතිග්‍රහණ (user acceptance) පරීක්ෂාවට පසුව සිදු කෙරේ.</b><br>මෙම ප්‍රකාශය <b>වැරදිය</b>. පද්ධති පරීක්ෂාව සිදු කරනු ලබන්නේ ප්‍රතිග්‍රහණ පරීක්ෂාවට පෙරය.</p><p>ඒ අනුව, නිවැරදි ප්‍රකාශය වන්නේ <b>(2) කාලමංජුස්සා (black-box) පරීක්ෂාවේ ශිල්පීය ක්‍රම සාමාන්‍යයෙන් ප්‍රතිග්‍රහණ (acceptance) පරීක්ෂාවේදී භාවිත වේ</b> යන්නයි.</p><p>එම නිසා, නිවැරදි පිළිතුර වන්නේ <b>(2)</b> ය.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjnTirJTwLMv83NQHZdjXsPrp2W2bV-6bVjh3hsqWAcQjekKuGSQKra9jRirQQ8ErVCS8tpmIXJzZgT4lo3SGIEuIAmWCZTA0aHLgNk6u8QIqgSKrrhFyfOidJJtDTBMbP5dXAuJbYjZGfaL_EE2QdJDvwrpVQb_FsnO_X-0m55jIPYDdfHwewjQcYozOYo",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjz-hNEPkb9tlwbh-zWispBNWfdBiIfJ7K3aj-DjS1cRO14g4x0V6TL2gq1Q3GqKnrxa-H26__jLcXhe6rtqiR6uLfeJwNQzH06E6VcB2v33RnRTYlTrMUhE19aCL5hy3T3NyZFnHPT5Zeq26hzo4KeaT2KI1LyRPMCwhpq0xS9n3kWZNCgEgfa0_OvpZK-"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiYD3RRTq30vqMG9zgD4Aej5GyIxgwWniMwwRJiOAa7kKIs2bJPBzn-NPXof2OGy96DOw6KqTtVc1FkzOg2tsGXIx8yJ0aSn1t4FpTcWPBKalQg1dwJvgYQxB9ONRtiqoohb7A7M1QXJdeBlT6xfwjgUxIzXOgg2D1P-Pw6I7sJ1sWyt7yhcMtl4CORjor1"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgzjPfeVzrj-inyQyrJPI5VhYhWTFF2uabYGPG42ZGXyfWZYCph4v0DNi7ZiBf_B1vGCQgprP5E71rrGdCZh-ZREatzdlb-7_TrcvKHXqgxxOAL2ThBzOhdwSyssopdq-wwqlO9XpCkUyhjR9jZTYNZnxfzGPuyBa5-ZNe0nrxj2Yw2T8H_FSZ2sVATxyYE"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEg-O09K_vni9-bFmB0CaR_9EtRdR9xTB818o1u-IF1wBAKxg3GZ-F2YWnzQwyfyHs5w_8Gn6qrzOvuxwFCLqtA5cVWO_V5aP5Xh_8SWAvaSVdI28E6EcpqxI77UVkEdkS3bSi2_cN7dKCnncKiKuyG4hlfqhN4dzrNZ1r1NbXEN15fXG9vNxdU4RUZVGUtZ"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEianO_J1e9AFQ49LZqTC4dZAf6_ht1CVtIRaatsXxlw14-PBQz7fUe5QZAdBt4wAJLylOzd942ggNmMaRCenhVI9hoBfYMyO5r_7tfuXh0XctSWbxzajvLaEsPTDIzdxCGcAdTkAXYYwXRfEhmt_0AkKYxveeVJceFFJ1EryoFFsm2KbleuJ0a05Sv_q56M"
+      }
+    ],
+    "correctAnswer": 4,
+    "explanation": "<p>ප්‍රශ්නයේ දක්වා ඇති සම්බන්ධතා පරිපාටික සටහන (relational schema) සහ භූතාර්ථ සම්බන්ධතා රූප සටහන් (ER diagram) විමසා බලමු.</p><p>සම්බන්ධතා පරිපාටික සටහනේ වගු තුනක් ඇත:</p><ol><li><b>Student (StudentID, StudentName, Address, Gender, DateOfBirth)</b><ul><li>මෙය සිසුන් පිළිබඳ තොරතුරු ගබඩා කරන වගුවයි.</li><li><b>StudentID</b> ප්‍රාථමික යතුරයි (ප්‍රධාන හඳුනාගැනීම).</li></ul></li><li><b>Study (StudentID, SubjectID, Grade)</b><ul><li>මෙය සිසුන් අධ්‍යයනය කරන විෂයන් සහ ඔවුන්ගේ ලකුණු පිළිබඳ තොරතුරු ගබඩා කරන වගුවයි.</li><li><b>StudentID</b> සහ <b>SubjectID</b> යන දෙකම එක්ව සංයුක්ත ප්‍රාථමික යතුරක් වේ.</li><li><b>StudentID</b> යනු Student වගුවට විදේශීය යතුරකි (Student වගුවේ ඇති StudentID වෙත යොමු කරයි).</li><li><b>SubjectID</b> යනු Subject වගුවට විදේශීය යතුරකි (Subject වගුවේ ඇති SubjectID වෙත යොමු කරයි).</li></ul></li><li><b>Subject (SubjectID, SubjectName)</b><ul><li>මෙය විෂයන් පිළිබඳ තොරතුරු ගබඩා කරන වගුවයි.</li><li><b>SubjectID</b> ප්‍රාථමික යතුරයි.</li></ul></li></ol><p>ප්‍රශ්නය අසන්නේ <b>Student</b> සහ <b>Subject</b> යන භූතාර්ථ දෙක අතර සම්බන්ධතාව නිවැරදිව නිරූපණය කරන ER රූප සටහන කුමක්ද යන්නයි. <b>Study</b> වගුව මෙම සම්බන්ධතාවය අතරමැදි කරන සම්බන්ධතා භූතාර්ථයක් (relationship entity) ලෙස ක්‍රියා කරයි.</p><p>දැන් අපි එක් එක් ER රූප සටහන විශ්ලේෂණය කරමු:</p><ol><li><b>Student --1-- studies --1-- Subject</b><p>මෙයින් අදහස් වන්නේ එක් සිසුවෙකු එක් විෂයයක් පමණක් හදාරන අතර එක් විෂයයක් එක් සිසුවෙකු පමණක් හදාරන බවයි. මෙය Study වගුවේ ව්‍යුහයට පටහැනි වේ (එක් සිසුවෙකුට බොහෝ විෂයන් හැදෑරිය හැකි අතර එක් විෂයක් බොහෝ සිසුන් හට හැදෑරිය හැක).</p></li><li><b>Student --1-- studies --m-- Subject</b><p>මෙයින් අදහස් වන්නේ එක් සිසුවෙකුට බොහෝ විෂයන් හැදෑරිය හැකි නමුත් එක් විෂයයක් හදාරන්නේ එක් සිසුවෙකු පමණක් බවයි. මෙයද Study වගුවේ ව්‍යුහයට පටහැනි වේ (එක් විෂයක් බොහෝ සිසුන් හට හැදෑරිය හැක).</p></li><li><b>Student --m-- subject --1-- Study</b><p>මෙය නිවැරදි නිරූපණයක් නොවේ. subject යනු සම්බන්ධතාවයේ නම වන අතර Study යනු භූතාර්ථයක් ලෙස දක්වා ඇත. අපට අවශ්‍ය වන්නේ Student සහ Subject අතර සම්බන්ධතාවයයි.</p></li><li><b>Student --n-- subject --m-- Study</b><p>මෙයද (3) ට සමාන ගැටළුවක් ඇත. subject සම්බන්ධතාවය වන අතර Study භූතාර්ථයක් ලෙස දක්වා ඇත.</p></li><li><b>Student --n-- studies --m-- Subject</b><p>මෙයින් අදහස් වන්නේ සිසුන් බොහෝ දෙනෙකුට (n) විෂයන් බොහෝ ගණනක් (m) හැදෑරිය හැකි බවයි. මෙය Study වගුවේ ව්‍යුහයට සම්පූර්ණයෙන්ම අනුකූල වේ:</p><ul><li>එක් සිසුවෙකුට (Student) Study වගුවේ බොහෝ වාර්තා තිබිය හැකිය, ඒ කියන්නේ ඔහුට බොහෝ විෂයන් හැදෑරිය හැකිය.</li><li>එක් විෂයයක් (Subject) සඳහා Study වගුවේ බොහෝ වාර්තා තිබිය හැකිය, ඒ කියන්නේ බොහෝ සිසුන් එම විෂය හැදෑරිය හැකිය.</li><li>studies යනු Student සහ Subject අතර ඇති සම්බන්ධතාවයයි.</li></ul></li></ol><p>එබැවින්, Student සහ Subject යන භූතාර්ථ අතර සම්බන්ධතාව නිවැරදිව නිරූපණය කරන ER රූප සටහන වන්නේ <b>(5)</b> යි.</p><p>නිවැරදි පිළිතුර වන්නේ <b>(5)</b> ය.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEj9xD5jcUJIiM0m8npBRftYL9cVBaG9-V8eKipUH5k-4Nu2vzQpUnrkRjXbnc5rDw1wW_eMZvAJJvCTGvyonHDmQZs_Wt5YfF9L0OxmPsAXY6s-oJkVh2An3UAtJmIMg7s3tydkHxwJvXRy4jCKFPN0dodMX8j4zzAOBx3zZpbI3RVViUMW6LZY_x_yI-zA",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgGIiCvQ7dGDblEB8iSuY8Ma3-cTwUXt0bxJwLjb0lbNTIPYEVsyrfmFpBD4-U28UaRXMHiSgszPG85HtB7JtN01V9HGKiwV065OBHjW39jjHmVwgL1LYnt8yKLPqT7YVkf-ars1k-g2k2F_G5Jy652O_DXJRzsEPYeg1JAPOLOzuK4jDwhTvsWefc9hk6D"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgOJnVJErdFF4_kvhLGjU_EdPaxQ2YMJB5Di2hUX6DfuHq5ckZ2EVcECO13_hdk2mreD1w2I7w8oERqRXzUOo_4yfftRbaK0Hl3eLmJ9wLDztoxGJcXJNJkKr9Q7en4Fc2ftlpE8tNXRTJw3RbqxseVKuswvuf7q4U3SPV3_-D0rXfG8zOetg3-3LghuJR7"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhk_ERmByzyhrsfD2KBzBnuLN6mnAsSWv7S1t46BHFJCz2B-aOxo_AL-ZeJw102xYvOOkAFHgSciAjLVmmRM9XRAVQ6mU0gHAlMrFQCxLRgb8iH0fhJIzQAbpgd326bQ3PJ7TVen1JL9id63QScKSlrAhWxxAanGfDJFfl5yFPV0D3UwtBPfgYWQocgxXyP"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjzDdhG4NbOOSZpMCHSrXYFZ9jewwo1rFgVKT-OQFEMJlJc7iklYM83EwDpXhnqHaHIIFqrGMw_oEz3pwlW_JAhyTiHom_lYtE1LAABdvOA_lV3aq35orfM4c3Pb2Z_xWxLGVoEeuJLdBCoeUTrGgZmwS4Td36rmbvS405kDrZYlos8IVyZoGd6KR0vI1js"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEh8vWuXZOVKuLB3la1XTOJp5dY_7xFfz6vxXNFNB1VjY4h29PV7wr_wl42Kwn-M5Yz7HI2rug2iuq7mU2lBZV8LAuTeEGnnYHcM_Ni53RJM9BIzqA5aeYhMZ2vbolG094O7uLVDgCvPwKlDxcADo3VviWiFjWW6kEkNZY2Vm8NeP97NJesZv2_wegRkEvZs"
+      }
+    ],
+    "correctAnswer": 2,
+    "explanation": "<p><b>Order</b> වගුවේ <b>OrderId</b> තීරුව සෑම ඇණවුමක් සඳහාම <b>unique</b> අගයක් ගන්නා බව පෙනේ. එබැවින්, <b>OrderId</b> යනු <b>Order</b> වගුවේ <b>unique</b> ප්‍රාථමික යතුර වේ.</p><p><b>Order_Product</b> වගුවේ එක් එක් වාර්තාව එක් ඇණවුමක ඇති එක් භාණ්ඩයක් නියෝජනය කරයි. එක් ඇණවුමක එකම භාණ්ඩය නැවත නැවතත් ඇතුළත් විය නොහැක. එබැවින්, එක් ඇණවුමක ඇති එක් එක් භාණ්ඩය <b>unique</b> ලෙස හඳුනා ගැනීම සඳහා <b>OrderId</b> සහ <b>ProdId</b> යන තීරු දෙකම එකට යොදාගත යුතුය. එබැවින්, <b>OrderId + ProdId</b> යනු <b>Order_Product</b> වගුවේ <b>unique</b> සංයුක්ත ප්‍රාථමික යතුර වේ.</p><p>එමනිසා, නිවැරදි පිළිතුර වන්නේ <b>(3) Order : OrderId, Order_Product : OrderId + ProdId</b> යන්නයි.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiTIT65XlfC_eq15eTzsRtzaymxU9Ti7oJvU5YoCj90Fg33z16EoE0_lCghHcAueKNrIKdZ4F3QKdigDbv15l4V7XxTkZABQFbAiDLWTZT2sii7JwWIilDtcIkm__7LcxXyilCpzY-_ee2PGRmQjS_cvIEOJPWvu3-mPziyjfCTR3t3OSkM4PBrDR3699SX",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEg7-F-iXryFwGS-Plv2Ll2rVChMx0EnmTE-tp6btlqhMjmp8rH-Jx9Sl8TW1vBMBfG2jsRlI0Sj83P067DQrX8NMKXmVnTM4aR_0houirBaNkqrQizVAifUj7Q3tLenPqPhDSptwyxGp0CT8RZ-AtzaZJh4uXeQlvU1CPzmvX9O8Tm8m3ngfVl20XM0XlIJ"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiN_oPGmBBBbLyecWLr72wPhtATxyBXGQfWKBLu3A3jjn4TMkxMmopjRIoi-FTxyv4HIUukiabJ5xzWD7BdEWYBemt4ORpGRfVY_-6BgB2zU7Rap4vPuWilAWXB-wqkqZUP3A6-oz9SQkjIxgNagoOOl-dkFmR7fVNrtdwmcjseFN0t235bfd5zbSBSktqC"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiOwBO_MzMOEdObNVCKym_ZjNHITsDcM1Jw0nYkNA-T5ZKLzR6eyrY49YitZLbn2e2yy-rzuoR_IT4Apr2VcNa-abRSa_sr4iF0eNnVsrt2FyRYJ-hW6lzpWNJxQCbkcpYs4KJDEPDYjYH1Z5asmM9FDUg3qOTiGHfyda2KFMAnEoI3_HzBK7FO_6r0DAXN"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjR-O4l-En8m1tFVsk4q8AUSKOcQlC74wNi0KKgP7WN2HxtWUg0tThojuDhJOn5gmrNwFXHG-idBHLlqrwNbO_A6vIML8vMLazqbaXV5tWlDiB-2Ymc0US2gP2WIqrQrDjO-cCJR7N_XIdjN_eEoZu607SrBE8Td2ajd5rE-d2ge7oXOb0FeL-M-O_7Dvsh"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjhnQIeEOw9nzMokWzJ3CwvH4GZrizLmR5MYMwCd4saMnkisgavFbMhJOHmiEyODdaDhAiuVJtq06F1KbWGK15NYWg7I_MOzpd1Jl1y7j2EjR9XNRjXOyjM2mad_xJ__PHv_6Ez4f9UlmcbigJ50g-a6Vuk6zmL4IsV2xyol3O3nZwOf5csoP3VVqHvWrjn"
+      }
+    ],
+    "correctAnswer": 0,
+    "explanation": "<p>මෙම SQL ප්‍රකාශය ක්‍රියාත්මක කළ විට ලැබෙන ප්‍රතිදානය කුමක්දැයි සොයා බලමු. ප්‍රකාශය කොටස් වශයෙන් විග්‍රහ කරමු:</p><ol><li><code>SELECT Customer.Fname , Customer.Lname , Order.Orderld</code><p>මෙම කොටසින් තෝරා ගැනීමට අවශ්‍ය තීරු සඳහන් කරයි. එනම්, <code>Customer</code> වගුවේ <code>Fname</code> (මුල් නම) සහ <code>Lname</code> (වාසගම) යන තීරුත්, <code>Order</code> වගුවේ <code>Orderld</code> (ඇණවුම් හැඳුනුම් අංකය) යන තීරුවත් ප්‍රතිදානයට ඇතුළත් වේ.</p></li><li><code>FROM Customer INNER JOIN Order ON Customer.Cusld = Order.Cusld</code><p>මෙම කොටසින් සම්බන්ධ කිරීමට අවශ්‍ය වගු සහ සම්බන්ධ වන ආකාරය දක්වයි.</p><ul><li><code>INNER JOIN</code> යනු <code>Customer</code> සහ <code>Order</code> යන වගු දෙකෙහිම පොදු වන වාර්තා පමණක් ප්‍රතිදානයට ඇතුළත් කරන සම්බන්ධ කිරීමේ ක්‍රමයකි.</li><li><code>ON Customer.Cusld = Order.Cusld</code> යනු වගු දෙක සම්බන්ධ වන තීරුවයි. එනම්, <code>Customer</code> වගුවේ <code>Cusld</code> (පාරිභෝගික හැඳුනුම් අංකය) තීරුවේ ඇති අගය <code>Order</code> වගුවේ <code>Cusld</code> තීරුවේ ඇති අගයට සමාන වන වාර්තා පමණක් සම්බන්ධ වේ.</li></ul></li><li><code>WHERE Customer.Location =  Galle </code><p>මෙම කොටසින් ප්‍රතිදානය සඳහා යම්කිසි කොන්දේසියක් පනවයි. එනම්, <code>Customer</code> වගුවේ <code>Location</code> (ස්ථානය) තීරුවේ අගය <code> Galle </code> ට සමාන වන පාරිභෝගිකයින්ගේ වාර්තා පමණක් සලකා බලනු ලැබේ.</p></li></ol><p>දැන් අපි වගුවල ඇති දත්ත සලකා බලමින් ප්‍රතිදානය කුමක් විය හැකිදැයි බලමු.</p><p><b>Customer (පාරිභෝගිකයා)</b> වගුවේ ගාල්ලේ සිටින පාරිභෝගිකයින් වන්නේ:</p><ul><li>Kalum Gamage (C002)</li><li>Shiromi Silva (C003)</li></ul><p><b>Order (ඇණවුම)</b> වගුවේ ඇති දත්ත සලකමු. අපි ගාල්ලේ පාරිභෝගිකයින්ගේ ඇණවුම් සොයා බලමු:</p><ul><li>පාරිභෝගික C002 (Kalum Gamage) ගේ ඇණවුම්: A001, A003</li><li>පාරිභෝගික C003 (Shiromi Silva) ගේ ඇණවුම්: A002</li></ul><p>දැන් අපි <code>SELECT</code> ප්‍රකාශයේ දක්වා ඇති තීරු පිළිවෙලට ප්‍රතිදානය සකස් කරමු (<code>Fname</code>, <code>Lname</code>, <code>Orderld</code>):</p><ul><li>Kalum Gamage ගේ ඇණවුම්: Kalum Gamage A001, Kalum Gamage A003</li><li>Shiromi Silva ගේ ඇණවුම: Shiromi Silva A002</li></ul><p>මෙම ප්‍රතිඵල (1) වන විකල්පයේ දක්වා ඇති ප්‍රතිදානයට සමාන වේ.</p><p>එමනිසා, මෙම SQL ප්‍රකාශය ක්‍රියාත්මක කිරීමෙන් පසු ලැබෙන ප්‍රතිදානය වන්නේ <b>(1)</b> ය.</p><p>නිවැරදි පිළිතුර වන්නේ <b>(1)</b> ය.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjQkj1LuEvV6B_YXkzfz3gkh4VVk10xmq0_64Y1UwnODuEIic3tOUC5QhG_D_C--TePHnDHlJb61caONll6ke2IVcgC6GSaeW46spE9Xuz2YS752a5gB7Js8Wd_gApbUGpVEJpU4rNLLqbVkwFH5dDzXOC7-sl4PdqRm9dyegG83ghwwsIMIqU79HKqC67w",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEguENhAtcQke6KDwLtuzVa55JGgpn5Qqv3t4VlOHHEDZ9UkfXXVY2TLhZ6HHqdybdJv8RBG8_Jt0U34EnQEZoRAN5NjaXOmG7tFY04VcGYRqb-cYrImefi4mKLLlUi3qonBajVFSxNNahYwsf_4em_LqL5-bGFZ9_hoTI1CKbaC0biQGOchFIHxNZtQ5-oU"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhYaTOQGJkCWYpDzHQlGEfUp0kwKTJkOktZsJ4xSEENZq0wjYss4IGV2tlLwlqc_dm4PYUz6_dBSMdfs03ZLsEOkhM-yltoz6gzELvp8_1xUcaj3lP3FF2Wq_hwKqVLJ4ZLX873vUicA8hfbaZhDO-b4PPvs5v31adGhLQ8_y5EVUv8C7R8Wxg2whXvJQFl"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgK0vHflUqyYe9IpJBYpoZfBWjiLcB4gQGkqA4aV_F2NtWt3COuwsw_Q0HwJM3K8GB4e3lb6Y8cZz612mdLNUFq8mTQhBXhfVsUoLbDoDno0E2Ypxjo790dW7nqY-Xe0R3NF2wzUWTBqGrDdodOp33kfENSClLGUFtGG2xgk4dRfsSk0KmVNOM80Xz3H1Ih"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgwiMg19sw0xbMJArNjdlxCeP7E85Bsjgias74SfK-xSCQ0e91cybSC2_W7ZinrSpjbSIgOiELawhQkFn04q_ct6DHLBCnVfoy8u4JFcIT36iGnYCp97ohn8Dp6-hty65pZpAt8UsTAlcAjScwXDWDFOve8P5_XvlYo8oA-8asjLfI5XEMh3L_pi5LE5UTx"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEj5U82h8MlpqVGv97CLMGZRzTEAg2FZZIUNjeqV0c4H2oh2ij7NVFxyLJlr4RlRNE1PbdjpbnbKw9bK9U53qbFGKqeRbBebvMyIWsLZCBb0LL5Ki_01FxH4rsatLuKpSq-1xNRlzIg1zyg9EDOVJcC4mOcEpbQY8fXu7bjRxUQJUD9ZwwUnP0pKok1EXewU"
+      }
+    ],
+    "correctAnswer": 2,
+    "explanation": "<p><b>Order (ඇණවුම)</b> වගුවේ තීරු වන්නේ: <b>OrderId, CusId, OrderDate, SellerId</b>.</p><p><b>(1) CusId උපලක්ෂණය (attribute) යින් වගුවේ එක් එක් උපලැකියාන (tuple) අනන්‍යව හඳුනාගනී.</b></p><p><b>වැරදියි.</b> CusId (පාරිභෝගික හැඳුනුම් අංකය) තීරුව පමණක් ගත්ත විට එක් පාරිභෝගිකයෙකුට බොහෝ ඇණවුම් තිබිය හැකි බැවින් එක් එක් වාර්තාව (උපලැකියානය) අනන්‍යව හඳුනාගත නොහැක.</p><p><b>(2) වගුව එහි ප්‍රථම ප්‍රමත අවස්ථාවේ (First Normal Form - 1NF) පවතී.</b></p><p><b>නිවැරදියි.</b> ප්‍රථම ප්‍රමත අවස්ථාවේදී වගුවක සෑම තීරුවකම අඩංගු විය යුත්තේ පරමාණුක (atomic) අගයන් පමණි. Order වගුවේ සෑම තීරුවකම තනි අගයන් අඩංගු වන බැවින් මෙය සත්‍යයකි.</p><p><b>(3) වගුව එහි දෙවන ප්‍රමත අවස්ථාවේ (Second Normal Form - 2NF) පවතී.</b></p><p><b>නිවැරදියි.</b> දෙවන ප්‍රමත අවස්ථාවේදී වගුවක් 1NF හි තිබිය යුතු අතර, ප්‍රාථමික යතුරේ කිසිදු අංගයක් නොවන (non-prime) සෑම උපලක්ෂණයක්ම සම්පූර්ණ ප්‍රාථමික යතුර මත ක්‍රියාකාරීව රඳා පැවතිය යුතුය.</p><ul><li>අපි කලින් නිගමනය කළ පරිදි <b>OrderId</b> යනු <b>Order</b> වගුවේ ප්‍රාථමික යතුරයි.</li><li>ප්‍රාථමික යතුර තනි තීරුවකින් සමන්විත බැවින්, එහි කිසිදු අංගයක් නොමැත.</li><li>එබැවින්, <b>CusId, OrderDate,</b> සහ <b>SellerId</b> යන සියලුම තීරු සම්පූර්ණ ප්‍රාථමික යතුර (<b>OrderId</b>) මත රඳා පවතී. නිශ්චිත <b>OrderId</b> එකක් සඳහා ඇත්තේ එක් නිශ්චිත <b>CusId, OrderDate,</b> සහ <b>SellerId</b> අගයක් පමණි.</li><li>මේ අනුව, වගුව 2NF හි පවතී.</li></ul><p><b>(4) එක් එක් පාරිභෝගිකයාගේ ඇණවුම් හසුරුවනු ලබන්නේ අනන්‍ය විකුණුම් කරුවෙකු විසිනි.</b></p><p><b>වැරදියි.</b> වගුවේ දත්ත අනුව, එක් පාරිභෝගිකයෙකුගේ ඇණවුම් කිහිපයක් විවිධ විකුණුම්කරුවන් විසින් හසුරුවා ඇති අවස්ථා තිබිය හැක.</p><p><b>(5) වගුව සංයුක්ත ප්‍රාථමික යතුරකින් (composite primary key) සමන්විත වේ.</b></p><p><b>වැරදියි.</b> <b>OrderId</b> තීරුවෙන්ම එක් එක් වාර්තාව අනන්‍යව හඳුනාගත හැකි බැවින් සංයුක්ත ප්‍රාථමික යතුරක් අවශ්‍ය නොවේ.</p><p>එමනිසා, <b>Order</b> වගුව සම්බන්ධයෙන් නිවැරදි ප්‍රකාශයන් වන්නේ <b>(2) වගුව එහි ප්‍රථම ප්‍රමත අවස්ථාවේ (First Normal Form - 1NF) පවතී</b> සහ <b>(3) වගුව එහි දෙවන ප්‍රමත අවස්ථාවේ (Second Normal Form - 2NF) පවතී</b> යන්නයි.</p><p>ප්‍රශ්නයේ අසන්නේ <b>කුමක් නිවැරදි ද</b> යන්න බැවින්, වඩාත් නිවැරදි පිළිතුර වන්නේ <b>(3) වගුව එහි දෙවන ප්‍රමත අවස්ථාවේ (Second Normal Form - 2NF) පවතී</b> යන්නයි. මන්ද, වගුව 2NF හි පවතී නම් එය ස්වයංක්‍රීයව 1NF හි ද පවතින බැවිනි. 2NF යනු 1NF ට වඩා දැඩි ප්‍රමිතියකි.</p><p>එබැවින්, නිවැරදි පිළිතුර වන්නේ <b>(3)</b> ය.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiv0EQopDPdQwpkWSl3JBrIU3jagk5QBtr2lF28RmDZ31_CNw7RxQ1_ddC7XIooqAqfdFC7238zGJjzbUfPBS8i286WJEUZ-nAoT4P1yNkVGbCmipnR50-4eIbvkj2GvB7jYjsMN468d_nNVOuN4pz4kYzBwXh4uDyqVqrOaBACNXydiRSL-Xv6A5DC0EZm",
+    "text":"",
+    "options": [
+      {
+        "text": "(1)  B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(2)  A සහ B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(3)  A සහ C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(4)  B සහ C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(5)  A,B සහ C සියල්ලම",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": " <ul><li><b>A</b> - පළමු ප්‍රමත අවස්ථාවේදී (1NF), වගුව තුළ ඇති පරමාණුක උපලක්ෂණ (atomic attributes) ඉවත් කරනු ලැබේ. - <b>වැරදියි</b></li><li><b>B</b> - දෙවන ප්‍රමත අවස්ථාවේදී (2NF), ප්‍රාථමික යතුර (primary key) මත උපලක්ෂණවල ආංශික පරායත්තතාව (partial dependency) ඉවත් කරනු ලැබේ. - <b>නිවැරදියි</b></li><li><b>C</b> - තෙවන ප්‍රමත අවස්ථාවේදී (3NF), උපලක්ෂණවල සංක්‍රාන්ති පරායත්තතාව (transitive dependency) ඉවත් කරනු ලැබේ. - <b>නිවැරදියි</b></li></ul><p>නිවැරදි පිළිතුර වන්නේ <b>(4) B සහ C පමණි</b> යන්නයි.</p>",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEg7nznUahYtGKzUGpTpF1F2zl1OeNtRDWIyqU_nzLWZt6Zcw8quzQlikqTaDybvfxW3P2bGaajMwO0Bp-e-vPaLwXQj1JJQtAP2Ids0x310CsP71vttyyI7sjFEFrTvJcz79C7VnPW4A0XsPImhdF5ZJvbEcMMMGFM3YAK3_dBJS0FlQWmIVKEnKKAJEJSf",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) A පමණි",
+        "image": ""
+      },
+      {
+        "text": "(2) B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(3) A සහ C පමණි",
+        "image": ""
+      },
+      { 
+        "text": "(4) B සහ C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(5) A,B සහ C සියල්ලම",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 2,
+    "explanation": "<p>භූතාර්ථ සම්බන්ධතා ආකෘතිකරණය (ER Modelling) සම්බන්ධයෙන් පහත සඳහන් ප්‍රකාශයන් විමසා බලමු:</p><ul><li><b>A</b> - දුර්වල භූතාර්ථයක් (weak entity) තවත් භූතාර්ථයක් මත රඳා පවතී.<p><b>නිවැරදියි.</b> දුර්වල භූතාර්ථයකට තනිවම හඳුනාගත හැකි ප්‍රාථමික යතුරක් නොමැති අතර, එය හඳුනා ගැනීම සඳහා වෙනත් (හඳුනාගැනීමේ) භූතාර්ථයක් මත රඳා පවතී.</p></li><li><b>B</b> - ව්‍යුත්පන්න කරන ලද උපලක්ෂණයක් (derived attribute) වගුවක් තුළදී, උපලක්ෂණයක් ලෙස නිරූපණය වේ.<p><b>වැරදියි.</b> ව්‍යුත්පන්න කරන ලද උපලක්ෂණයක් යනු වෙනත් උපලක්ෂණයකින් ගණනය කළ හැකි අගයක් ඇති උපලක්ෂණයකි. ER රූප සටහනකදී එය ඉලිප්සාකාරයකින් නිරූපණය කළ හැකි නමුත්, භෞතික දත්ත සමුදා වගුවකදී එය සෑම විටම තීරුවක් ලෙස ගබඩා කිරීම අවශ්‍ය නොවේ. අවශ්‍ය විට ගණනය කර ගත හැකි බැවින් එය ගබඩා නොකර සිටීමටද හැකිය.</p></li><li><b>C</b> - භූතාර්ථයකට, එකම වේලාවේදී බහු-අගය (multi-value) උපලක්ෂණයක් සහ සංයුක්ත (composite) උපලක්ෂණයක් අඩංගු විය හැකිය.<p><b>නිවැරදියි.</b> භූතාර්ථයකට එකවර බහු අගයන් තිබිය හැකි උපලක්ෂණයක් (උදා: දුරකථන අංක කිහිපයක්) සහ තවත් උපලක්ෂණ කිහිපයකින් සමන්විත උපලක්ෂණයක් (උදා: සම්පූර්ණ නම - මුල් නම, මැද නම, වාසගම) යන දෙකම තිබිය හැකිය.</p></li></ul><p>ඒ අනුව, නිවැරදි ප්‍රකාශයන් වන්නේ <b>A</b> සහ <b>C</b> පමණි.</p><p>එමනිසා, නිවැරදි පිළිතුර වන්නේ <b>(3) A සහ C පමණි</b>.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiJye_SeYXwEzE2k7nn8Wlh9NKvIx7_PLbOGr0-je98XKsCeMMAdytbAQajYBntfjSxf5p3IpvjBPJqV-zvMipvGDz2F_T3sMD3o_0xG7vKhRxgnKjUmNIeBrD0N7QnHREdugOq_dS_2AWqZFahPK7JWdWB8ZjoJy_zUMAPIcx8kgG-z8nx4HtZ6rhp2zdv",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiu_Y37g1ELHjBdiwhAlIBFimI_h0lRPLX4xrmwP_8PSpYc1WfMc_jVqBnlpR0TTYbq9Uy3mtm2jx7mYaM1ZbJM8JzMtYWvSqM6-c-u4JB4MRKIab5r8GGMpNHkwNWx7_cmHGpAWxL21jgFtsMrbm27i0IN_SI8uQREmgcSkY7fB2VJkuZ_0t24IvlkJH8d"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiWpdAFh3b6e0_uSkUf31OfHy6lFeAMjdppYSpve3SnIwyQ3kbH49DiV6Sw_w3TTSalUjVAZ4MnHh1jYYjbu8juRjZ6x360trUfI2s3DeD0In3lb9B6cjwglSHCcpDCvpnC2zmC1P7WPPZv7OAXFuMed35k9qM599IOXVx4ImKJEE5UnTdLSnJlkidYGQq9"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgoQvQr7o_VWwHwsakY7xapd-356NCRL1kIdma_P74Hj_CvnpdlD_joRqv2D4ZSi6PQdOODmB9JHFs_EtbINZQJwc0KuOINVu_D8w_Uer0J_yMVXZGtS4vWYjxanaU42ySL9_cde0dXEhou2y_XM4Q5413CwRAscNGagt4M69G7X9CjjZlo81oVzfmonCcO"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgsXMbQYaHOG_QePikLaGUEVGgBrujFtn4WYtLyLozR90Q27VJPakJ3lWwAxOYxsYo0hAuDX7OOT9_FSiUvlYekVXAvQlXD1SMlkLMcgM8Mb70pYZNyZNI54tsEWEmm1sTlAnDIUs4Tc5c45ULt0BD5BBRaKgc59TIWTl_OHAwnM_BAg86tILFBa9HrzQeO"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiVOe8IRRX0-zL0e49jUcvBB2Pypx3bpKhPoOYgUgLFeC0TV7HWFnNxMXh6tm4ysTUIfjH79Ion-9c0SdcERvAY-d9AYtEV57sxSpyf-esQnYnwJtAzq1mA6FL2tFQHCd6M8aqZM5mK1yfTibY_QV-0x51vyFNctjbweSVAriI5g7Bc_aAl1uIU4cxk7Tgw"
+      }
+    ],
+    "correctAnswer": 0,
+    "explanation": " මෙහිදි පිලිතුර වන්නේ 1 වෙනි පිලිතුරයි භුතාර්ත සටහනට අනුව BOOK වගුවේ උපලක්ශන ලෙස Book_id(මෙය BOOK වගුවේ ප්‍රාතමික යතුරයි),Book_Name,ISBN මෙන්ම AUTHOR වගුවේ සහ STUDENT වගුවේ ප්‍රාතමික යතුරු එනම් පිලිවෙලින් Aut_Id,Stu_Id ඇතුලත්වේ එසේ වන්නේ ගනනීය තාව සලකා වගු අතර සම්බන්ධදාවන් ඇති කිරිමේදී 1 පැත්තේ වගුවෙහි ප්‍රාතමික යතුර m පැත්තේ වගුවේ ආගන්තුක යතුර වන නිසායි එමෙන්ම STUDENT වගුවේ උපලක්ශණ වන්නේ Stu_id(ප්‍රාතමික යතුරයි),Stu_FName,Stu_LName(Stu_Name යන්න සංයුත්ත උපලක්ශනයක් වන බැවින් ඊට අදාල දෑ මෙලෙස වෙන් වෙන්ව ඇතුලත් කරනු ලබයි),DOB AUTHOR වගුවෙහි Aut_Id(ප්‍රාතමික යතුරයි),Aut_Name එමෙන්ම මෙම භුතාර්ත සටහනේ AUTHOR වගුවෙහි Qulifications යන්න බහු අගයන් සහිත උපලක්ශනයකි එම නිසා එය වෙනම වගුවක් ලෙස Data Base එකට ඇතුලත් කල යුතුයි එය ඇතුලත් කිරීමේදී ප්‍රාතමික යතුර ලෙස Aut_id(AUTHOR වගුවේ ප්‍රාතමික යතුර) සහ Quilifications යන දෙකම භාවිතා කරයි"
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiYwxf7b8U1AMb24zjlkBaWyoWiVSiouXRMfcRmd5cpvAQXJ7hNGPhWWqxa9dRp-AXrRTC8d2wYtDTWnaTAZMwpzBMpVwWj3aayqB16VQB08lbit_9D24CV4K1WEpw_9i3YO6b98GPv7CjVk9fsS0vJUo2S3RMYo69P5xScOPKZobqjMQR0bb-YqxqOQ7ho",
+    "text":"",
+    "options": [
+      {
+        "text": "(1)  A පමණි",
+        "image": ""
+      },
+      {
+        "text": "(2)  B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(3)  C පමණි",
+        "image": ""
+      },
+      {
+        "text": "(4)  A හා B පමණි",
+        "image": ""
+      },
+      {
+        "text": "(5)  B හා C පමණි",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 0,
+    "explanation": "..... ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgtATdypF3zWUK5XCqPf2JXiylE0bTuW4OZcppxOJ0OuoONzf855P9ez1nTx00sCYXDxr9cse5nTUnb0FUmnCbONSQDfYVpLqH7oFBHm6L3so3XlV7x8GXIXja1DHy1oMnMP5-HKk3qxvJbdZpWSl0Tw4_Zum4ysSXbyqCJuK8qssRPgYH-hTBU7AYL9nwA",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) 0",
+        "image": ""
+      },
+      {
+        "text": "(2) 1",
+        "image": ""
+      },
+      {
+        "text": "(3) 3",
+        "image": ""
+      },
+      {
+        "text": "(4) 12",
+        "image": ""
+      },
+      {
+        "text": "(5) 25",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 1,
+    "explanation": "<p>පයිතන් කේතයේ ආදානය 25 වූ විට ප්‍රතිදානය කුමක් වේදැයි පියවරෙන් පියවර බලමු:</p><ol><li><code>x = int(input())</code>:<p>පරිශීලකයාගෙන් ආදානයක් ලබාගෙන එය පූර්ණ සංඛ්‍යාවක් (integer) බවට පරිවර්තනය කර <code>x</code> නම් විචල්‍යයට පවරයි.</p><p>ප්‍රශ්නය අනුව ආදානය <code>25</code> වේ.</p><p>එබැවින්, <code>x</code> හි අගය දැන් <code>25</code> වේ.</p></li><li><code>x = (x % (x - 21)) ** 3</code>:<p>මෙම පේළියේ ගණනය කිරීම් කිහිපයක් අනුපිළිවෙලින් සිදු වේ:</p><ul> <li><code>x - 21</code>: <code>x</code> හි අගය 21 න් අඩු කරයි. මෙහිදී <code>25 - 21 = 4</code> වේ.</li> <li><code>x % (x - 21)</code>: <code>x</code> හි අගය (<code>25</code>) <code>x - 21</code> හි අගයෙන් (<code>4</code>) බෙදූ විට ලැබෙන ශේෂය ගණනය කරයි. <code>25 % 4</code> හි ශේෂය <code>1</code> වේ (මන්ද <code>4 * 6 = 24</code> වන අතර <code>25 - 24 = 1</code>).</li><li><code>(...) ** 3</code>: ඉහත ගණනය කිරීමේ ප්‍රතිඵලය (ශේෂය) 3 වන බලයට (ඝනයට) ඔසවයි. මෙහිදී <code>1 ** 3 = 1 * 1 * 1 = 1</code> වේ.</li></ul><p>අවසාන ප්‍රතිඵලය නැවත <code>x</code> විචල්‍යයට පවරයි.</p> <p>එබැවින්, <code>x</code> හි නව අගය <code>1</code> වේ.</p></li><li><code>print(x)</code>:<p><code>x</code> විචල්‍යයේ වත්මන් අගය තිරය මත මුද්‍රණය කරයි.</p><p><code>x</code> හි වත්මන් අගය <code>1</code> බැවින්, ප්‍රතිදානය <code>1</code> වනු ඇත.</p></li></ol><p>එමනිසා, ආදානය 25 වූ විට මෙම පයිතන් කේතයේ ප්‍රතිදානය <b>(2) 1</b> වේ.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEilda_POTO58AdiFh8g6DpI-PJWCI1jR-1L0tdwF34xlV0iwwrJpSUS9MvAESl-1PG2BZQZFFE_jcR6E31qsMjcNHHrBzoF5-Qw0JuAYcuO4_wCs9-mRhGp1T4wrIhPCiQrnFFHZ23lZtoH7Ve1UNmx97MJF8WOAtQxNg4KoYQ9qDfr9uKEbXiv_WdlK-6a",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) Result is 0",
+        "image": ""
+      },
+      {
+        "text": "(2) Result is 2",
+        "image": ""
+      },
+      {
+        "text": "(3) Result is -2",
+        "image": ""
+      },
+      {
+        "text": "(4) Result is (2,4)",
+        "image": ""
+      },
+      {
+        "text": "(5) Result is +2",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 1,
+    "explanation": "<p>පයිතන් කේතයේ ප්‍රතිදානය කුමක්දැයි පියවරෙන් පියවර බලමු:</p><ol><li><code>def fun(para1, para2):</code>:<p><code>fun</code> නමින් ශ්‍රිතයක් නිර්වචනය කරයි. එය <code>para1</code> සහ <code>para2</code> යන පරාමිති දෙකක් ලබා ගනී.</p><p>මෙහිදී, <code>fun(2, 4)</code> ලෙස අමතන විට <code>para1</code> හි අගය 2 වන අතර <code>para2</code> හි අගය 4 වේ.</p> </li><li><code>x = foo(para2, para1)</code>:<p><code>foo</code> නමින් තවත් ශ්‍රිතයක් <code>para2</code> සහ <code>para1</code> යන ආගියුමෙන්තු සමග අමතයි.</p><p><code>para2</code> හි අගය 4 වන අතර <code>para1</code> හි අගය 2 වන බැවින්, <code>foo(4, 2)</code> ලෙස ශ්‍රිතය අමතනු ලැබේ.</p></li><li><code>def foo(para3, para4):</code>:<p><code>foo</code> නමින් ශ්‍රිතයක් නිර්වචනය කරයි. එය <code>para3</code> සහ <code>para4</code> යන පරාමිති දෙකක් ලබා ගනී.</p><p><code>foo(4, 2)</code> ලෙස අමතන විට <code>para3</code> හි අගය 4 වන අතර <code>para4</code> හි අගය 2 වේ.</p></li><li><code>return para3 - para4</code>:<p><code>foo</code> ශ්‍රිතය <code>para3</code> (4) සහ <code>para4</code> (2) අතර වෙනස ගණනය කර ප්‍රතිඵලය නැවත ලබා දෙයි.</p><p><code>4 - 2 = 2</code> වේ.</p><p>එබැවින්, <code>foo(4, 2)</code> හි ප්‍රතිඵලය <code>2</code> වේ.</p></li><li><code>x = foo(para2, para1)</code> (නැවත <code>fun</code> ශ්‍රිතය තුළ):<p><code>foo(4, 2)</code> වෙතින් ලැබුණු ප්‍රතිඵලය (<code>2</code>) <code>fun</code> ශ්‍රිතයේ <code>x</code> නම් විචල්‍යයට පවරයි.</p><p>එබැවින්, <code>x</code> හි අගය දැන් <code>2</code> වේ.</p></li><li><code>return x</code>:<p><code>fun</code> ශ්‍රිතය <code>x</code> හි අගය (<code>2</code>) නැවත ලබා දෙයි.</p></li><li><code>result = fun(2, 4)</code>:<p><code>fun(2, 4)</code> වෙතින් ලැබුණු ප්‍රතිඵලය (<code>2</code>) <code>result</code> නම් විචල්‍යයට පවරයි.</p><p>එබැවින්, <code>result</code> හි අගය දැන් <code>2</code> වේ.</p></li> <li><code>print(Result is  + str(result))</code>:<p><code>Result is </code> යන වචන සමග <code>result</code> හි අගය (පෙළ ආකාරයට පරිවර්තනය කර) එකතු කර තිරය මත මුද්‍රණය කරයි.</p><p>එබැවින්, ප්‍රතිදානය වන්නේ <code>Result is 2</code> යන්නයි.</p></li></ol><p>ඒ අනුව, නිවැරදි පිළිතුර වන්නේ <b>(2) Result is 2</b> යන්නයි.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjdZR5k4t5M2WBImE7EYQpslq90v1m76FDcttNZ1ozLjyBtAmBPOF4T-gSsRzF0CIWAukfD93Z10uH-4wp4sVLuJ4vByRZw1bykY9TA6EqquEIVVCxxxx7hjcVbqFtx-dhBePJaG6IVYBWHbVE4diny5-616x7Cmq_SPABSoz9aRQLHj3nUH_BrTZs4R1nA",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) Nimal Colombbo 25",
+        "image": ""
+      },
+      {
+        "text": "(2) Nimal, Colombo, 25",
+        "image": ""
+      },
+      {
+        "text": "(3) Nimal, Kandy, 18",
+        "image": ""
+      },
+      {
+        "text": "(4) Nimal Kandy 18",
+        "image": ""
+      },
+      {
+        "text": "(5) Nimal 18 Kandy",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": "<p>පයිතන් කේතයේ ප්‍රතිදානය කුමක්දැයි පියවරෙන් පියවර බලමු:</p><ol><li><code>def foo(name, age=18, address=Kandy):</code>:<p><code>foo</code> නමින් ශ්‍රිතයක් නිර්වචනය කරයි. එය <code>name</code> නම් අනිවාර්ය පරාමිතියක් සහ <code>age</code> (default අගය 18) හා <code>address</code> (default අගය Kandy) යන විකල්ප පරාමිති දෙකක් ලබා ගනී.</p></li><li><code>foo(Nimal, 25, Colombo)</code>:<p><code>foo</code> ශ්‍රිතය <code>Nimal</code>, <code>25</code>, සහ <code>Colombo</code> යන ආගියුමෙන්තු සමග අමතයි.</p><ul> <li><code>Nimal</code> යන අගය <code>name</code> පරාමිතියට ලැබේ.</li> <li><code>25</code> යන අගය <code>age</code> පරාමිතියේ default අගය වෙනුවට ආදේශ වේ.</li> <li><code>Colombo</code> යන අගය <code>address</code> පරාමිතියේ default අගය වෙනුවට ආදේශ වේ.</li></ul></li><li><code>print(name, address, age)</code>:<p><code>foo</code> ශ්‍රිතය තුළ, <code>name</code>, <code>address</code>, සහ <code>age</code> යන විචල්‍යයන්ගේ අගයන් තිරය මත මුද්‍රණය කරයි.</p><ul><li><code>name</code> හි අගය <code>Nimal</code> වේ.</li> <li><code>address</code> හි අගය <code>Colombo</code> වේ (මන්ද ශ්‍රිතය අමතන විට <code>Colombo</code> ලෙස අගයක් ලබා දී ඇත).</li><li><code>age</code> හි අගය <code>25</code> වේ (මන්ද ශ්‍රිතය අමතන විට <code>25</code> ලෙස අගයක් ලබා දී ඇත).</li><li><code>print</code> ශ්‍රිතය මඟින් ලබා දෙන විචල්‍යයන් අතර ස්වයංක්‍රීයව හිස්තැනක් (space) තබයි.</li></ul></li></ol><p>එබැවින්, මෙම පයිතන් කේතයේ ප්‍රතිදානය වන්නේ <b>(1) Nimal Colombo 25</b> යන්නයි.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgA2jz1NiXcq14ILwipj2d58CrDm0Lw2zZYyQySY_ykc0cK0_x9PGH0-a9ul3ImXQcNnEzLVIPvQnYlMUqNRKSeCLXl6wGtXvI_G4OX5sTniqP6hg-RNYO4sGGUL67XJZO2Kqb__A8acNi3yQHLu1-r_6BoZ2jrn3vDfCMKr8F8cSOa20-8p5SMDTsZILwR",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) [10,50,60,]",
+        "image": ""
+      },
+      {
+        "text": "(2) [10,20,40,60]",
+        "image": ""
+      },
+      {
+        "text": "(3) [10,30,50,60]",
+        "image": ""
+      },
+      {
+        "text": "(4) [20,30,40,50]",
+        "image": ""
+      },
+      {
+        "text": "(5) [20,30,50,60]",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 2,
+    "explanation": "<p>පයිතන් කේතයේ ප්‍රතිදානය පියවරෙන් පියවර බලමු:</p><ol><li><code>numbers = [10, 20, 30, 40, 50]</code>:<p><code>numbers</code> නමින් ලැයිස්තුවක් නිර්මාණය කරයි. එහි අගයන් 10, 20, 30, 40, 50 වේ.</p></li><li><code>numbers.pop(1)</code>:<p>ලැයිස්තුවේ දර්ශකය (index) 1 වන අංගය ඉවත් කරයි. පයිතන් හි දර්ශකය 0න් ආරම්භ වන බැවින්, දර්ශකය 1 යනු 20යි. ඉවත් කිරීමෙන් පසු ලැයිස්තුව <code>[10, 30, 40, 50]</code> වේ.</p></li><li><code>numbers.append(60)</code>:<p>ලැයිස්තුවේ අවසානයට 60 යන අගය එකතු කරයි. ලැයිස්තුව දැන් <code>[10, 30, 40, 50, 60]</code> වේ.</p></li><li><code>numbers.pop(2)</code>:<p>ලැයිස්තුවේ දර්ශකය 2 වන අංගය ඉවත් කරයි. ලැයිස්තුවේ වත්මන් අගයන් අනුව, දර්ශකය 2 යනු 40යි. ඉවත් කිරීමෙන් පසු ලැයිස්තුව <code>[10, 30, 50, 60]</code> වේ.</p></li><li><code>print(numbers)</code>:<p><code>numbers</code> ලැයිස්තුවේ වත්මන් අගයන් තිරය මත මුද්‍රණය කරයි.</p></li></ol><p>එබැවින්, මෙම පයිතන් කේතයේ ප්‍රතිදානය වන්නේ <code>[10, 30, 50, 60]</code> යන්නයි.</p><p>ඒ අනුව, නිවැරදි පිළිතුර වන්නේ <b>(3) [10,30,50,60 ]</b> යන්නයි.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhYJeXEPMOU4EEYkCsUxg3JzIOGnztVDyGebDHXWtYRs7deTxQcf_xF-zr_epMeNx-DLSsJypzRN2dOkOUAEpVdGTml7_GVfbpoToZUi5i8RIwVXeP3Rlqu_UQ6Gc17EdHU2HutNEAiWyPWUdLUsXdu5qJSEdrj3D7OHrGdLaGiJNJqGvHihsvSif8cQ4ti",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) 18",
+        "image": ""
+      },
+      {
+        "text": "(2) 24",
+        "image": ""
+      },
+      {
+        "text": "(3) 29",
+        "image": ""
+      },
+      {
+        "text": "(4) 38",
+        "image": ""
+      },
+      {
+        "text": "(5) 39",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 0,
+    "explanation": " ...",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjEjVz3M7ujiLFxyRjma4Sbm7Zge-rgyDH0oX5cDF2DQa1_nH1TU1n42-WEysAdf4xUkw0ug3OpuGg-d_nMXRjYy2qX_2CgIaLLXi6vqiXdHUzGcYwFHsi88UpKU-TaNbekVfgcH5lZvOamf9O0C-D1brpfb19iO10X7DtKYMYmBUZN1mIngrIMfLqx8W4h",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) B පමණී",
+        "image": ""
+      },
+      {
+        "text": "(2) C පමණී",
+        "image": ""
+      },
+      {
+        "text": "(3) A සහ c පමණී",
+        "image": ""
+      },
+      {
+        "text": "(4) B සහ c පමණී",
+        "image": ""
+      },
+      {
+        "text": "(5) A,B සහ C සියල්ලම",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 4,
+    "explanation": " <p>පයිතන් ශ්‍රිත සම්බන්ධයෙන් පහත සඳහන් ප්‍රකාශයන් විමසා බලමු:</p><ul><li><b>A - පයිතන් ශ්‍රිතයකට අගයන් සමූහයක් ඇති දත්ත ව්‍යූහයක් (data structure) ප්‍රත්‍යාගමනය (return) කළ හැකිය.</b><p><b>නිවැරදියි.</b> පයිතන් ශ්‍රිතයකට ලැයිස්තු (lists), ටියුපල් (tuples), ශබ්දකෝෂ (dictionaries) වැනි ඕනෑම දත්ත ව්‍යූහයක් නැවත ලබා දිය හැක.</p></li> <li><b>B - පයිතන් ශ්‍රිතයක්, එයට කිසිදු පරාමිති යැවීමකින් තොරව භාවිත කළ හැකිය.</b><p><b>නිවැරදියි.</b> පරාමිති රහිත ශ්‍රිත නිර්මාණය කළ හැකි අතර ඒවා කිසිදු ආගියුමෙන්තුවක් යැවීමකින් තොරව ඇමතිය හැක.</p></li><li><b>C - පයිතන් ශ්‍රිතයකට පරාමිතීන්, අගයක් (value) හෝ යොමුවක් (reference) හෝ ලෙස යැවිය හැකිය.</b><p><b>නිවැරදියි.</b> පයිතන් හි, වෙනස් කළ නොහැකි දත්ත වර්ග (immutable types - int, float, string, tuple) අගය අනුව යවනු ලැබේ (passed by value). වෙනස් කළ හැකි දත්ත වර්ග (mutable types - list, dictionary) යොමුව අනුව යවනු ලැබේ (passed by reference).</p></li></ul><p>ඉහත විශ්ලේෂණයට අනුව, A, B සහ C යන සියලුම ප්‍රකාශ පයිතන් ශ්‍රිත සම්බන්ධයෙන් නිවැරදි වේ.</p><p>එබැවින්, නිවැරදි පිළිතුර වන්නේ <b>(5) A, B සහ C සියල්ලම</b> යන්නයි.</p>",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgKt3Mmktz-Wt74OpCVO3AKgH0yEtWB0z9hQouJwQD8R6khK3Fj7MQFa7_-CbHqtHqwL5YS4ArfgwkDOatS919sKmxT9D1T11xf2KRDQmYb_kMkTkN9FxB_ubR54niOvUY6Hri5blYfSSt7jjrvo5_3KwKdXFWvOWT-qer2HJVKx6Z66cZntHd8gKUHsFda",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgC6Dlv4xpJ7sMs4P4rIrUyGdYzneOjc8aLK4J90xTGchY6KkWPyDtMwC-TOSikTH185N15l3QCIGCBPAIHJfKpIEYWyRhcSDWEEQBsGwx2mPYFop4u2BQJoQ63d9Aipvg-99PcbCsHM2t-77g0gh6iDmaTzUoZ7mtgQRorO0G-f17KhbLbePpBfnXNGAkk"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEi_Dch3nwDc78I_kuPLBdStEwzTSzz70mt-KcuvaDIwRGXdssI2GldDJpgVKe8WJtH-niz2FmRgbU8jwkunvuOXqWpuHGHMuRjEHuLm6vP0HbVDai1mMt_4AAjqv4wxIEEm6aLvO9K_OpRwDOzNab6xWh3QLvLymn6OnoMlj7wO3FpVeqSlr91eFjv_7gcy"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjqWDBw43a1eR0LSDOmbuGzx-8w4dZzO_CgIg9Ai3YuyosbhA8K3nBvnpkLHRzGgVb108IDiM02y_cDZbsusxZNpIlxy1vRNg6EanKxDd81ZGQ4Se6vivd8F2XYc1WcFiQvO5T57W7TpAMbFuGTqe7YYysMue3OyjWYI2mfykJnp4VBrIOr6CBr93EBQWYc"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgS7WwdThoHtVIePjwgu30Cb9kUwwh2q93PYqFiOVkCm4f3dsu8ge8l2HJdRzFW1rn6aUJsdH6OOo4BNYZJ6VTJuQ2B1guxBpEPDw_YQr9bU9iKglcLUnxgy0S8kv9iqp74nJsymOEqgxlODjAMNaOMkrEGllaFzxDBaawOXShcc0B5m-uDQfyPdHetKkI_"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiLcwhWosg1WShw-XjJFyxjaGNLmNX3xONMIc4urXSgoftA9Ejx3h7N3RD6FtKw29jOmTA8wAbqKR1M7F8wDrKY2FpZbwZqpA63T1NaLZiR6h2vz7CpHib_Nh6IX0LFRI533BZs0UILAL_UBGoHz9m_xWZ9IykZwAGEhxkmybVRrO61T_6UHF1RIhYS-WcE"
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": "...... ",
+    "explanationImage":""
+  },
+  {
+    "question": "",
+    "image": " https://blogger.googleusercontent.com/img/a/AVvXsEjGqmRtQiPbKHMEDFeGynHpgHnRIpKbSAhZy0zAMjPy4_W_S3yndxMKmaUJb5-RhAzIDGxUp_gJea1cziXS7jYWzPx48FKdAFk-ChTZzr3gaUZkmLqqButUma8rthUZ_kjN4wY057NDIh61c_Kf-7JUZ3dZNyatT2LyHuAQFxC8-oy2vQLpSy00H3X8qtIt",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjIL6odyw-1US3K4DpYyEs_na0IIabhhAXq7rDEhK8qsRFJyL2okaIFrHIqyaPcMgzOTH778_eOcoTIb2krJGNt_Tv6xk7ZIfAgIf2ZE648tMdSVeBSrglVvH-28uDdf3VcRvcwKjp4KsMAwbJ5czNHATLeQJefgh7fI8TmykGCN_lTirmAwftl_qQFqni8"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEi0gtWwbQ05Mo_e_aCZ8eqncuLg1rJthsJpBmhTwuCmMI6LvRtr5OYDz-IWFX6auzKey7emPeVvXqWWYbmdc9Y3mLtR0PqXhf1fhZgunkQB3nvb0V8s0F1-8Rxw0KDZNDIPcRFho6WnkBbIF__mx6JPs1RkumoMfdsXJRzkXr51RcMXEnQA8dtMzu2AZYQ6"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhJsIYJPrh7MhSw4tKboUGJoB2gVtrgY_1OaATZ0dpwMfde9HW3hPvQRNZuhlVqSDukOTvNyfF5GBn6u77OJNefxCzOHL9I-N09aLYZBFTfAFVkarhE1jS9gXgz9fqIHWH72S-kIUzrNwGFsuHLgPE4F_JozTBCf06xWHYQwQEvWvWc_fSmq8XEdxrmGN0t"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhOeuybXYBXqbzbqYf69FYY0gwFF9OyxtT8rdyozol5QNPz-HzgbZda6AGb97EWL2jdq_oqWVH9cgyMT37-YFbKefT5H1A4vyWkfPgYhr6j_8_ZtCToWidQxD-DQlXY4C8LWlLMWDbQCxx50lKMnAbSFAEERrfdMRK-IFC_SzKhWPEh4RHws2ac9aLnaBWd"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjHaHGurbkszuurDWcuGKL-EHhgGRUY_H-6jlVYkLHXfb14Qjjg1a45u0q8w2xlKYvxqaAJ2V_013ZXn1kI5IF-crQLlkgud73G9M4b0XAWO9esL_JfqrfcsKIocZSQydLDUcBegtfZjDPcpyn24DZaIdxDthz8E7_cO8YQWIaNDqujq8ZDSilAN519jiAt"
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": " ...",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEg1gjKuFoUH9RBN1S4XeZLP4fczaKoFy42lCsFjoFxl75tvdKvmyTfk0VdiL0c3c7JbmncfaOGZIdNJvu-1Kw_kXYE36i4k3ezIL6bmCAULhtAmq6IE-mvs86jNtzavpFEGhNykFraM3FWq9ft5tfJe3WDACX9wW1Ro3_-UmxH34puAYf4R7wTmxGu3l_57",
+    "text":"",
+    "options": [
+      {
+        "text": "(1)  A පමණී",
+        "image": ""
+      },
+      {
+        "text": "(2) A සහ B පමණී",
+        "image": ""
+      },
+      {
+        "text": "(3)  A සහ C පමණී",
+        "image": ""
+      },
+      {
+        "text": "(4)  B සහ C පමණී",
+        "image": ""
+      },
+      {
+        "text": "(5) A,B සහ C පමණී",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 4,
+    "explanation": "<p>HTML සහ CSS සම්බන්ධයෙන් පහත දැක්වෙන ප්‍රකාශයන් සලකා බලමු:</p><ul><li><b>A - HTML අංග (elements) තිරයක දිස් කළ යුතු ආකාරය CSS භාවිතයෙන් විස්තර කළ හැකි ය.</b><p><b>නිවැරදියි.</b> CSS ප්‍රධාන වශයෙන් භාවිතා කරන්නේ HTML අංගවල වර්ණය, පසුබිම, ප්‍රමාණය, පිහිටීම වැනි දෘශ්‍ය ලක්ෂණ නිර්වචනය කිරීම සඳහායි.</p></li><li><b>B - HTML පිටු කිහිපයක විලාසය (style) අර්ථ දැක්වීමට බාහිර (external) CSS භාවිත කළ හැකි ය.</b><p><b>නිවැරදියි.</b> බාහිර CSS ගොනුවක් (.css) නිර්මාණය කිරීමෙන්, එම ගොනුව HTML පිටු කිහිපයකට සම්බන්ධ කර ඒවායේ පෙනුම එක හා සමාන ආකාරයකට පවත්වා ගැනීමට හැකියාව ලැබේ.</p></li><li><b>C - එක් HTML අංගයකට (element) විලාසයක් යෙදීමට පේළිගත (inline) CSS භාවිත කළ හැකි ය.</b><p><b>නිවැරදියි.</b> HTML ටැගය තුළ `style` යන ගුණාංගය භාවිතා කරමින් එක් විශේෂිත අංගයකට පමණක් සීමා වන CSS විලාසයක් යෙදිය හැකිය.</p></li></ul><p>ඉහත පැහැදිලි කිරීම් අනුව, A, B සහ C යන ප්‍රකාශ තුනම HTML සහ CSS සම්බන්ධයෙන් නිවැරදි වේ.</p><p>එබැවින්, නිවැරදි පිළිතුර වන්නේ <b>(5) A, B සහ C සියල්ලම</b> යන්නයි.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgCQcq0zhoM42-dZtoQ9w2l-Zm3NHrNWpw2D8VCyxgXbBWXEft7Q7HOSOSGuxfo0FXk317g3b_l4ZdHl1_DZB2SnXVl_HOmAMuw00M-GYwkvpDdC7Scqv9fSVuKRb2IgSPxVcOx-sChtN8UQmEHXZ8k8tnpcb5AkxoFBfv24pfLTEHPI5wwlPiSWy6HwoKx",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgsKp1bqomFkr-KrwnUvZ4kjP-NWSc_5lTUD7nEUVkrAVne1Hr9IGeEk1ZxSp6oGrSPfjDKoxXrV5DiCKgmWNBjoRzmBsRYsumyF3vS18iMpSFk4wJ5Llo-DhT9sigaXY-VySfawv7ipcOzeKP032dkc4EzF6zfEKTTLzIZImmFaV4ClmgTCAwv-PTeRzQ3"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEiunX3uTZ-M8qLq1pbgntEvV1z4j_jjfT0vE7UiHJxFPP189lZvhZMEKBigQY31W8oy3iVnqU6pvxc4utRn8yu4HM-6qNYkWPKC6bkvveWs_NAQqYXnoISAMV-HrLUStgE_ql58xGNAuqbA3cc8bfukWIoSqpFldlXs-mxOOeunxPS78B_hsnxhaNXcEXYf"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjw9AQfGFBQ7Vd-rgUw0ZvNIzrKXT1PJ_Z8BbBihZXoYF7Lm0FwwXk6wEaIxn7yJqHSuFCI0KRkp5Vx_YsekChrXRqVP3T7S7NZgd57SrixJVhq8WFV93dxLPe8wI3d89mjR3ysA1UZnr4-A2Oirlb73xIJgVLifmUY54RW__MBKxsk9V7S3nRDhFlQsRW0"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjbf2czDsgQz-yr6U_-e2udg0VksEt8F-SYjUC9U-z9MjbMd8BlicwJqrvmJKOPk2RSIcYRI247CNq1NRMsyprhUR45XQVb1lfr_fgOBp1L4wtOfc8jP6FQHlwYO2_2DHsb2KYWV5vvkTglBFD_lWy8FlFwJN97jlltAGuWQuH43fk8MwCU5KZpgS5W0fek"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjrNo3Ye9aKdKYqiXyLgGeJOAi-r4uSvEvNCkKZ_lThek_rg-n3pjP4FSHVuA71xBKOxQgNSVF0Coy3_z1LPjMsyy7O14fuFf7ttpkxlrF_L-1lklYGGLsFXUQUtOpmjkx3AZ1p5VujFXNAahknsxH8YP8jyXSEIiNt-p_s_QQhJsTKtWKf_4HIgLUFG1PE"
+      }
+    ],
+    "correctAnswer": 1,
+    "explanation": " ...",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEgufTFcHr-Sem0lWOfwqTzz9neY4kQcMXNQQymr5pBlmnoFsLr7zVbNu5gD5ktOWuEQRb52iD-4y3mSp0TEQL_bCM1mHNUC3j1tv_pnr0-FCTlsfMqK_ksvrDyCArwrVHLa1IB_fE1rEB25-_wPHrhhcsvvU3JmaYjsRVw_yUpXXIQCZKw4eiY2WGMqJ1pL",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) A පමණී",
+        "image": ""
+      },
+      {
+        "text": "(2) B පමණී",
+        "image": ""
+      },
+      {
+        "text": "(3) C පමණී",
+        "image": ""
+      },
+      {
+        "text": "(4) A සහ C පමණී",
+        "image": ""
+      },
+      {
+        "text": "(5) B  සහ C පමණී",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 2,
+    "explanation": "<p>PHP හි සරල අරාවක් නිර්මාණය කර පළමු අංගයට අගයක් පැවරීමට වඩාත් සුදුසු ක්‍රමය වන්නේ:</p><pre><code>$city = array(Colombo);</code></pre><p>මෙම ක්‍රමය මඟින් <code>$city</code> නමින් අරාවක් නිර්මාණය කර එහි පළමු අංගයට Colombo යන අගය පවරයි.</p><p>විකල්ප A වන <code>$city[] = array(Colombo);</code> යනු දැනට පවතින අරාවකට තවත් අරාවක් අංගයක් ලෙස එකතු කිරීමට භාවිතා කරන ක්‍රමයකි. එය සරල අරාවක් නිර්මාණය කිරීමට වඩා සුදුසු නොවේ.</p><p>විකල්ප B වන <code>city[] = Colombo;</code> යනු PHP හි වලංගු ක්‍රමයක් නොවේ. විචල්‍ය නාමයක් ඉදිරියෙන් <code>$</code> සංකේතය අනිවාර්යයෙන්ම යෙදිය යුතුය.</p><p>එබැවින්, නිවැරදි පිළිතුර වන්නේ <b>(3) C පමණි</b> යන්නයි.</p> ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEj1rSxvWnPWvFgAvI8Pi8Il5X6IxItKmaKNWKgNFyzZz4Tu4oq891zqo4eclx2G323aVOLM0KRXhIWoiGXyZJZuM_1y9v5oo2DcR2nWxv9m6et9UPDiHN5seha2X_kWW2iopcGuyOP1JCh77Tbd8qpwIvh3hiUJ9Sd0xKUIInF7bWDUBORm3HJWkskcYAvC",
+    "text":"",
+    "options": [
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjXWJl7rXGK3T_4ZOPUsaAUN3i4wq2ndWn8QEp_LayITI2zzxZiH-hN_wzXLMW8TVef5Y9nDPxukVYLS7VUbd0toyaqLikdeA2foh6mgZDt3eUgOM8mxZ7p_vF_GoU3XlWaw3IQRZP3dYOxuh3-LfYs3QA6WQXPiNpKA9CwqqmJhHrZMcKeuheR91iIjaQL"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjePIOm96MyV_hXHfcgojHSora387FgEdKqXsT1lu1rpJ0O3FKqMLKLmTXNF4tc5EEkMoc-uCIm5277xpOUlth3TuuTCTiNvVFvgNSZoBAJ4PRGCnA940H8F7q4cfcAu9msZ4NAiYv0jjrFnF53COsJM2boJj7bxQvflLJjTZDo6CO9W0LIlFZyOdSgzpbG"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjqNKdA1xwfbURLQSbeezGptzQVmc_d1iAl1JTirDE9Mpn6MLIFGl9cBY1nXY3bbEnNBEeqaJCwTH2o9jQvN_MnG7-8xCFwbjtBs8I0rCggmJARjd7KvH5gkALxS5K-xY6TUFM3kv9dKA2FSLn3LQoncx1DJL41dS-kfoVhr5H1si_uWUxdepYtOEWiY9Oe"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEg5-2zASmL76dY1S0_E0XQwPXGdEdbzYVxgCmn1LWcfyMJYpkp0u__Y7snLX16teD2yvy4Vv-d1doj3RCH20P5cxLAdkpuOw2M78_XRYc8jq2oRpSC2OUG2IhfslcNiDfsX4gRHKhDHfPmjBxOSfmzQe9qmBkLWX1jBaeUkwHCJqu1Az-xIGkhV4BsO6WYk"
+      },
+      {
+        "text": "",
+        "image": "https://blogger.googleusercontent.com/img/a/AVvXsEjzq5qd1spOvOrEPeKf-Rjao-bHLinQ3vLt-U71lWXWJM0HAmC4M0N7Wu7-p4Y4uUfQSURJ0yohmqe3TsPLL4unyNl9XTL5BWd24py5z_FDVe7xTIXfcKvzeeUodx2i5VzG8Nf4z61-Oa3YsJaSjtKwVmNBd3cKa1p-v095cPDbpMQ2dIpm72BSGt0La__X"
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": "... ",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhKWuwcl3TYIy5RRnVRq6wIx1HWmyIeTKDx8apjsJvRGGKfW3Hsc6KY_4mZMD9IlSXHUIPva1sKHp8jddOWh6lwVEFDjoWsOSwqZzVfZVu147ZsPWGf1COcStE7w2KPJ9d6KY1Pe-hVy1kkc0zn3IY--d82Vec2pUZAv2WxAr3veeXZB9bV_EX6Y14YXLx1",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) A පමණී",
+        "image": ""
+      },
+      {
+        "text": "(2) A සහා B පමණී",
+        "image": ""
+      },
+      {
+        "text": "(3) A සහා C පමණී",
+        "image": ""
+      },
+      {
+        "text": "(4) B සහ  C පමණී",
+        "image": ""
+      },
+      {
+        "text": "(5) A,B සහ C සියල්ලම",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 4,
+    "explanation": "<ul>  <li><b>A - දැනට පවතින ක්ෂුද්‍ර සකසනවල (microprocessors) සීමිත හැකියාවන් මඟ හරවා ගැනීමට ක්වොන්ටම් පරිගණනය (quantum computing) විකල්පයක් විය හැකිය.</b><p><b>විස්තරය:</b> වර්තමානයේ අප භාවිතා කරන සාම්ප්‍රදායික පරිගණක බිට් (bits) මත පදනම් වී ඇති අතර ඒවාට 0 හෝ 1 යන අගයන්ගෙන් එකක් පමණක් නිරූපණය කළ හැකිය. ක්ෂුද්‍ර සකසනවල වැඩි කාර්යක්ෂමතාවක් සහ වේගයක් ලබා ගැනීමට බොහෝ සීමාවන් පවතී. ක්වොන්ටම් පරිගණනය ක්වොන්ටම් බිට් (qubits) මත පදනම් වී ඇති අතර ඒවාට 0, 1 හෝ ඒ දෙකෙහිම සුපිරි ස්ථානයක් (superposition) දැරිය හැකිය. මෙමඟින් ක්වොන්ටම් පරිගණකවලට සාම්ප්‍රදායික පරිගණකවලට ඉතා දිගු කාලයක් ගතවන ඇතැම් සංකීර්ණ ගැටළු ඉතා වේගයෙන් විසඳීමට හැකියාව ලැබේ. එබැවින්, දැනට පවතින ක්ෂුද්‍ර සකසනවල සීමිත හැකියාවන් මඟ හරවා ගැනීමට ක්වොන්ටම් පරිගණනය විකල්පයක් විය හැකි බව සත්‍යයකි.</p></li> <li><b>B - සංකීර්ණ ගැටලු විසඳීම සඳහා නව පරිගණන ආකෘති ගොඩනැගීමට කුහුඹු ජනපදවල (ant colony) චර්යා වැනි ස්වාභාවික සංසිද්ධි භාවිත කළ හැකිය.</b><p><b>විස්තරය:</b> ස්වභාවධර්මයේ දක්නට ලැබෙන විවිධ ජීවීන්ගේ සහ ක්‍රියාවලීන්ගේ හැසිරීම් අධ්‍යයනය කිරීමෙන් නව පරිගණන ආකෘති නිර්මාණය කළ හැකිය. කුහුඹු ජනපද ඇල්ගොරිතම (Ant Colony Optimization - ACO) යනු එවැනි එක් උදාහරණයකි. කුහුඹුවන් ආහාර සොයා යන විට කෙටිම මාර්ගය සොයා ගැනීමට ඔවුන්ගේ ෆෙරමෝන් (pheromone) සලකුණු භාවිතා කරන ආකාරය මෙම ඇල්ගොරිතම අනුකරණය කරයි. ACO සංකීර්ණ ප්‍රශස්තකරණ ගැටළු (optimization problems) විසඳීම සඳහා සාර්ථකව භාවිතා කර ඇත. ඒ හා සමානව, ජානමය ඇල්ගොරිතම (Genetic Algorithms) වැනි තවත් බොහෝ පරිගණන ආකෘති ස්වාභාවික සංසිද්ධිවලින් ආභාසය ලබා ගෙන ඇත. එබැවින්, සංකීර්ණ ගැටලු විසඳීම සඳහා ස්වාභාවික සංසිද්ධි භාවිත කළ හැකි බව සත්‍යයකි.</p></li> <li><b>C - විශේෂඥ පද්ධතියක (expert system) ඇති අනුමාන එන්ජිම (inference engine) තම තීරණ ගැනීම සඳහා දැනුම් පාදකයක (knowledge base) ඇති කරුණු (facts) භාවිත කරයි.</b><p><b>විස්තරය:</b> විශේෂඥ පද්ධතියක් යනු නිශ්චිත දැනුම් ක්ෂේත්‍රයක මානව විශේෂඥයෙකුගේ තීරණ ගැනීමේ හැකියාව අනුකරණය කිරීමට නිර්මාණය කර ඇති පරිගණක පද්ධතියකි. එහි ප්‍රධාන අංග දෙකක් ඇත: දැනුම් පාදකය (knowledge base) සහ අනුමාන එන්ජිම (inference engine). දැනුම් පාදකයේ එම ක්ෂේත්‍රයට අදාළ කරුණු සහ නීති ගබඩා කර ඇත. අනුමාන එන්ජිම මෙම දැනුම භාවිතා කරමින් පරිශීලකයාගෙන් ලබා ගන්නා තොරතුරු මත පදනම්ව තීරණ ගැනීමට හෝ නිගමනවලට එළඹීමට උත්සාහ කරයි. අනුමාන එන්ජිම දැනුම් පාදකයේ ඇති කරුණු සහ නීති ක්‍රියාත්මක කරමින් තර්කානුකූලව නිගමනවලට එළඹේ. එබැවින්, විශේෂඥ පද්ධතියක අනුමාන එන්ජිම තීරණ ගැනීම සඳහා දැනුම් පාදකයේ ඇති කරුණු භාවිත කරන බව සත්‍යයකි.</p></ul><p>ඉහත සියලු විස්තර අනුව, A, B සහ C යන ප්‍රකාශ තුනම නිවැරදි වේ.</p><p>එබැවින්, නිවැරදි පිළිතුර වන්නේ <b>(5) A, B සහ C සියල්ලම</b> යන්නයි.</p>",
+    "explanationImage":""
+  },
+  {
+    "question": " ",
+    "image": "https://blogger.googleusercontent.com/img/a/AVvXsEhkpSmSYZOq5hre1IqGUtfSNWNB4g6zWl3-Ct3rzheDpU4aJEs-vdWnq6rPhdenEcZ7At1B4l4mE2ddPjkWTlKOTthU09OEcD3LhXqnliPofJfSqN1CanZTWeLfwSBEP52N7PTRA1eUgDzwYvGlG_yx0qBizDbPjH2CdEjjftYoxQUbn3ULkC6skrk9hbbf",
+    "text":"",
+    "options": [
+      {
+        "text": "(1) A පමණී",
+        "image": ""
+      },
+      {
+        "text": "(1) B පමණී",
+        "image": ""
+      },
+      {
+        "text": "(1) C පමණී",
+        "image": ""
+      },
+      {
+        "text": "(1) A සහ C පමණී",
+        "image": ""
+      },
+      {
+        "text": "(1) B සහ C පමණී",
+        "image": ""
+      }
+    ],
+    "correctAnswer": 3,
+    "explanation": " <p>පහත සඳහන් ප්‍රකාශයන්හි සත්‍ය අසත්‍යතාව විමසා බලමු:</p><ul><li><b>A - ඊ-වාණිජ්‍ය (e-commerce), ගැනුම්කරුවන් සහ විකුණුම්කරුවන් අතර භෞතික අන්තර් ක්‍රියා අවම කිරීමට දිරිමත් කරයි.</b><p><b>නිවැරදියි.</b> ඊ-වාණිජ්‍යය යනු අන්තර්ජාලය හරහා භාණ්ඩ හා සේවා මිලදී ගැනීම සහ විකිණීමයි. එය භෞතික වෙළඳසැල් වෙත යාමේ අවශ්‍යතාවය අවම කරන අතර ගැනුම්කරුවන්ට සහ විකුණුම්කරුවන්ට දුරස්ථව ගනුදෙනු කිරීමට ඉඩ සලසයි.</p> </li> <li><b>B - මාර්ගගත ගෙවීමක් අතරතුර ණය පත (credit card) හිමිකරුගේ ජංගම දුරකථනයට එක් වරක් පමණක් භාවිත කළ හැකි මුරපදයක් (One Time Password - OTP) යැවීමේ ප්‍රධාන අරමුණ වන්නේ කාඩ්පත හිමිකරු දැනට සිටින ස්ථානය හඳුනාගැනීමයි.</b><p><b>වැරදියි.</b> මාර්ගගත ගෙවීම් වලදී OTP යැවීමේ ප්‍රධාන අරමුණ වන්නේ ගනුදෙනුවේ ආරක්ෂාව තහවුරු කිරීමයි. කාඩ්පත් හිමිකරු විසින්ම ගනුදෙනුව සිදුකරන බව සහතික කිරීම මෙහි අරමුණයි. එය කාඩ්පත් හිමිකරුගේ ස්ථානය හඳුනාගැනීම සඳහා භාවිතා නොවේ.</p> </li> <li><b>C - Bitcoin යනු ප්‍රමුඛ අතථ්‍ය (virtual) මුදල් ඒකකයකි.</b><p><b>නිවැරදියි.</b> Bitcoin යනු 2009 දී නිර්මාණය කරන ලද විමධ්‍යගත ඩිජිටල් මුදල් ඒකකයකි. එය භෞතික ස්වරූපයක් නොමැති අතථ්‍ය මුදල් වර්ගයක් ලෙස සැලකේ.</p> </li></ul><p>ඉහත විශ්ලේෂණයට අනුව, A සහ C යන ප්‍රකාශ දෙක නිවැරදි වේ.</p><p>එබැවින්, නිවැරදි පිළිතුර වන්නේ <b>(4) A සහ C පමණි</b> යන්නයි.</p>",
+    "explanationImage":""
+  },
+ 
+  
+
+  
+  
+            
+        ];
+
+        // Variables to track quiz state
+        let answers = Array(quizData.length).fill(null);
+        let timeLeft = 2 * 60 * 60; // 2 hours in seconds
+        let timerInterval;
+        const marksPerQuestion = 2; // Each question is worth 2 marks
+
+        // DOM elements
+        const quizQuestionsEl = document.getElementById('quiz-questions');
+        const floatingTimerEl = document.getElementById('floating-timer');
+        const timerTimeEl = document.getElementById('timer-time');
+        const submitBtn = document.getElementById('submit-btn');
+        const incompleteModal = document.getElementById('incomplete-modal');
+        const resultsModal = document.getElementById('results-modal');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalMarksDisplay = document.getElementById('total-marks');
+        const wrongAnswersEl = document.getElementById('wrong-answers');
+        const continueBtn = document.getElementById('continue-btn');
+        const closeButtons = document.getElementsByClassName('close');
+        const reattemptBtn = document.getElementById('reattempt-btn');
+
+        // Function to reset the quiz
+        function resetQuiz() {
+            // Reset answers array
+            answers = Array(quizData.length).fill(null);
+            
+            // Reset timer (2 hours)
+            timeLeft = 2 * 60 * 60;
+            updateTimerDisplay();
+            
+            // Clear any existing timer interval and start a new one
+            clearInterval(timerInterval);
+            startTimer();
+            
+            // Re-display questions to clear any selected answers
+            displayQuestions();
+            
+            // Close the results modal
+            resultsModal.classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Start timer
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            const seconds = timeLeft % 60;
+            
+            const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            timerTimeEl.textContent = timeString;
+            
+            // Change color when time is running out
+            if (timeLeft <= 600) { // 10 minutes left
+                floatingTimerEl.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+                floatingTimerEl.style.borderColor = 'var(--highlight)';
+            } else if (timeLeft <= 1800) { // 30 minutes left
+                floatingTimerEl.style.background = 'linear-gradient(135deg, var(--highlight), #e67e22)';
+                floatingTimerEl.style.borderColor = 'var(--highlight)';
+            } else {
+                floatingTimerEl.style.background = 'linear-gradient(135deg, var(--highlight), #f1c40f)';
+                floatingTimerEl.style.borderColor = 'var(--highlight)';
+            }
+        }
+
+        // Display all questions with image captions
+        function displayQuestions() {
+            quizQuestionsEl.innerHTML = '';
+            
+            quizData.forEach((question, index) => {
+                const questionEl = document.createElement('div');
+                questionEl.className = 'question';
+                questionEl.id = `question-${index}`;
+                
+                // Build question HTML
+                let questionHTML = `
+                    <div class="question-text"> ${question.question}</div>
+                `;
+                
+                // Add question image if it exists
+                if (question.image) {
+                    questionHTML += `
+                        <img src="${question.image}" class="question-image" alt="Question image">
+                    `;
+                }
+                
+                // Add additional text if it exists
+                if (question.text) {
+                    questionHTML += `
+                        <div class="question-additional-text">${question.text}</div>
+                    `;
+                }
+                
+                // Add options with images if they exist
+                questionHTML += `
+                    <div class="options">
+                        ${question.options.map((option, i) => `
+                            <div class="option">
+                                <input type="radio" name="question-${index}" id="question-${index}-option-${i}" value="${i}" 
+                                    ${answers[index] === i ? 'checked' : ''}>
+                                <label for="question-${index}-option-${i}">
+                                    ${option.image ? `<img src="${option.image}" class="option-image" alt="Option image">` : ''}
+                                    <span class="option-text">${option.text}</span>
+                                </label>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                questionEl.innerHTML = questionHTML;
+
+                // Add event listeners for radio buttons
+                const inputs = questionEl.querySelectorAll('input[type="radio"]');
+                inputs.forEach(input => {
+                    input.addEventListener('change', function() {
+                        answers[index] = parseInt(this.value);
+                    });
+                });
+                
+                quizQuestionsEl.appendChild(questionEl);
+            });
+        }
+
+        // Submit the quiz
+        function submitQuiz() {
+            // Check if any questions are answered
+            const answeredQuestions = answers.filter(answer => answer !== null).length;
+            
+            if (answeredQuestions === 0) {
+                incompleteModal.classList.add('active');
+                return;
+            }
+            
+            clearInterval(timerInterval);
+            floatingTimerEl.classList.remove('visible');
+            
+            // Calculate score
+            let score = 0;
+            const wrongAnswers = [];
+            
+            quizData.forEach((question, index) => {
+                if (answers[index] === question.correctAnswer) {
+                    score += marksPerQuestion;
+                } else {
+                    wrongAnswers.push({
+                        questionIndex: index,
+                        question: question.question,
+                        questionText: question.text || '', // Include question text
+                        questionImage: question.image,
+                        options: question.options,
+                        userAnswer: answers[index] !== null ? question.options[answers[index]]?.text : null,
+                        userAnswerIndex: answers[index],
+                        correctAnswer: question.options[question.correctAnswer].text,
+                        correctAnswerIndex: question.correctAnswer,
+                        explanation: question.explanation,
+                        explanationImage: question.explanationImage || null
+                    });
+                }
+            });
+            
+            // Display results
+            scoreDisplay.textContent = score;
+            totalMarksDisplay.textContent = quizData.length * marksPerQuestion;
+            
+            // Clear previous results
+            wrongAnswersEl.innerHTML = '';
+            
+            // Show wrong answers with explanations
+            if (wrongAnswers.length > 0) {
+                wrongAnswersEl.innerHTML = '<h3 style="color: var(--danger); margin-bottom: 15px;">වැරදි පිළිතුරු සහ පිළිතුරු නොදුන් ප්‍රශ්න:</h3>';
+                
+                wrongAnswers.forEach((wrong, index) => {
+                    const wrongEl = document.createElement('div');
+                    wrongEl.className = 'explanation';
+                    wrongEl.style.marginBottom = '30px';
+                    wrongEl.style.padding = '15px';
+                    wrongEl.style.borderRadius = '8px';
+                    wrongEl.style.backgroundColor = '#f9f9f9';
+                    
+                    // Question text
+                    let html = `
+                        <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; color: var(--dark);">
+                            ප්‍රශ්නය : ${wrong.question}<br>
+                        </div>
+                    `;
+                    
+                    // Question image
+                    if (wrong.questionImage) {
+                        html += `
+                            <div style="text-align: center; margin: 15px 0;">
+                                <img src="${wrong.questionImage}" 
+                                     style="max-width: 100%; max-height: 300px; border-radius: 5px; border: 1px solid #ddd;">
+                            </div>
+                        `;
+                    }
+                    
+                    // Additional question text if exists
+                    if (wrong.questionText) {
+                        html += `
+                            <div style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-left: 3px solid var(--highlight);">
+                                ${wrong.questionText}
+                            </div>
+                        `;
+                    }
+                    
+                    // Correct answer
+                    const correctOption = wrong.options[wrong.correctAnswerIndex];
+                    html += `
+                        <div style="margin: 15px 0; padding: 10px; border-left: 4px solid var(--success); background-color: rgba(39, 174, 96, 0.1);">
+                            <div style="font-weight: bold; color: var(--success);">නිවැරදි පිළිතුර:</div>
+                            <div style="margin-top: 5px;">
+                                ${String.fromCharCode(65 + wrong.correctAnswerIndex)}) ${correctOption.text}
+                            </div>
+                    `;
+                    
+                    if (correctOption.image) {
+                        html += `
+                            <div style="margin-top: 10px;">
+                                <img src="${correctOption.image}" 
+                                     style="max-width: 100%; max-height: 200px; border-radius: 4px; border: 1px solid #eee;">
+                            </div>
+                        `;
+                    }
+                    
+                    html += `</div>`;
+                    
+                    // User's answer (if different from correct answer)
+                    if (wrong.userAnswerIndex !== null && wrong.userAnswerIndex !== wrong.correctAnswerIndex) {
+                        const userOption = wrong.options[wrong.userAnswerIndex];
+                        html += `
+                            <div style="margin: 15px 0; padding: 10px; border-left: 4px solid var(--danger); background-color: rgba(231, 76, 60, 0.1);">
+                                <div style="font-weight: bold; color: var(--danger);">ඔබේ පිළිතුර:</div>
+                                <div style="margin-top: 5px;">
+                                    ${String.fromCharCode(65 + wrong.userAnswerIndex)}) ${userOption.text}
+                                </div>
+                        `;
+                        
+                        if (userOption.image) {
+                            html += `
+                                <div style="margin-top: 10px;">
+                                    <img src="${userOption.image}" 
+                                         style="max-width: 100%; max-height: 200px; border-radius: 4px; border: 1px solid #eee;">
+                                </div>
+                            `;
+                        }
+                        
+                        html += `</div>`;
+                    }
+                    
+                    // Explanation
+                    html += `
+                        <div style="margin-top: 20px; padding: 10px; background-color: #f0f8ff; border-radius: 5px; border-left: 4px solid var(--highlight);">
+                            <div style="font-weight: bold; color: red; margin-bottom: 8px;">පැහැදිලි කිරීම:</div>
+                    `;
+                    
+                    if (wrong.explanationImage) {
+                        html += `
+                            <div style="text-align: center; margin: 10px 0;">
+                                <img src="${wrong.explanationImage}" 
+                                     style="max-width: 100%; max-height: 250px; border-radius: 4px; border: 1px solid #ddd;">
+                            </div>
+                        `;
+                    }
+                    
+                    html += `
+                            <div style="color:red">${wrong.explanation || 'පැහැදිලි කිරීමක් නොමැත.'}</div>
+                        </div>
+                    `;
+                    
+                    wrongEl.innerHTML = html;
+                    wrongAnswersEl.appendChild(wrongEl);
+                });
+            } else {
+                wrongAnswersEl.innerHTML = `
+                    <div style="text-align: center; padding: 20px; background-color: #e8f5e9;
+                         border-radius: 8px; border-left: 6px solid var(--success);">
+                        <p style="color: var(--success); font-weight: bold; font-size: 1.2rem;">
+                            සියලු ප්‍රශ්නවලට නිවැරදිව පිළිතුරු දී ඇත!
+                        </p>
+                        <p style="margin-top: 10px;">ඔබ ලබාගත් ලකුණු: ${score}/${quizData.length * marksPerQuestion}</p>
+                    </div>
+                `;
+            }
+            
+            // Show results modal
+            resultsModal.classList.add('active');
+            
+            // Smooth scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Drawing Tool Functionality
+        let isDrawing = false;
+        let isDrawingModeEnabled = false;
+        let lastX = 0;
+        let lastY = 0;
+        let canvas, ctx;
+
+        function initDrawingTool() {
+            // Get elements
+            const showToolbarBtn = document.getElementById('show-drawing-toolbar');
+            const drawingToolbar = document.getElementById('drawing-toolbar');
+            const drawingToggle = document.getElementById('drawing-toggle');
+            const clearDrawingBtn = document.getElementById('clear-drawing');
+            const penSizeInput = document.getElementById('pen-size');
+            const penColorInput = document.getElementById('pen-color');
+            
+            // Setup canvas
+            canvas = document.getElementById('drawing-canvas');
+            ctx = canvas.getContext('2d');
+            
+            // Set canvas size to match window
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            
+            // Toggle toolbar visibility with one click
+            showToolbarBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Toggle visibility
+                if (drawingToolbar.style.display === 'none' || !drawingToolbar.style.display) {
+                    drawingToolbar.style.display = 'block';
+                } else {
+                    drawingToolbar.style.display = 'none';
+                }
+            });
+            
+            // Toggle drawing mode
+            drawingToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                isDrawingModeEnabled = !isDrawingModeEnabled;
+                drawingToggle.textContent = isDrawingModeEnabled ? 'Disable Drawing' : 'Enable Drawing';
+                
+                if (isDrawingModeEnabled) {
+                    canvas.classList.add('drawing-active');
+                    canvas.style.display = 'block';
+                    document.body.classList.add('drawing-mode');
+                } else {
+                    canvas.classList.remove('drawing-active');
+                    canvas.style.display = 'none';
+                    document.body.classList.remove('drawing-mode');
+                    isDrawing = false; // Stop any active drawing
+                }
+            });
+            
+            // Clear drawing
+            clearDrawingBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+            
+            // Drawing functionality for both mouse and touch
+            // Mouse events
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            // Touch events for mobile
+            canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+            canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+            canvas.addEventListener('touchend', stopDrawing);
+            
+            // Prevent context menu on right click
+            canvas.addEventListener('contextmenu', (e) => {
+                if (isDrawingModeEnabled) {
+                    e.preventDefault();
+                }
+            });
+            
+            // Prevent scrolling when drawing on mobile
+            function preventDefault(e) {
+                if (isDrawingModeEnabled) {
+                    e.preventDefault();
+                }
+            }
+            
+            // Add touch event listeners to prevent scrolling
+            document.addEventListener('touchmove', preventDefault, { passive: false });
+        }
+
+        function startDrawing(e) {
+            if (!isDrawingModeEnabled) return;
+            
+            isDrawing = true;
+            
+            // Get position based on device type
+            const pos = getPosition(e);
+            [lastX, lastY] = [pos.x, pos.y];
+            
+            // Start a new path
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.strokeStyle = document.getElementById('pen-color').value;
+            ctx.lineWidth = document.getElementById('pen-size').value;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+
+        function draw(e) {
+            if (!isDrawingModeEnabled || !isDrawing) return;
+            
+            e.preventDefault();
+            
+            // Get position based on device type
+            const pos = getPosition(e);
+            
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            
+            // Update last position
+            lastX = pos.x;
+            lastY = pos.y;
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                ctx.closePath();
+                isDrawing = false;
+            }
+        }
+
+        function handleTouchStart(e) {
+            if (!isDrawingModeEnabled) return;
+            
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            startDrawing(mouseEvent);
+        }
+
+        function handleTouchMove(e) {
+            if (!isDrawingModeEnabled) return;
+            
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            draw(mouseEvent);
+        }
+
+        function getPosition(e) {
+            let x, y;
+            
+            if (e.touches) {
+                // Touch event
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                x = touch.clientX - rect.left;
+                y = touch.clientY - rect.top;
+            } else {
+                // Mouse event
+                x = e.clientX;
+                y = e.clientY;
+            }
+            
+            return { x, y };
+        }
+
+        // Initialize the quiz
+        function initQuiz() {
+            // Set total marks
+            totalMarksDisplay.textContent = quizData.length * marksPerQuestion;
+            
+            displayQuestions();
+            startTimer();
+            
+            // Show floating timer when scrolling
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    floatingTimerEl.classList.add('visible');
+                } else {
+                    floatingTimerEl.classList.remove('visible');
+                }
+            });
+            
+            // Event listeners
+            submitBtn.addEventListener('click', submitQuiz);
+            continueBtn.addEventListener('click', () => {
+                incompleteModal.classList.remove('active');
+            });
+            reattemptBtn.addEventListener('click', resetQuiz);
+            
+            for (let i = 0; i < closeButtons.length; i++) {
+                closeButtons[i].addEventListener('click', function() {
+                    this.closest('.modal').classList.remove('active');
+                });
+            }
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target == incompleteModal) {
+                    incompleteModal.classList.remove('active');
+                }
+                if (event.target == resultsModal) {
+                    resultsModal.classList.remove('active');
+                }
+            });
+
+            // Initialize drawing tool
+            initDrawingTool();
+        }
+
+        // Initialize the quiz when the page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            initQuiz();
+        });
+    </script>
+</body>
+</html>

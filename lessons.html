@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT පාඩම් - උසස්පෙළ තොරතුරු තාක්ෂණය</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, rgba(5, 3, 129, 0.9), rgba(15, 126, 170, 0.9), rgba(153, 23, 228, 0.9), rgba(43, 108, 176, 0.9));
+            background-size: 400% 400%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: hidden;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lesson-card {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-5px) scale(1.03);
+        }
+
+        .lesson-image {
+            transition: all 0.5s ease;
+            width: 150%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .lesson-card:hover .lesson-image {
+            transform: scale(1.08);
+        }
+
+        .play-button {
+            transition: all 0.3s ease;
+        }
+
+        .lesson-card:hover .play-button {
+            background-color: #FF0000;
+            transform: scale(1.12);
+        }
+
+        .header-text {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .glass-card {
+                width: 95%;
+                margin: 10px auto;
+            }
+            
+            .lesson-image {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="glass-card max-w-6xl mx-auto p-6 md:p-8">
+            <div class="text-center mb-10">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-3 header-text">උසස්පෙළ ICT පාඩම්</h1>
+                <p class="text-xl text-white mb-5">යුටියුබ් චැනලයේ පාඩම් වීඩියෝ මාලාව</p>
+                <div class="w-32 h-1.5 bg-white bg-opacity-50 mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Lesson 1 -->
+                <a href="pythom lesson.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="python Intro.jpg" alt="පාඩම 1" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 1: Python හැඳින්වීම</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 25:10</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 2 -->
+                <a href="lesson2.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="Web Design intro.jpg" alt="පාඩම 2" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 2: දත්ත විශ්ලේෂණය</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 32:45</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 3 -->
+                <a href="lesson3.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/8jAykqxIeqw/maxresdefault.jpg" alt="පාඩම 3" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 3: SQL මූලික කරුණු</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 28:15</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 4 -->
+                <a href="lesson4.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/7S_tz1z_5bA/maxresdefault.jpg" alt="පාඩම 4" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 4: HTML & CSS මූලික</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 35:20</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 5 -->
+                <a href="lesson5.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/pQN-pnXPaVg/maxresdefault.jpg" alt="පාඩම 5" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 5: JavaScript මූලික</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 40:05</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 6 -->
+                <a href="lesson6.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/RBSGKlAvoiM/maxresdefault.jpg" alt="පාඩම 6" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 6: දත්ත සැකසීම</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 22:30</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 7 -->
+                <a href="lesson7.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/8dUpL8SCO1w/maxresdefault.jpg" alt="පාඩම 7" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 7: ඇල්ගොරිතම</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 45:15</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 8 -->
+                <a href="lesson8.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/09TeUXjzpKs/maxresdefault.jpg" alt="පාඩම 8" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 8: දත්ත ගබඩා කිරීම</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 38:20</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 9 -->
+                <a href="lesson9.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/7ghhRHRP6t4/maxresdefault.jpg" alt="පාඩම 9" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 9: ජාලකරණ මූලික</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 30:45</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 10 -->
+                <a href="lesson10.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/3QhU9jd03a0/maxresdefault.jpg" alt="පාඩම 10" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 10: සයිබර් ආරක්ෂාව</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 42:10</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 11 -->
+                <a href="lesson11.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/2Fp1N6dof0Y/maxresdefault.jpg" alt="පාඩම 11" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 11: AI මූලික</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 50:25</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 12 -->
+                <a href="lesson12.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/JJmcL1N2KQs/maxresdefault.jpg" alt="පාඩම 12" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 12: Machine Learning</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 55:40</p>
+                    </div>
+                </a>
+
+                <!-- Lesson 13 -->
+                <a href="lesson13.html" class="lesson-card glass-card rounded-xl overflow-hidden">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/7eh4d6sabA0/maxresdefault.jpg" alt="පාඩම 13" class="lesson-image">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                            <div class="play-button bg-red-600 rounded-full p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2">පාඩම 13: ICT ව්‍යාපෘති</h3>
+                        <p class="text-gray-200">පාඩම් කාලය: 60:15</p>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <a href="https://youtube.com/yourchannel" target="_blank" class="inline-flex items-center px-8 py-4 bg-red-600 text-white text-lg rounded-full hover:bg-red-700 transition transform hover:-translate-y-1 shadow-xl hover:shadow-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    අපගේ යුටියුබ් චැනලය සඳහා සම්බන්ධ වන්න
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
